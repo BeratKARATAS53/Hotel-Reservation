@@ -29,22 +29,22 @@ create table if not exists person(
 create table if not exists manager(
    	id int auto_increment primary key,
    	salary float,
-   	hotel_id int references hotel(id),
-   	person_id int references person(id)
+   	hotel_id int references hotel(id) on delete cascade,
+   	person_id int references person(id) on delete cascade
 );
 
 create table if not exists employee(
    	id int auto_increment primary key,
    	salary float,
-   	hotel_id int references hotel(id),
-   	person_id int references person(id)
+   	hotel_id int references hotel(id) on delete cascade,
+   	person_id int references person(id) on delete cascade
 );
 
 create table if not exists customer(
 	id int auto_increment primary key,
    	age int not null,
    	username varchar(100) unique not null,
-   	person_id int references person(id)
+   	person_id int references person(id) on delete cascade
 );
 
 create table if not exists organization(
@@ -52,7 +52,7 @@ create table if not exists organization(
    	name varchar(255) not null,
    	org_info varchar(255) not null,
   	price float not null,
-   	hotel_id int references hotel(id)
+   	hotel_id int references hotel(id) on delete cascade
 );
 
 create table if not exists room(
@@ -62,7 +62,7 @@ create table if not exists room(
    	room_number varchar(10) not null,
    	status varchar(255) not null,
    	capacity int not null,
-   	hotel_id int references hotel(id)
+   	hotel_id int references hotel(id) on delete cascade
 );
 
 create table if not exists reservation(
@@ -71,7 +71,7 @@ create table if not exists reservation(
    	total_day int not null,
    	total_night int not null,
    	price float not null,
-   	customer_id int references customer(id)
+   	customer_id int references customer(id) on delete cascade
 );
 
 create table if not exists room_reservation (
@@ -82,12 +82,12 @@ create table if not exists room_reservation (
 create table if not exists specialroom(
    	id int auto_increment primary key,
    	feature varchar(255) not null,
-   	room_id int references room(id)
+   	room_id int references room(id) on delete cascade
 );
 
 create table if not exists standartroom(
    	id int auto_increment primary key,
-   	room_id int references room(id)
+   	room_id int references room(id) on delete cascade
 );
 
 create table if not exists extraservice (
@@ -105,7 +105,7 @@ create table if not exists room_extraservice (
 create table if not exists foodservice (
    	id int auto_increment primary key,
    	food_detail varchar(255) not null,
-   	service_id int references extraservice(id)
+   	service_id int references extraservice(id) on delete cascade
 );
 
 drop procedure if exists addbalance;
@@ -121,7 +121,9 @@ drop procedure if exists updatebalance;
 delimiter $$
 create procedure updatebalance(in balance_id integer, in balance_money float, in balance_date date)
 begin
-	update balance set balance.money=money, balance.balance_date=balance_date where balance.id=balance_id; 
+	if exists(select * from balance where id=balance_id) then 
+		update balance set balance.money=money, balance.balance_date=balance_date where balance.id=balance_id; 
+	end if;
 end;
 delimiter ;
 
@@ -173,13 +175,13 @@ begin
 		delete from hotel where id=hotel_id;
 	end if;
 end
-delimiter ;
+delimiter 
 /*call addhotel(:name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
 call addhotel('hilton', 'tunali', '5555555', 'ultra zengin', 5, 'lüks otel');
-/*call updatehotel(:name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
+/*call updatehotel(:hotel_id, :name, :address, :telephone, :hotel_info, :star, :hotel_type, :balance_money)*/
 call updatehotel(1, 'hilton', 'kýzýlay', '5555555', 'ultra zengin', 5, 'ultra lüks otel', 1);
-/*call deletehotel(:name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
-call deletehotel(2);
+/*call deletehotel(:hotel_id)*/
+call deletehotel(1);
 
 drop procedure if exists addperson;
 delimiter $$
@@ -277,12 +279,12 @@ call addperson('Mert', 'Pek', '15995', 'mp@g.c', 'Mersin', '3333', 21, null, nul
 call addperson('Ahmet', 'Iþýk', '0246', 'ai@g.c', 'Amasya', '4444', 18, 50, 'ahmetýþýk', null, 'customer');
 call addperson('ali4', 'veli', '123', '2@g.c', 'mamak', '3333', 21, 222.22, null, 2, 'manager');
 call addperson('ali6', 'veli', '123', 'ai@g.c', 'mamak', '131', 21, 222.22, null, 1, 'employee');
-/*call updateperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_id, :person_type)*/
-call addperson('Ali-U', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 20, null, 'aliveli', null, 'customer');
-call addperson('Berat-U', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 1, 'employee');
-call addperson('Mert-U', 'Pek', '15995', 'mp@g.c', 'Mersin', '3333', 21, null, null, 1, 'manager');
+/*call updateperson(:person_id, :firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_id, :person_type)*/
+call updateperson(1, 'Ali-U', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 28, null, 'aliveli', null, 'customer');
+call updateperson(2, 'Berat-U', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 1, 'employee');
+call updateperson(5, 'Mert-U', 'Pek', '15995', 'mp@g.c', 'Mersin', '3333', 21, null, null, 1, 'manager');
 /*call deleteperson(:person_id)*/
-call deleteperson(3);
+call deleteperson(4);
 
 drop procedure if exists addroom;
 delimiter $$
