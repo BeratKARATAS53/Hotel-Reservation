@@ -1,3 +1,4 @@
+/*---TABLES---*/
 create table if not exists balance(
 	id int auto_increment primary key,
    	money float,
@@ -108,6 +109,7 @@ create table if not exists foodservice (
    	service_id int references extraservice(id) on delete cascade
 );
 
+/*---PROCEDURES---*/
 drop procedure if exists addbalance;
 delimiter $$
 create procedure addbalance(in balance_money float, in balance_date date, out balance_id integer)
