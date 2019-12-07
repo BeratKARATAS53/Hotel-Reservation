@@ -13,7 +13,8 @@ create table if not exists hotel(
    	hotel_info varchar(255) not null,
    	star int,
    	hotel_type varchar(150) not null,
-   	balance_id int references balance(id)
+   	balance_id int not null,
+   	foreign key (balance_id) references balance(id) on update cascade
 );
 
 create table if not exists person(
@@ -24,28 +25,34 @@ create table if not exists person(
    	email varchar (255) unique not null,
    	address varchar (255) not null,
    	telephone varchar (20) unique not null,
-   	balance_id int references balance(id)
+   	balance_id int not null,
+   	foreign key (balance_id) references balance(id) on update cascade
 );
 
 create table if not exists manager(
    	id int auto_increment primary key,
    	salary float,
-   	hotel_id int references hotel(id) on delete cascade,
-   	person_id int references person(id) on delete cascade
+   	hotel_id int not null,
+   	person_id int not null,
+   	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade,
+   	foreign key (person_id) references person(id) on delete cascade on update cascade
 );
 
 create table if not exists employee(
    	id int auto_increment primary key,
    	salary float,
-   	hotel_id int references hotel(id) on delete cascade,
-   	person_id int references person(id) on delete cascade
+   	hotel_id int not null,
+   	person_id int not null,
+   	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade,
+   	foreign key (person_id) references person(id) on delete cascade on update cascade
 );
 
 create table if not exists customer(
 	id int auto_increment primary key,
    	age int not null,
    	username varchar(100) unique not null,
-   	person_id int references person(id) on delete cascade
+   	person_id int,
+   	foreign key (person_id) references person(id) on delete cascade on update cascade
 );
 
 create table if not exists organization(
@@ -53,7 +60,8 @@ create table if not exists organization(
    	name varchar(255) not null,
    	org_info varchar(255) not null,
   	price float not null,
-   	hotel_id int references hotel(id) on delete cascade
+   	hotel_id int,
+   	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade
 );
 
 create table if not exists room(
@@ -63,7 +71,8 @@ create table if not exists room(
    	room_number varchar(10) not null,
    	status varchar(255) not null,
    	capacity int not null,
-   	hotel_id int references hotel(id) on delete cascade
+   	hotel_id int,
+   	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade
 );
 
 create table if not exists reservation(
@@ -72,23 +81,28 @@ create table if not exists reservation(
    	total_day int not null,
    	total_night int not null,
    	price float not null,
-   	customer_id int references customer(id) on delete cascade
+   	customer_id int,
+   	foreign key (customer_id) references customer(id) on delete cascade on update cascade
 );
 
 create table if not exists room_reservation (
-   	room_id int references room(id),
-   	reservation_id int references reservation(id)
+	room_id int,	
+	reservation_id int,
+   	foreign key (room_id) references room(id),
+   	foreign key (reservation_id) references reservation(id)
 );
 
 create table if not exists specialroom(
    	id int auto_increment primary key,
    	feature varchar(255) not null,
-   	room_id int references room(id) on delete cascade
+   	room_id int,
+   	foreign key (room_id) references room(id) on delete cascade on update cascade
 );
 
 create table if not exists standartroom(
    	id int auto_increment primary key,
-   	room_id int references room(id) on delete cascade
+   	room_id int,
+   	foreign key (room_id) references room(id) on delete cascade on update cascade
 );
 
 create table if not exists extraservice (
@@ -99,14 +113,17 @@ create table if not exists extraservice (
 );
 
 create table if not exists room_extraservice (
-   	room_id int references room(id),
-   	service_id int references extraservice(id)
+	room_id int,	
+	service_id int,
+   	foreign key (room_id) references room(id),
+   	foreign key (service_id) references extraservice(id)
 );
 
 create table if not exists foodservice (
    	id int auto_increment primary key,
    	food_detail varchar(255) not null,
-   	service_id int references extraservice(id) on delete cascade
+   	service_id int,
+   	foreign key (service_id) references extraservice(id) on delete cascade on update cascade
 );
 
 /*---PROCEDURES---*/
@@ -138,9 +155,6 @@ begin
 	end if;
 end;
 delimiter ;
-/*call addbalance(:balance_money, :balance_date)*/
-/*call updatebalance(:balance_id, :balance_money, :balance_date)*/
-/*call deletebalance(:balance_id)*/
 
 drop procedure if exists addhotel;
 delimiter $$
@@ -177,19 +191,13 @@ begin
 		delete from hotel where id=hotel_id;
 	end if;
 end
-delimiter 
-/*call addhotel(:name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
-call addhotel('hilton', 'tunali', '5555555', 'ultra zengin', 5, 'lüks otel');
-/*call updatehotel(:hotel_id, :name, :address, :telephone, :hotel_info, :star, :hotel_type, :balance_money)*/
-call updatehotel(1, 'hilton', 'kýzýlay', '5555555', 'ultra zengin', 5, 'ultra lüks otel', 1);
-/*call deletehotel(:hotel_id)*/
-call deletehotel(1);
+delimiter ;
 
 drop procedure if exists addperson;
 delimiter $$
 create procedure addperson(in firstname varchar(100), in lastname varchar(100), in passwrd varchar(255), in mail varchar(255),
-	in address varchar(255), in phone varchar(20), in age integer, in salary float, in username varchar(150), in hotel_id int,
-	in person_type varchar(20))
+	in address varchar(255), in phone varchar(20), in age integer, in salary float, in username varchar(150),
+	in hotel_name varchar(200), in person_type varchar(20))
 begin
 	declare id INT DEFAULT 0;
 	if not exists (select * from person p where p.email = mail or p.telephone = phone) then
@@ -201,22 +209,38 @@ begin
 	   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
 				select p.id into id from person p where p.email = mail;
 	    		insert into customer(age, username, person_id) values(age, username, id); 
+				if not exists (select * from customer c where c.person_id=id) then
+					delete from person p where p.id=id;
+					delete from balance b where b.id=(select @balance_id);
+				end if;
 			end;
 		when 'employee' then
 			begin
+				declare hotel_id INT DEFAULT 0;
 		   		call addbalance(salary, curdate(), @balance_id);
 	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
 	   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
 				select distinct p.id into id from person p where p.email = mail;
+				select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 				insert into employee(salary, hotel_id, person_id) values(salary, hotel_id, id);
+				if not exists (select * from employee e where e.person_id=id) then
+					delete from person p where p.id=id;
+					delete from balance b where b.id=(select @balance_id);
+				end if;
 			end;
 		when 'manager' then
 			begin
+		   		declare hotel_id INT DEFAULT 0;
 		   		call addbalance(salary, curdate(), @balance_id);
 	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
 	   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
 				select distinct p.id into id from person p where p.email = mail;
+				select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 				insert into manager(salary, hotel_id, person_id) values(salary, hotel_id, id);
+				if not exists (select * from manager m where m.person_id=id) then
+					delete from person p where p.id=id;
+					delete from balance b where b.id=(select @balance_id);
+				end if;
 			end;
 		end case;
 	end if;
@@ -227,7 +251,7 @@ drop procedure if exists updateperson;
 delimiter $$
 create procedure updateperson(in person_id integer, in firstname varchar(100), in lastname varchar(100), in passwrd varchar(255),
 	in mail varchar(255), in address varchar(255), in phone varchar(20), in age integer, in salary float, in username varchar(150),
-	in hotel_id int, in person_type varchar(20))
+	in person_type varchar(20))
 begin
 	declare id INT DEFAULT 0;
 	declare balance INT DEFAULT 0;
@@ -269,48 +293,40 @@ drop procedure if exists deleteperson;
 delimiter $$
 create procedure deleteperson(in person_id integer)
 begin
+	declare balance_id INT DEFAULT 0;
 	if exists (select * from person p where p.id = person_id) then
-	   	delete from person where id = person_id;
+		select b.id into balance_id from balance b where b.id = (select balance_id from person p where p.id = person_id);
+		delete from person where id = person_id;
+	   	delete from balance where id = balance_id;
 	end if;
 end
 delimiter ;
-/*call addperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_id, :person_type)*/
-call addperson('Ali', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 20, null, 'aliveli', null, 'customer');
-call addperson('Berat', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 1, 'employee');
-call addperson('Mert', 'Pek', '15995', 'mp@g.c', 'Mersin', '3333', 21, null, null, 1, 'manager');
-call addperson('Ahmet', 'Iþýk', '0246', 'ai@g.c', 'Amasya', '4444', 18, 50, 'ahmetýþýk', null, 'customer');
-call addperson('ali4', 'veli', '123', '2@g.c', 'mamak', '3333', 21, 222.22, null, 2, 'manager');
-call addperson('ali6', 'veli', '123', 'ai@g.c', 'mamak', '131', 21, 222.22, null, 1, 'employee');
-/*call updateperson(:person_id, :firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_id, :person_type)*/
-call updateperson(1, 'Ali-U', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 28, null, 'aliveli', null, 'customer');
-call updateperson(2, 'Berat-U', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 1, 'employee');
-call updateperson(5, 'Mert-U', 'Pek', '15995', 'mp@g.c', 'Mersin', '3333', 21, null, null, 1, 'manager');
-/*call deleteperson(:person_id)*/
-call deleteperson(4);
 
 drop procedure if exists addroom;
 delimiter $$
 create procedure addroom(in room_info varchar(255), in room_price float, in room_number varchar(10), in status varchar(255),
-	in capacity integer, in feature varchar(255), in hotel_id integer, in room_type varchar(25))
+	in capacity integer, in feature varchar(255), in hotel_name varchar(200), in room_type varchar(25))
 begin
 	declare room_id INT DEFAULT 0;
-	if exists (select * from hotel h where h.id = hotel_id) then
+	declare hotel_id INT DEFAULT 0;
+	if exists (select * from hotel h where h.name = hotel_name) then
+		select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 	   	case room_type
 	   	when 'special' then
 	   		begin
-				if not exists (select * from room r where r.room_number=concat('0-', hotel_id, room_number) and r.hotel_id=hotel_id) then 
+				if not exists (select * from room r where r.room_number=concat(hotel_id, '-1-', room_number) and r.hotel_id=hotel_id) then 
 					insert into room(room_info, room_price, room_number, status, capacity, hotel_id)
-					values(room_info, room_price, concat('0-', hotel_id, room_number), status, capacity, hotel_id);
-					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat('0-', hotel_id,room_number);
+					values(room_info, room_price, concat(hotel_id, '-1-', room_number), status, capacity, hotel_id);
+					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat(hotel_id, '-1-', room_number);
 					insert into specialroom(feature, room_id) values(feature, room_id);
 				end if;
 		   	end;
 	   	when 'standart' then
 	   		begin
-				if not exists (select * from room r where r.room_number=concat('1-', hotel_id, room_number) and r.hotel_id=hotel_id) then
+				if not exists (select * from room r where r.room_number=concat(hotel_id, '-0-', room_number) and r.hotel_id=hotel_id) then
 					insert into room(room_info, room_price, room_number, status, capacity, hotel_id)
-					values(room_info, room_price, concat('1-', hotel_id, room_number), status, capacity, hotel_id);
-					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat('1-', hotel_id, room_number);
+					values(room_info, room_price, concat(hotel_id, '-0-', room_number), status, capacity, hotel_id);
+					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat(hotel_id, '-0-', room_number);
 					insert into standartroom(room_id) values(room_id);
 				end if;
 		   	end;
@@ -321,21 +337,19 @@ delimiter ;
 
 drop procedure if exists updateroom;
 delimiter $$
-create procedure updateroom(in room_id integer, in room_info varchar(255), in room_price float, in room_number varchar(10),
-	in status varchar(255), in capacity integer, in feature varchar(255), in hotel_id integer, in room_type varchar(25))
+create procedure updateroom(in room_id integer, in room_info varchar(255), in room_price float, in status varchar(255),
+	in capacity integer, in feature varchar(255), in room_type varchar(25))
 begin
 	if exists (select * from room r where r.id=room_id) then
 	   	case room_type
 	   	when 'special' then
 	   		begin
-	    		update room set room.room_info=room_info, room.room_price=room_price, room.room_number=concat('0-', hotel_id, room_number),
-	    			room.status=status, room.capacity=capacity, room.hotel_id=hotel_id where room.id=room_id;
+	    		update room set room.room_info=room_info, room.room_price=room_price, room.status=status, room.capacity=capacity where room.id=room_id;
 				update specialroom set specialroom.feature=feature where specialroom.room_id=room_id;
 		   	end;
 	   	when 'standart' then
 	   		begin
-				update room set room.room_info=room_info, room.room_price=room_price, room.room_number=concat('0-', hotel_id, room_number),
-					room.status=status, room.capacity=capacity, room.hotel_id=hotel_id where room.id=room_id;
+				update room set room.room_info=room_info, room.room_price=room_price, room.status=status, room.capacity=capacity where room.id=room_id;
 		   	end;
 		end case;
 	end if;
@@ -351,18 +365,6 @@ begin
 	end if;
 end
 delimiter ;
-/*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_id, :room_type)*/
-call addroom('hilton', 5555, 5, 'uygun', 4, 'ekstra pahali', 1, 'special');
-call addroom('hilton', 5555, 5, 'uygun', 4, 'ekstra ucuz', 1, 'special');
-call addroom('hilton', 555, 5, 'uygun', 4, null, 1, 'standart');
-call addroom('hilton', 5555, 6, 'uygun', 4, 'ekstra yemekli', 1, 'special');
-call addroom('hilton', 555, 52, 'uygun', 4, null, 1, 'standart');
-/*call updateperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_id, :person_type)*/
-call updateroom(1, 'hilton', 555, 5, 'uygun', 4, 'ekstra ucuz', 1, 'special');
-call updateroom(2, 'hilton', 5555, 6, 'uygun', 4, 'ekstra yemeksiz', 1, 'special');
-call updateroom(3, 'hilton', 555, 52, 'uygun', 4, null, 1, 'standart');
-/*call deleteroom(:room_id)*/
-call deleteroom(2);
 
 drop procedure if exists addreservation;
 delimiter $$
@@ -388,7 +390,7 @@ delimiter ;
 drop procedure if exists updatereservation;
 delimiter $$
 create procedure updatereservation(in reservation_id integer, in reservation_date date, in total_day integer,
-	in total_night integer, in price float, in customer_id integer, in room_id integer)
+	in total_night integer, in price float, in room_id integer)
 begin
 	declare reservation_id INT DEFAULT 0;
 	if exists (select * from reservation r where r.id=reservation_id) then
@@ -408,34 +410,27 @@ begin
 	end if;
 end
 delimiter ;
-/*call addreservation(:reservation_date, :total_day, :total_night, :price, :customer_id, :room_id)*/
-call addreservation(curdate(), 8, 10, 1589, 1, 3);
-call addreservation(curdate(), 5, 4, 1589, 2, 1);
-call addreservation(curdate(), 3, 4, 1589, 3, 4);
-/*call updatereservation(:reservation_id, :reservation_date, :total_day, :total_night, :price, :customer_id, :room_id)*/
-call updatereservation(1, curdate(), 8, 8, 1589, 1, 3);
-/*call deletereservation(:reservation_id)*/
-call deletereservation(2);
 
 drop procedure if exists addorganization;
 delimiter $$
-create procedure addorganization(in name varchar(255), in org_info varchar(255), in price float, in hotel_id integer)
+create procedure addorganization(in name varchar(255), in org_info varchar(255), in price float, in hotel_name varchar(200))
 begin
+	declare hotel_id INT DEFAULT 0;
 	if not exists (select * from organization o where o.name=name and o.org_info=org_info) then
-		if exists (select * from hotel h where h.id=hotel_id) then
+		if exists (select * from hotel h where h.name=hotel_name) then
+			select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 			insert into organization(name, org_info, price, hotel_id) values(name, org_info, price, hotel_id);
 		end if;
 	end if;
 end
 delimiter ;
 
-drop procedure if exists updaterganization;
+drop procedure if exists updateorganization;
 delimiter $$
-create procedure updaterganization(in organization_id integer, in name varchar(255), in org_info varchar(255),
-	in price float, in hotel_id integer)
+create procedure updateorganization(in organization_id integer, in name varchar(255), in org_info varchar(255), in price float)
 begin
 	if exists (select * from organization o where o.id=organization_id) then
-		update organization set organization.name=name, organization.org_info=org_info, organization.price=price;
+		update organization set organization.name=name, organization.org_info=org_info, organization.price=price where organization.id=organization_id;
 	end if;
 end
 delimiter ;
@@ -449,26 +444,17 @@ begin
 	end if;
 end
 delimiter ;
-/*call addorganization(:name, :org_info, :price, :hotel_id)*/
-call addorganization('Murat Boz', 'Ünlü sanaçtý Murat Boz bizlerle', 125, 1);
-call addorganization('Murat Koz', 'Ünlü sanaçtý Murat Koz bizlerle', 124, 1);
-call addorganization('Murat Köz', 'Ünlü sanaçtý Murat Köz bizlerle', 123, 1);
-/*call updaterganization(:organization_id, :name, :org_info, :price, :hotel_id)*/
-call updaterganization(1, 'Murat Boz', 'Ünlü sanaçtý Murat Boz bizlerle', 1255, 1);
-call updaterganization(3, 'Murat Köz', 'Ünlü sanaçtý Murat Köz bizlerle', 1215, 1);
-/*call deleteorganization(:organization_id)*/
-call deleteorganization(2);
 
 drop procedure if exists addextraservice;
 delimiter $$
-create procedure addextraservice(in service varchar(255), in service_price float, in service_point integer, in room_id integer)
+create procedure addextraservice(in service varchar(255), in service_price float, in service_point integer, in room_id integer,
+	out service_id integer)
 begin
-	declare service_id INT DEFAULT 0;
-	if not exists (select * from extraservice e where e.service=service and e.service_price=service_price) then
+	if not exists (select * from extraservice e, room_extraservice re where e.id=re.service_id and re.room_id=room_id and e.service=service) then
 		if exists (select * from room r where r.id=room_id) then
 			insert into extraservice(service, service_price, service_point) values(service, service_price, service_point);
-			select id into service_id from extraservice e where e.service=service and e.service_price=service_price;
-			insert into room_extraservice(room_id, service_id) values(room_id, service_id);
+			set service_id := (select MAX(id) from extraservice);
+			insert into room_extraservice(room_id, service_id) values(room_id, (select MAX(id) from extraservice));
 		end if;
 	end if;
 end
@@ -479,7 +465,7 @@ delimiter $$
 create procedure updateextraservice(in service_id integer, in service varchar(255), in service_price float,
 	in service_point integer, in room_id integer)
 begin
-	if exists (select * from extraservice e where e.id=service_id) then
+	if exists (select * from extraservice e, room_extraservice re where e.id=re.service_id and re.room_id=room_id and e.service=service) then
 		update extraservice set extraservice.service=service, extraservice.service_point=service_point, 
 			extraservice.service_price=service_price where extraservice.id=service_id;
 		update room_extraservice set room_extraservice.service_id=service_id where room_extraservice.room_id=room_id;
@@ -496,26 +482,17 @@ begin
 	end if;
 end
 delimiter ;
-/*call addextraservice(:service, :service_price, :service_point, :room_id)*/
-call addextraservice('temizlik', 55, 0, 1);
-call addextraservice('taþýma', 55, 3, 2);
-/*call updateextraservice(:service_id, :service, :service_price, :service_point, :room_id)*/
-call updateextraservice(1, 'temizlik', 55, 2, 1);
-/*call deleteextraservice(:service_id)*/
-call deleteextraservice(2);
 
 drop procedure if exists addfoodservice;
 delimiter $$
 create procedure addfoodservice(in service varchar(255), in service_price float, in service_point integer, in food_detail varchar(255),
 	in room_id integer)
 begin
-	declare service_id INT DEFAULT 0;
 	if not exists (select * from extraservice e, foodservice f where e.id=f.service_id and e.service=service
 		and f.food_detail=food_detail) then
-		if exists (select * from room r where r.id=room_id) then
-			insert into extraservice(service, service_price, service_point) values(service, service_price, service_point);
-			select id into service_id from extraservice e where e.service=service and e.service_price=service_price;
-			insert into foodservice(food_detail, service_id) values(food_detail, service_id);
+		if exists (select * from room r, specialroom s where r.id=s.room_id and r.id=room_id) then
+			call addextraservice(service, service_price, service_point, room_id, @service_id);
+			insert into foodservice(food_detail, service_id) values(food_detail, (select @service_id));
 		end if;
 	end if;
 end
@@ -527,8 +504,7 @@ create procedure updatefoodservice(in food_id integer, in service varchar(255), 
 	in food_detail varchar(255), in room_id integer)
 begin
 	if exists (select * from foodservice f where f.id=food_id) then
-		update extraservice set extraservice.service=service, extraservice.service_point=service_point, 
-			extraservice.service_price=service_price where extraservice.id=(select service_id from foodservice f where f.id=food_id);
+		call updateextraservice(food_id, service, service_price, service_point, room_id);
 		update foodservice set foodservice.food_detail=food_detail where foodservice.id=food_id;
 	end if;
 end
@@ -543,10 +519,78 @@ begin
 	end if;
 end
 delimiter ;
+
+/*---insert---*/
+
+/*call addbalance(:balance_money, :balance_date)*/
+/*call updatebalance(:balance_id, :balance_money, :balance_date)*/
+/*call deletebalance(:balance_id)*/
+
+/*call addhotel(:name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
+call addhotel('hilton', 'tunali', '5555555', 'ultra zengin', 5, 'lüks otel');
+/*call updatehotel(:hotel_id, :name, :address, :telephone, :hotel_info, :star, :hotel_type, :balance_money)
+call updatehotel(1, 'hilton', 'kýzýlay', '5555555', 'ultra zengin', 5, 'ultra lüks otel', 1);
+call deletehotel(:hotel_id)
+call deletehotel(5)*/
+
+/*call addperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_id, :person_type)*/
+call addperson('Berat', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 'hilton', 'employee');
+call addperson('ali6', 'veli', '123', 'ai@g.c', 'mamak', '131', 21, 222.22, null, 'hilton', 'employee');
+call addperson('Ali', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 20, null, 'aliveli', null, 'customer');
+call addperson('Ahmet', 'Iþýk', '0246', 'ai@g.c', 'Amasya', '4444', 18, 50, 'ahmetýþýk', null, 'customer');
+call addperson('Mert', 'Mert', '53937', 'mm@g.c', 'Bursa', '1231', 22, 2214.5, null, 'hilton', 'manager');
+call addperson('ali4', 'veli', '123', '2@g.c', 'mamak', '3333', 21, 222.22, null, 'hilton', 'manager');
+call addperson('Berat2', 'Karataþ2', '53937', 'bk2@g.c', 'Bursa', '22222', 22, 2214.5, null, 'hilton', 'employee');
+/*call updateperson(:person_id, :firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :person_type)
+call updateperson(1, 'Ali-U', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 28, null, 'aliveli', 'customer');
+call updateperson(2, 'Berat-U', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 'employee');
+call updateperson(3, 'Mert-U', 'Pek', '15995', 'mp@g.c', 'Mersin', '3333', 21, null, null, 'manager');
+call deleteperson(:person_id)
+call deleteperson(1);*/
+
+/*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
+call addroom('hilton', 5555, 5, 'uygun', 4, 'ekstra pahali', 'hilton', 'special');
+call addroom('hilton', 5555, 5, 'uygun', 4, 'ekstra ucuz', 'hilton', 'special');
+call addroom('hilton', 555, 5, 'uygun', 4, null, 'hilton', 'standart');
+call addroom('hilton', 5555, 6, 'uygun', 4, 'ekstra yemekli', 'hilton', 'special');
+call addroom('hilton', 555, 52, 'uygun', 4, null, 'hilton', 'standart');
+/*call updateperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_name, :person_type)
+call updateroom(1, 'hilton', 555, 5, 'uygun', 4, 'ekstra ucuz', 1, 'special');
+call updateroom(2, 'hilton', 5555, 6, 'uygun', 4, 'ekstra yemeksiz', 1, 'special');
+call updateroom(3, 'hilton', 555, 52, 'uygun', 4, null, 1, 'standart');
+call deleteroom(:room_id)
+call deleteroom(2);*/
+
+/*call addreservation(:reservation_date, :total_day, :total_night, :price, :customer_id, :room_id)*/
+call addreservation(curdate(), 8, 10, 1589, 2, 10);
+call addreservation(curdate(), 5, 4, 1589, 2, 11);
+/*call updatereservation(:reservation_id, :reservation_date, :total_day, :total_night, :price, :customer_id, :room_id)
+call updatereservation(1, curdate(), 8, 8, 1589, 1, 3);
+call deletereservation(:reservation_id)
+call deletereservation(2);*/
+
+/*call addorganization(:name, :org_info, :price, :hotel_name)*/
+call addorganization('Murat Boz', 'Ünlü sanaçtý Murat Boz bizlerle', 125, 'hilton');
+call addorganization('Murat Koz', 'Ünlü sanaçtý Murat Koz bizlerle', 124, 'hilton');
+call addorganization('Murat Kuzu', 'Ünlü sanaçtý Murat Kuzu bizlerle', 123, 'hilton');
+/*call updateorganization(:organization_id, :name, :org_info, :price, :hotel_name)
+call updateorganization(1, 'Murat Boz', 'Ünlü sanaçtý Murat Boz bizlerle', 1255, 'hilton');
+call updateorganization(2, 'Murat Köz', 'Ünlü sanaçtý Murat Köz bizlerle', 1215, 'hilton');
+call deleteorganization(:organization_id)
+call deleteorganization(2);*/
+
+/*call addextraservice(:service, :service_price, :service_point, :room_id)*/
+call addextraservice('temizlik', 55, 0, 11, @service_id);
+call addextraservice('taþýma', 55, 3, 12, @service_id);
+/*call updateextraservice(:service_id, :service, :service_price, :service_point, :room_id)
+call updateextraservice(1, 'temizlik', 55, 2, 1);
+call deleteextraservice(:service_id)
+call deleteextraservice(2);*/
+
 /*call addfoodservice(:service, :service_price, :service_point, :food_detail, :room_id)*/
-call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', 1);
-call addfoodservice('akþam yemeði', 155, 4, '4 çeþit yemek', 1);
-/*call updatefoodservice(:food_id, :service, :service_price, :service_point, :food_detail, :room_id)*/
+call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', 10);
+call addfoodservice('akþam yemeði', 155, 4, '4 çeþit yemek', 12);
+/*call updatefoodservice(:food_id, :service, :service_price, :service_point, :food_detail, :room_id)
 call updatefoodservice(1, 'kahvaltý', 55, 0, 'dolu dolu anadolu kahvaltý', 1);
-/*call deletefoodservice(:food_id)*/
-call deletefoodservice(1);
+call deletefoodservice(:food_id)
+call deletefoodservice(1);*/
