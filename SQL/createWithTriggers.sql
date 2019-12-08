@@ -119,8 +119,9 @@ create table if not exists extraservice (
 );
 
 create table if not exists room_extraservice (
-	room_id int,	
+	room_id int,
 	service_id int,
+	service_price float not null,
    	foreign key (room_id) references room(id),
    	foreign key (service_id) references extraservice(id) on delete cascade on update cascade
 );
@@ -130,13 +131,6 @@ create table if not exists foodservice (
    	food_detail varchar(255) not null,
    	service_id int,
    	foreign key (service_id) references extraservice(id) on delete cascade on update cascade
-);
-
-create table if not exists rentroom_extraservice (
-	room_id int,
-	service_id int,
-   	foreign key (room_id) references room(id) on delete cascade,
-   	foreign key (service_id) references extraservice(id) on delete cascade
 );
 
 /*---PROCEDURES---*/
@@ -231,29 +225,33 @@ begin
 		when 'employee' then
 			begin
 				declare hotel_id INT DEFAULT 0;
-		   		call addbalance(salary, curdate(), @balance_id);
-	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-	   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
-				select distinct p.id into id from person p where p.email = mail;
-				select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
-				insert into employee(salary, hotel_id, person_id) values(salary, hotel_id, id);
-				if not exists (select * from employee e where e.person_id=id) then
-					delete from person p where p.id=id;
-					delete from balance b where b.id=(select @balance_id);
+				if exists (select * from hotel where hotel.name=hotel_name) then
+			   		call addbalance(salary, curdate(), @balance_id);
+		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
+		   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
+					select distinct p.id into id from person p where p.email = mail;
+					select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
+					insert into employee(salary, hotel_id, person_id) values(salary, hotel_id, id);
+					if not exists (select * from employee e where e.person_id=id) then
+						delete from person p where p.id=id;
+						delete from balance b where b.id=(select @balance_id);
+					end if;
 				end if;
 			end;
 		when 'manager' then
 			begin
 		   		declare hotel_id INT DEFAULT 0;
-		   		call addbalance(salary, curdate(), @balance_id);
-	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-	   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
-				select distinct p.id into id from person p where p.email = mail;
-				select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
-				insert into manager(salary, hotel_id, person_id) values(salary, hotel_id, id);
-				if not exists (select * from manager m where m.person_id=id) then
-					delete from person p where p.id=id;
-					delete from balance b where b.id=(select @balance_id);
+				if exists (select * from hotel where hotel.name=hotel_name) then
+			   		call addbalance(salary, curdate(), @balance_id);
+		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
+		   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
+					select distinct p.id into id from person p where p.email = mail;
+					select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
+					insert into manager(salary, hotel_id, person_id) values(salary, hotel_id, id);
+					if not exists (select * from manager m where m.person_id=id) then
+						delete from person p where p.id=id;
+						delete from balance b where b.id=(select @balance_id);
+					end if;
 				end if;
 			end;
 		end case;
@@ -387,8 +385,9 @@ begin
 	declare reservation_id INT DEFAULT 0;
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
-	declare person_money INT DEFAULT 0;
-	declare room_money INT DEFAULT 0;
+	declare person_money FLOAT DEFAULT 0;
+	declare room_service_money FLOAT DEFAULT 0;
+	declare room_money FLOAT DEFAULT 0;
 	declare diff_day INT DEFAULT 0;
 	declare total_price FLOAT DEFAULT 0;
 	set diff_day := (select day(finish_date) - day(start_date));
@@ -400,8 +399,9 @@ begin
 					and r.start_date=start_date and r.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
 					select money into person_money from balance where id=balanceId;
+					select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
 					select room_price into room_money from room where id=room_id;
-					set total_price := (select diff_day*room_money);
+					set total_price := (select ((diff_day*room_money)+room_service_money));
 					if(person_money > total_price) then
 						insert into reservation(start_date, finish_date, price, customer_id)
 						values(start_date, finish_date, total_price, customer_id);
@@ -424,6 +424,7 @@ begin
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
 	declare person_money INT DEFAULT 0;
+	declare room_service_money INT DEFAULT 0;
 	declare room_money INT DEFAULT 0;
 	declare reservation_money INT DEFAULT 0;
 	declare diff_day INT DEFAULT 0;
@@ -437,7 +438,9 @@ begin
 				select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
 				select money into person_money from balance where id=balanceId;
 				select price into reservation_money from reservation where id=reservation_id;
+				select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
 				select room_price into room_money from room where id=room_id;
+				set total_price := (select diff_day*(room_money+room_service_money));
 				set person_money := (select person_money+reservation_money);
 				set total_price := (select diff_day*room_money);
 				set person := person_money;
@@ -557,8 +560,7 @@ begin
 		if exists (select * from room r where r.id=room_id) then
 			insert into extraservice(service, service_price, service_point) values(service, service_price, service_point);
 			set service_id := (select MAX(id) from extraservice);
-			insert into room_extraservice(room_id, service_id) values(room_id, (select MAX(id) from extraservice));
-			update room set room.room_price=room_price+service_price where room.id=room_id;
+			insert into room_extraservice(room_id, service_id, service_price) values(room_id, (select MAX(id) from extraservice), service_price);
 		end if;
 	end if;
 end
@@ -572,7 +574,8 @@ begin
 	if exists (select * from extraservice e, room_extraservice re where e.id=re.service_id and re.room_id=room_id and e.service=service) then
 		update extraservice set extraservice.service=service, extraservice.service_point=service_point, 
 			extraservice.service_price=service_price where extraservice.id=service_id;
-		update room_extraservice set room_extraservice.service_id=service_id where room_extraservice.room_id=room_id;
+		update room_extraservice set room_extraservice.service_price=service_price
+			where room_extraservice.service_id=service_id and room_extraservice.room_id=room_id;
 	end if;
 end
 delimiter ;
@@ -628,31 +631,6 @@ begin
 end
 delimiter ;
 
-drop procedure if exists add_rentroom_extraservice;
-delimiter $$
-create procedure add_rentroom_extraservice(in service_id integer, in room_id integer)
-begin
-	declare service_money FLOAT DEFAULT 0;
-	if not exists (select * from rentroom_extraservice re where re.room_id=room_id and re.service_id=service_id) then
-		select service_price into service_money from extraservice e where e.id=service_id;
-		insert into rentroom_extraservice(room_id, service_id) values(room_id, service_id);
-		update room set room.room_price=room_price+service_money where room.id=room_id;
-	end if;
-end
-delimiter ;
-
-drop procedure if exists delete_rentroom_extraservice;
-delimiter $$
-create procedure delete_rentroom_extraservice(in service_id integer, in room_id integer)
-begin
-	declare service_money FLOAT DEFAULT 0;
-	if exists (select * from rentroom_extraservice re where re.room_id=room_id and re.service_id=service_id) then
-		select service_price into service_money from extraservice e where e.id=service_id;
-		delete from rentroom_extraservice re where re.room_id=room_id and re.service_id=service_id;
-		update room set room.room_price=room_price-service_money where room.id=room_id;
-	end if;
-end
-delimiter ;
 
 /*---Triggers---*/
 drop  trigger if exists balance_auto_increment;
@@ -877,7 +855,7 @@ call addperson('Veysel', 'Irmak', '123', 'vi@g.c', 'mamak', '3333', 21, 222.22, 
 call updateperson(3, 'Ali', 'Veli', '4950', 'av@g.c', 'Ankara', '0000', 20, 45555, 'aliveli', null, 'customer');
 call updateperson(1, 'Berat', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 221.5, null, 'Ata Kule', 'employee');
 /*call deleteperson(:person_id)*/
-call deleteperson(6);
+call deleteperson(5);
 
 /*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
 call addroom('Butce Dostu', 150, 5, 'available', 4, null, 'Double Hilton', 'standart');
@@ -889,12 +867,12 @@ call updateroom(1, 'Butce Dostu', 125, 'available', 4, null, 'standart');
 call deleteroom(2);
 
 /*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
-call addreservation(curdate(), curdate()+5, 1, '1-0-5');
+call addreservation(curdate(), curdate()+5, 1, '3-0-5');
 call addreservation(curdate(), curdate()+2, 1, '2-1-10');
-call addreservation(curdate()-5, curdate()-2, 1, '1-0-5');
-call addreservation(curdate()-5, curdate()-2, 1, '1-0-7');
+call addreservation(curdate()-5, curdate()-2, 1, '3-0-5');
+call addreservation(curdate()-5, curdate()-4, 1, '2-1-10');
 /*call updatereservation(:reservation_id, :start_date, :finish_date, :customer_id, :room_number)*/
-call updatereservation(3, curdate(), curdate()+7, 1, '1-0-7', @person, @room, @reserve, @total);
+call updatereservation(3, curdate(), curdate()+7, 1, '3-0-5', @person, @room, @reserve, @total);
 /*call deletereservation(:reservation_id)*/
 call deletereservation(1);
 
@@ -922,15 +900,9 @@ call deleteextraservice(:service_id)
 call deleteextraservice(4);*/
 
 /*call addfoodservice(:service, :service_price, :service_point, :food_detail, :room_id)*/
-call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', 3);
-call addfoodservice('öðle yemeði', 155, 4, '4 çeþit yemek', 3);
+call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', 1);
+call addfoodservice('öðle yemeði', 155, 4, '4 çeþit yemek', 1);
 /*call updatefoodservice(:food_id, :service, :service_price, :service_point, :food_detail, :room_id)
 call updatefoodservice(1, 'kahvaltý', 55, 0, 'dolu dolu anadolu kahvaltý', 1);
 call deletefoodservice(:food_id)
 call deletefoodservice(1);*/
-
-/*call add_rentroom_extraservice(:service_id, :room_id)*/
-call add_rentroom_extraservice(1,1);
-call add_rentroom_extraservice(1,2);
-/*call delete_rentroom_extraservice(:service_id, :room_id)*/
-call delete_rentroom_extraservice(1, 1);
