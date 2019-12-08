@@ -456,8 +456,17 @@ drop procedure if exists deletereservation;
 delimiter $$
 create procedure deletereservation(in reservation_id integer)
 begin
+	declare customerId INT default 0;
+	declare balanceId INT default 0;
+	declare person_money INT default 0;
+	declare reservation_price INT default 0;
 	if exists (select * from reservation r where r.id=reservation_id) then
+		select customer_id into customerId from reservation r where r.id=reservation_id;
+		select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customerId;
+		select money into person_money from balance b where b.id=balanceId;
+		select price into reservation_price from reservation r where r.id=reservation_id;
 		delete from reservation r where r.id=reservation_id;
+		update balance set balance.money=person_money+reservation_price where balance.id=balanceId;
 	end if;
 end
 delimiter ;
@@ -683,12 +692,13 @@ call deleteroom(2);*/
 call addreservation(curdate(), curdate()+5, 2, '1-0-5');
 call addreservation(curdate(), curdate()+2, 2, '1-1-5');
 call addreservation(curdate(), curdate()+2, 2, '1-0-52');
-call updatereservation(2, curdate(), curdate()+2, 2, '1-0-5', @person, @room, @reserve, @total);
-select @room;
-/*call updatereservation(:start_date, :finish_date, :total_day, :total_night, :customer_id, :room_number)
+call updatereservation(1, curdate(), curdate()+2, 2, '1-0-5', @person, @room, @reserve, @total);
+select @person;
+/*call updatereservation(:reservation_id, :start_date, :finish_date, :customer_id, :room_number)
 call updatereservation(1, curdate(), curdate()+7, 1, '1-1-5');
 call deletereservation(:reservation_id)
 call deletereservation(2);*/
+call deletereservation(2);
 
 /*call addorganization(:name, :org_info, :price, :hotel_name)*/
 call addorganization('Murat Boz', 'Ünlü sanaçtý Murat Boz bizlerle', 125, 'hilton');
