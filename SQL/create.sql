@@ -452,7 +452,7 @@ delimiter ;
 drop procedure if exists updatereservation;
 delimiter $$
 create procedure updatereservation(in reservation_id integer, in start_date date, in finish_date date, in customer_id integer,
-	in room_number varchar(10), out person int, out room int, out reserve int, out total float)
+	in room_number varchar(10))
 begin
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
@@ -793,8 +793,7 @@ call addreservation(curdate(), curdate()+3, 3, '4-1-10');
 call addreservation(curdate()-5, curdate()-2, 3, '3-0-7');
 call addreservation(curdate()-5, curdate()-4, 3, '4-1-10');
 /*call updatereservation(:reservation_id, :start_date, :finish_date, :customer_id, :room_number)*/
-call updatereservation(2, curdate()-8, curdate()-7, 1, '2-1-10', @person, @room, @reserve, @total, @in0, @in1, @in2, @in3);
-select @total;
+call updatereservation(2, curdate()-8, curdate()-7, 1, '2-1-10');
 /*call deletereservation(:reservation_id)*/
 call deletereservation(6);
 
