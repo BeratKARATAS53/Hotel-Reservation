@@ -1,12 +1,12 @@
 /*---TABLES---*/
 create table if not exists balance(
-	id int primary key,
+	id int auto_increment primary key,
    	money float,
    	balance_date date
 );
 
 create table if not exists hotel(
-   	id int primary key,
+   	id int auto_increment primary key,
    	name varchar(200) unique not null,
    	address varchar(255) not null,
    	telephone varchar(20) unique not null,
@@ -17,8 +17,15 @@ create table if not exists hotel(
    	foreign key (balance_id) references balance(id) on update cascade
 );
 
+create table if not exists hotel_deleted(
+   	id int auto_increment primary key,
+   	name varchar (100) not null,
+   	address varchar (100) not null,
+   	date_time timestamp
+);
+
 create table if not exists person(
-   	id int primary key,
+   	id int auto_increment primary key,
    	firstname varchar (100) not null,
    	lastname varchar (100) not null,
    	passwrd varchar (255) not null,
@@ -29,8 +36,16 @@ create table if not exists person(
    	foreign key (balance_id) references balance(id) on update cascade
 );
 
+create table if not exists person_deleted(
+   	id int auto_increment primary key,
+   	firstname varchar (100) not null,
+   	lastname varchar (100) not null,
+   	email varchar (255) unique not null,
+   	date_time timestamp
+);
+
 create table if not exists manager(
-   	id int primary key,
+   	id int auto_increment primary key,
    	salary float,
    	hotel_id int not null,
    	person_id int not null,
@@ -39,7 +54,7 @@ create table if not exists manager(
 );
 
 create table if not exists employee(
-   	id int primary key,
+   	id int auto_increment primary key,
    	salary float,
    	hotel_id int not null,
    	person_id int not null,
@@ -48,7 +63,7 @@ create table if not exists employee(
 );
 
 create table if not exists customer(
-	id int primary key,
+	id int auto_increment primary key,
    	age int not null,
    	username varchar(100) unique not null,
    	person_id int,
@@ -56,7 +71,7 @@ create table if not exists customer(
 );
 
 create table if not exists organization(
-   	id int primary key,
+   	id int auto_increment primary key,
    	name varchar(255) not null,
    	org_info varchar(255) not null,
   	price float not null,
@@ -72,7 +87,7 @@ create table if not exists rent_organization(
 );
 
 create table if not exists room(
-   	id int primary key,
+   	id int auto_increment primary key,
    	room_info varchar(255) not null,
    	room_price float not null,
    	room_number varchar(10) not null,
@@ -82,8 +97,15 @@ create table if not exists room(
    	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade
 );
 
+create table if not exists room_deleted(
+   	id int auto_increment primary key,
+   	hotel_id int,
+   	room_number varchar(10),
+   	date_time timestamp
+);
+
 create table if not exists reservation(
-   	id int primary key,
+   	id int auto_increment primary key,
    	start_date date not null,
    	finish_date date not null,
    	price float,
@@ -99,23 +121,31 @@ create table if not exists room_reservation (
 );
 
 create table if not exists specialroom(
-   	id int primary key,
+   	id int auto_increment primary key,
    	feature varchar(255) not null,
    	room_id int,
    	foreign key (room_id) references room(id) on delete cascade on update cascade
 );
 
 create table if not exists standartroom(
-   	id int primary key,
+   	id int auto_increment primary key,
    	room_id int,
    	foreign key (room_id) references room(id) on delete cascade on update cascade
 );
 
 create table if not exists extraservice (
-   	id int primary key,
+   	id int auto_increment primary key,
    	service varchar(255) not null,
    	service_price float not null,
-   	service_point int
+   	service_point int,
+   	room_number varchar(10) not null
+);
+
+create table if not exists extraservice_deleted (
+   	id int auto_increment primary key,
+   	service varchar(255) not null,
+   	room_number varchar(10) not null,
+   	date_time timestamp
 );
 
 create table if not exists room_extraservice (
@@ -127,7 +157,7 @@ create table if not exists room_extraservice (
 );
 
 create table if not exists foodservice (
-   	id int primary key,
+   	id int auto_increment primary key,
    	food_detail varchar(255) not null,
    	service_id int,
    	foreign key (service_id) references extraservice(id) on delete cascade on update cascade
@@ -394,12 +424,14 @@ begin
 	if exists (select * from room rm where rm.room_number=room_number) then
 		if(strcmp((select status from room rm where rm.room_number=room_number),'available') = 0) then
 			select id into room_id from room rm where rm.room_number=room_number;
-				if exists (select * from customer c where c.id=customer_id) then
-					if not exists (select * from room_reservation rr, reservation r where rr.reservation_id=r.id and rr.room_id=room_id
+			if exists (select * from customer c where c.id=customer_id) then
+				if not exists (select * from room_reservation rr, reservation r where rr.reservation_id=r.id and rr.room_id=room_id
 					and r.start_date=start_date and r.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
 					select money into person_money from balance where id=balanceId;
-					select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
+					if exists (select * from room_extraservice roomex where roomex.room_id=room_id) then
+						select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
+					end if;
 					select room_price into room_money from room where id=room_id;
 					set total_price := (select ((diff_day*room_money)+room_service_money));
 					if(person_money > total_price) then
@@ -408,6 +440,7 @@ begin
 						select max(id) into reservation_id from reservation re where re.start_date=start_date and re.finish_date=finish_date;
 						insert into room_reservation(room_id, reservation_id) values(room_id, reservation_id);
 						update balance set balance.money=person_money-total_price, balance.balance_date=curdate() where balance.id=balanceId;
+						delete from room_extraservice res where res.room_id=room_id;
 					end if;
 				end if;
 			end if;
@@ -553,14 +586,13 @@ delimiter ;
 
 drop procedure if exists addextraservice;
 delimiter $$
-create procedure addextraservice(in service varchar(255), in service_price float, in service_point integer, in room_id integer,
+create procedure addextraservice(in service varchar(255), in service_price float, in service_point integer, in room_number varchar(10),
 	out service_id integer)
 begin
-	if not exists (select * from extraservice e, room_extraservice re where e.id=re.service_id and re.room_id=room_id and e.service=service) then
-		if exists (select * from room r where r.id=room_id) then
-			insert into extraservice(service, service_price, service_point) values(service, service_price, service_point);
+	if not exists (select * from extraservice e where e.service=service and e.room_number=room_number) then
+		if exists (select * from room r where r.room_number=room_number) then
+			insert into extraservice(service, service_price, service_point, room_number) values(service, service_price, service_point, room_number);
 			set service_id := (select MAX(id) from extraservice);
-			insert into room_extraservice(room_id, service_id, service_price) values(room_id, (select MAX(id) from extraservice), service_price);
 		end if;
 	end if;
 end
@@ -568,14 +600,12 @@ delimiter ;
 
 drop procedure if exists updateextraservice;
 delimiter $$
-create procedure updateextraservice(in service_id integer, in service varchar(255), in service_price float,
-	in service_point integer, in room_id integer)
+create procedure updateextraservice(in service_id integer, in service varchar(255), in service_price float, in service_point integer,
+	in room_number varchar(10))
 begin
-	if exists (select * from extraservice e, room_extraservice re where e.id=re.service_id and re.room_id=room_id and e.service=service) then
+	if exists (select * from extraservice e where e.service=service and e.room_number=room_number) then
 		update extraservice set extraservice.service=service, extraservice.service_point=service_point, 
 			extraservice.service_price=service_price where extraservice.id=service_id;
-		update room_extraservice set room_extraservice.service_price=service_price
-			where room_extraservice.service_id=service_id and room_extraservice.room_id=room_id;
 	end if;
 end
 delimiter ;
@@ -593,12 +623,11 @@ delimiter ;
 drop procedure if exists addfoodservice;
 delimiter $$
 create procedure addfoodservice(in service varchar(255), in service_price float, in service_point integer, in food_detail varchar(255),
-	in room_id integer)
+	in room_number varchar(10))
 begin
-	if not exists (select * from extraservice e, foodservice f where e.id=f.service_id and e.service=service
-		and f.food_detail=food_detail) then
-		if exists (select * from room r, specialroom s where r.id=s.room_id and r.id=room_id) then
-			call addextraservice(service, service_price, service_point, room_id, @service_id);
+	if not exists (select * from extraservice e where e.service=service and e.room_number=room_number) then
+		if exists (select * from room r, specialroom s where r.id=s.room_id and r.room_number=room_number) then
+			call addextraservice(service, service_price, service_point, room_number, @service_id);
 			insert into foodservice(food_detail, service_id) values(food_detail, (select @service_id));
 		end if;
 	end if;
@@ -608,12 +637,12 @@ delimiter ;
 drop procedure if exists updatefoodservice;
 delimiter $$
 create procedure updatefoodservice(in food_id integer, in service varchar(255), in service_price float, in service_point integer,
-	in food_detail varchar(255), in room_id integer)
+	in food_detail varchar(255), in room_number varchar(10))
 begin
 	declare serviceId INT default 0;
 	if exists (select * from foodservice f where f.id=food_id) then
 		select service_id into serviceId from foodservice f where f.id=food_id;
-		call updateextraservice(serviceId, service, service_price, service_point, room_id);
+		call updateextraservice(serviceId, service, service_price, service_point, room_number);
 		update foodservice set foodservice.food_detail=food_detail where foodservice.id=food_id;
 	end if;
 end
@@ -631,201 +660,63 @@ begin
 end
 delimiter ;
 
-
-/*---Triggers---*/
-drop  trigger if exists balance_auto_increment;
+drop procedure if exists addroom_extraservice;
 delimiter $$
-create trigger balance_auto_increment before insert on balance
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from balance) then
-            	select max(id) into max_key from balance;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
+create procedure addroom_extraservice(in room_id integer, in service_id integer)
+begin
+	declare service_money FLOAT DEFAULT 0;
+	if not exists (select * from room_extraservice re where re.room_id=room_id and re.service_id=service_id) then
+		if(strcmp((select room_number from extraservice e where e.id=service_id),(select room_number from room r where r.id=room_id)) = 0) then
+			select service_price into service_money from extraservice e where e.id=service_id;
+			insert into room_extraservice(room_id, service_id, service_price) values(room_id, service_id, service_money);
+		end if;
+	end if;
+end
 delimiter ;
 
-drop  trigger if exists hotel_auto_increment;
+drop procedure if exists deleteroom_extraservice;
 delimiter $$
-create trigger hotel_auto_increment before insert on hotel
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from hotel) then
-            	select max(id) into max_key from hotel;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
+create procedure deleteroom_extraservice(in room_id integer, in service_id integer)
+begin
+	declare service_money FLOAT DEFAULT 0;
+	if exists (select * from room_extraservice re where re.room_id=room_id and re.service_id=service_id) then
+		delete from room_extraservice re where re.room_id=room_id and re.service_id=service_id;
+	end if;
+end
 delimiter ;
 
-drop  trigger if exists person_auto_increment;
+
+/*----TRIGGERS----*/
+drop trigger if exists hotel_deleted
 delimiter $$
-create trigger person_auto_increment before insert on person
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from person) then
-            	select max(id) into max_key from person;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
+create trigger hotel_deleted after delete on hotel for each row
+begin
+	insert into hotel_deleted(name, address, date_time) values (old.name, old.address, current_timestamp());
+end
 delimiter ;
 
-drop  trigger if exists customer_auto_increment;
+drop trigger if exists person_deleted
 delimiter $$
-create trigger customer_auto_increment before insert on customer
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from customer) then
-            	select max(id) into max_key from customer;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
+create trigger person_deleted after delete on person for each row
+begin
+	insert into person_deleted(firstname, lastname, email, date_time) values (old.firstname, old.lastname, old.email, current_timestamp());
+end
 delimiter ;
 
-drop  trigger if exists employee_auto_increment;
+drop trigger if exists room_deleted
 delimiter $$
-create trigger employee_auto_increment before insert on employee
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from employee) then
-            	select max(id) into max_key from employee;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
+create trigger room_deleted after delete on room for each row
+begin
+	insert into room_deleted(hotel_id, room_number, date_time) values (old.hotel_id, old.room_number, current_timestamp());
+end
 delimiter ;
 
-drop  trigger if exists manager_auto_increment;
+drop trigger if exists extraservice_deleted
 delimiter $$
-create trigger manager_auto_increment before insert on manager
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from manager) then
-            	select max(id) into max_key from manager;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists organization_auto_increment;
-delimiter $$
-create trigger organization_auto_increment before insert on organization
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from organization) then
-            	select max(id) into max_key from organization;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists room_auto_increment;
-delimiter $$
-create trigger room_auto_increment before insert on room
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from room) then
-            	select max(id) into max_key from room;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists specialroom_auto_increment;
-delimiter $$
-create trigger specialroom_auto_increment before insert on specialroom
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from specialroom) then
-            	select max(id) into max_key from specialroom;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists standartroom_auto_increment;
-delimiter $$
-create trigger standartroom_auto_increment before insert on standartroom
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from standartroom) then
-            	select max(id) into max_key from standartroom;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists reservation_auto_increment;
-delimiter $$
-create trigger reservation_auto_increment before insert on reservation
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from reservation) then
-            	select max(id) into max_key from reservation;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists extraservice_auto_increment;
-delimiter $$
-create trigger extraservice_auto_increment before insert on extraservice
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from extraservice) then
-            	select max(id) into max_key from extraservice;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
-delimiter ;
-
-drop  trigger if exists foodservice_auto_increment;
-delimiter $$
-create trigger foodservice_auto_increment before insert on foodservice
-    for each row
-        begin
-	        declare max_key int default 0;
-            if exists(select * from foodservice) then
-            	select max(id) into max_key from foodservice;
-                set new.id = max_key+1;
-           	else
-                set new.id = max_key+1;
-            end if;
-        end
+create trigger extraservice_deleted after delete on extraservice for each row
+begin
+	insert into extraservice_deleted(service, room_number, date_time) values (old.service, old.room_number, current_timestamp());
+end
 delimiter ;
 
 
@@ -855,7 +746,7 @@ call addperson('Veysel', 'Irmak', '123', 'vi@g.c', 'mamak', '3333', 21, 222.22, 
 call updateperson(3, 'Ali', 'Veli', '4950', 'av@g.c', 'Ankara', '0000', 20, 45555, 'aliveli', null, 'customer');
 call updateperson(1, 'Berat', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 221.5, null, 'Ata Kule', 'employee');
 /*call deleteperson(:person_id)*/
-call deleteperson(5);
+call deleteperson(10);
 
 /*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
 call addroom('Butce Dostu', 150, 5, 'available', 4, null, 'Double Hilton', 'standart');
@@ -866,15 +757,41 @@ call updateroom(1, 'Butce Dostu', 125, 'available', 4, null, 'standart');
 /*call deleteroom(:room_id)*/
 call deleteroom(2);
 
+/*call addextraservice(:service, :service_price, :service_point, :room_number)*/
+call addextraservice('temizlik', 55, 0, '3-0-5', @service_id);
+call addextraservice('temizlik', 55, 0, '3-0-7', @service_id);
+call addextraservice('taþýma', 55, 3, '3-0-5', @service_id);
+call addextraservice('taþýma', 55, 3, '3-0-7', @service_id);
+call addextraservice('taþýma', 55, 3, '4-1-10', @service_id);
+/*call updateextraservice(:service_id, :service, :service_price, :service_point, :room_number)*/
+call updateextraservice(2, 'temizlik', 55, 2, '3-0-5');
+/*call deleteextraservice(:service_id)*/
+call deleteextraservice(11);
+
+/*call addfoodservice(:service, :service_price, :service_point, :food_detail, :room_number)*/
+call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', '3-0-7');
+call addfoodservice('öðle yemeði', 155, 4, '4 çeþit yemek', '4-1-10');
+/*call updatefoodservice(:food_id, :service, :service_price, :service_point, :food_detail, :room_number)*/
+call updatefoodservice(2, 'öðle yemeði', 255, 0, 'dolu dolu anadolu kahvaltý', '4-1-10');
+/*call deletefoodservice(:food_id)*/
+call deletefoodservice(1);
+
+/*call addroom_extraservice(:room_id, :service_id)*/
+call addroom_extraservice(3, 6);
+call addroom_extraservice(3, 11);
+call addroom_extraservice(2, 5);
+/*call deleteroom_extraservice(:room_id, :service_id)*/
+call deleteroom_extraservice(1, 2);
+
 /*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
-call addreservation(curdate(), curdate()+5, 1, '3-0-5');
-call addreservation(curdate(), curdate()+2, 1, '2-1-10');
-call addreservation(curdate()-5, curdate()-2, 1, '3-0-5');
-call addreservation(curdate()-5, curdate()-4, 1, '2-1-10');
+call addreservation(curdate(), curdate()+1, 3, '3-0-7');
+call addreservation(curdate(), curdate()+3, 3, '4-1-10');
+call addreservation(curdate()-5, curdate()-2, 3, '3-0-7');
+call addreservation(curdate()-5, curdate()-4, 3, '4-1-10');
 /*call updatereservation(:reservation_id, :start_date, :finish_date, :customer_id, :room_number)*/
-call updatereservation(3, curdate(), curdate()+7, 1, '3-0-5', @person, @room, @reserve, @total);
+call updatereservation(3, curdate(), curdate()+7, 3, '3-0-5', @person, @room, @reserve, @total);
 /*call deletereservation(:reservation_id)*/
-call deletereservation(1);
+call deletereservation(6);
 
 /*call addorganization(:name, :org_info, :price, :hotel_name)*/
 call addorganization('Murat Boz', 'Famous artist Murat Boz with us', 125, 'Ata Kule');
@@ -890,19 +807,3 @@ call deleteorganization(2);
 call addrentorganization(1, 1);
 /*call deleterentorganization(:customer_id, :organization_id)*/
 call deleterentorganization(1, 1);
-
-/*call addextraservice(:service, :service_price, :service_point, :room_id)*/
-call addextraservice('temizlik', 55, 0, 1, @service_id);
-call addextraservice('taþýma', 55, 3, 1, @service_id);
-/*call updateextraservice(:service_id, :service, :service_price, :service_point, :room_id)
-call updateextraservice(1, 'temizlik', 55, 2, 1);
-call deleteextraservice(:service_id)
-call deleteextraservice(4);*/
-
-/*call addfoodservice(:service, :service_price, :service_point, :food_detail, :room_id)*/
-call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', 1);
-call addfoodservice('öðle yemeði', 155, 4, '4 çeþit yemek', 1);
-/*call updatefoodservice(:food_id, :service, :service_price, :service_point, :food_detail, :room_id)
-call updatefoodservice(1, 'kahvaltý', 55, 0, 'dolu dolu anadolu kahvaltý', 1);
-call deletefoodservice(:food_id)
-call deletefoodservice(1);*/
