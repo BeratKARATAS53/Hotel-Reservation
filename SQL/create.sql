@@ -477,10 +477,6 @@ begin
 					select room_price into room_money from room where id=room_id;
 					set person_money := (select person_money+reservation_money);
 					set total_price := (select ((diff_day*room_money)+room_service_money));
-					set person := person_money;
-					set room := room_id;
-					set reserve := reservation_money;
-					set total := total_price;
 					if(person_money > total_price) then
 						delete from reservation r where r.id=reservation_id;
 						insert into reservation(start_date, finish_date, price, customer_id)
@@ -725,89 +721,3 @@ begin
 end
 delimiter ;
 
-
-/*---Insert---*/
-
-/*call addbalance(:balance_money, :balance_date)*/
-/*call updatebalance(:balance_id, :balance_money, :balance_date)*/
-/*call deletebalance(:balance_id)*/
-
-/*call addhotel(:name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
-call addhotel('Double Hilton', 'Cankaya', '555 222 1100', 'Zenginlerin Oteli', 5, 'Ultra Lux');
-call addhotel('Ata Kule', 'Cankaya', '505 202 1001', 'Zenginlerin Oteli', 5, 'Ultra Expensive');
-/*call updatehotel(:hotel_id, :name, :address, :telephone, :hotel_info, :star, :hotel_type)*/
-call updatehotel(1, 'Double Hilton', 'Cankaya', '555 222 1100', 'Zenginlerin Oteli', 7, 'Ultra Lux');
-call updatehotel(2, 'Ata Kule', 'Cankaya', '505 202 1001', 'Zenginlerin Oteli', 5, 'Ultra Expensive');
-
-/*call addperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_name, :person_type)*/
-call addperson('Berat', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 2214.5, null, 'Ata Kule', 'employee');
-call addperson('Veli', 'Sefir', '123', 'ai@g.c', 'Istanbul', '1312', 21, 222.22, null, 'Ata Kule', 'employee');
-call addperson('Ali', 'Veli', '4950', 'av@g.c', 'Ankara', '1111', 20, 5555, 'aliveli', null, 'customer');
-call addperson('Ahmet', 'Isýl', '0246', 'aii@g.c', 'Amasya', '4444', 18, 50, 'ahmetýþýk', null, 'customer');
-call addperson('Mert', 'Mert', '53937', 'mm@g.c', 'Bursa', '1231', 22, 2214.5, null, 'Double Hilton', 'manager');
-call addperson('Veysel', 'Irmak', '123', 'vi@g.c', 'mamak', '3333', 21, 222.22, null, 'Ata Kule', 'manager');
-/*call updateperson(:person_id, :firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_name, :person_type)*/
-call updateperson(3, 'Ali', 'Veli', '4950', 'av@g.c', 'Ankara', '0000', 20, 45555, 'aliveli', null, 'customer');
-call updateperson(1, 'Berat', 'Karataþ', '53937', 'bk@g.c', 'Bursa', '2222', 22, 221.5, null, 'Ata Kule', 'employee');
-/*call deleteperson(:person_id)*/
-
-/*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
-call addroom('Butce Dostu', 150, 5, 'available', 4, null, 'Double Hilton', 'standart');
-call addroom('Sudan Ucuz', 100, 7, 'available', 6, null, 'Double Hilton', 'standart');
-call addroom('Cep Yakan', 1500, 10, 'not available', 2, 'suit room', 'Ata Kule', 'special');
-/*call updateroom(:room_id, :room_info, :room_price, :status, :capacity, :feature, :room_type)*/
-call updateroom(1, 'Butce Dostu', 125, 'available', 4, null, 'standart');
-/*call deleteroom(:room_id)*/
-call deleteroom(2);
-
-/*call addextraservice(:service, :service_price, :service_point, :room_number)*/
-call addextraservice('temizlik', 55, 0, '3-0-5', @service_id);
-call addextraservice('temizlik', 55, 0, '3-0-7', @service_id);
-call addextraservice('taþýma', 55, 3, '3-0-5', @service_id);
-call addextraservice('taþýma', 55, 3, '3-0-7', @service_id);
-call addextraservice('taþýma', 55, 3, '2-1-10', @service_id);
-/*call updateextraservice(:service_id, :service, :service_price, :service_point, :room_number)*/
-call updateextraservice(2, 'temizlik', 55, 2, '3-0-5');
-/*call deleteextraservice(:service_id)*/
-call deleteextraservice(11);
-
-/*call addfoodservice(:service, :service_price, :service_point, :food_detail, :room_number)*/
-call addfoodservice('kahvaltý', 55, 0, 'açýk büfe kahvaltý', '3-0-7');
-call addfoodservice('öðle yemeði', 155, 4, '4 çeþit yemek', '2-1-10');
-/*call updatefoodservice(:food_id, :service, :service_price, :service_point, :food_detail, :room_number)*/
-call updatefoodservice(2, 'öðle yemeði', 255, 0, 'dolu dolu anadolu kahvaltý', '4-1-10');
-/*call deletefoodservice(:food_id)*/
-call deletefoodservice(1);
-
-/*call addroom_extraservice(:room_id, :service_id)*/
-call addroom_extraservice(1, 6);
-call addroom_extraservice(1, 5);
-call addroom_extraservice(2, 5);
-/*call deleteroom_extraservice(:room_id, :service_id)*/
-call deleteroom_extraservice(1, 2);
-
-/*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
-call addreservation(curdate(), curdate()+1, 1, '2-1-10');
-call addreservation(curdate()-1, curdate(), 1, '2-1-10');
-call addreservation(curdate(), curdate()+3, 3, '4-1-10');
-call addreservation(curdate()-5, curdate()-2, 3, '3-0-7');
-call addreservation(curdate()-5, curdate()-4, 3, '4-1-10');
-/*call updatereservation(:reservation_id, :start_date, :finish_date, :customer_id, :room_number)*/
-call updatereservation(2, curdate()-8, curdate()-7, 1, '2-1-10');
-/*call deletereservation(:reservation_id)*/
-call deletereservation(6);
-
-/*call addorganization(:name, :org_info, :price, :hotel_name)*/
-call addorganization('Murat Boz', 'Famous artist Murat Boz with us', 125, 'Ata Kule');
-call addorganization('Ayhan Isýk', 'Famous artist Ayhan Isýk with us', 124, 'Ata Kule');
-call addorganization('Osman Pasa', 'Famous actor Osman Pasa with us', 123, 'Double Hilton');
-/*call updateorganization(:organization_id, :name, :org_info, :price)*/
-call updateorganization(1, 'Murat Boz', 'Famous artist Murat Boz with us', 1255);
-call updateorganization(2, 'Ayhan Isýk', 'Famous artist Ayhan Isýk with us', 115);
-/*call deleteorganization(:organization_id)*/
-call deleteorganization(2);
-
-/*call addrentorganization(:customer_id, :organization_id)*/
-call addrentorganization(1, 1);
-/*call deleterentorganization(:customer_id, :organization_id)*/
-call deleterentorganization(1, 1);
