@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-import tkinter.ttk
+import tkinter.ttk as ttk
 import tkinter.messagebox as Messagebox
 import mysql.connector as mysql
 
@@ -201,11 +201,11 @@ reservation = Button(root, text="RESERVATION", font=(
     "bold", 10), bg="#d9d9d9")
 reservation.place(relx=0.023, rely=0.194, height=24, width=127)
 
-TSeparator1 = tkinter.ttk.Separator()
+TSeparator1 = ttk.Separator()
 TSeparator1.place(relx=0.194, rely=0.032, relheight=0.919)
 TSeparator1.configure(orient="vertical")
 
-TSeparator2 = tkinter.ttk.Separator()
+TSeparator2 = ttk.Separator()
 TSeparator2.place(relx=0.217, rely=0.435, relwidth=0.743)
 
 '''INPUT TEXTS'''
@@ -300,7 +300,7 @@ rent.place(relx=0.8, rely=0.371, height=24, width=96)
 customer = Label(root, text="Customer Table", font=("Comic Sans MC", 9))
 customer.place(relx=0.537, rely=0.452, height=21, width=89)
 
-customer_list = tkinter.ttk.Treeview(height=10, columns=5)
+customer_list = ttk.Treeview(height=10, columns=5)
 customer_list.grid(row=4, column=0)
 
 customer_list.configure(columns="Col1 Col2 Col3 Col4 Col5 Col6 Col7 Col8 Col9")
