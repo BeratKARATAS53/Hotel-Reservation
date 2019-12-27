@@ -184,123 +184,123 @@ def get():
         con.close()
 
 
-root = tk.Tk()
-root.geometry("875x620+237+110")
-root.title("Main Page")
+custRoot = tk.Tk()
+custRoot.geometry("875x620+237+110")
+custRoot.title("Main Page")
 
 '''SIDE BAR'''
-hotel = Button(root, text="HOTEL", font=(
+hotel = Button(custRoot, text="HOTEL", font=(
     "bold", 10), bg="#d9d9d9")
 hotel.place(relx=0.023, rely=0.067, height=24, width=127)
 
-customer = Button(root, text="CUSTOMER", font=(
+customer = Button(custRoot, text="CUSTOMER", font=(
     "bold", 10), bg="#80ff00")
 customer.place(relx=0.023, rely=0.129, height=24, width=127)
 
-reservation = Button(root, text="RESERVATION", font=(
+reservation = Button(custRoot, text="RESERVATION", font=(
     "bold", 10), bg="#d9d9d9")
 reservation.place(relx=0.023, rely=0.194, height=24, width=127)
 
-TSeparator1 = ttk.Separator()
+TSeparator1 = ttk.Separator(custRoot)
 TSeparator1.place(relx=0.194, rely=0.032, relheight=0.919)
 TSeparator1.configure(orient="vertical")
 
-TSeparator2 = ttk.Separator()
+TSeparator2 = ttk.Separator(custRoot)
 TSeparator2.place(relx=0.217, rely=0.435, relwidth=0.743)
 
 '''INPUT TEXTS'''
-customer_id = Label(root, text="ID: ", font=("bold", 9))
+customer_id = Label(custRoot, text="ID: ", font=("bold", 9))
 customer_id.place(relx=0.251, rely=0.065, height=21, width=24)
 
-c_customer_id = Entry()
+c_customer_id = Entry(custRoot)
 c_customer_id.place(relx=0.286, rely=0.065, height=20, relwidth=0.039)
 
-firstname = Label(root, text="First Name: ", font=("bold", 9))
+firstname = Label(custRoot, text="First Name: ", font=("bold", 9))
 firstname.place(relx=0.331, rely=0.065, height=21, width=69)
 
-c_firstname = Entry()
+c_firstname = Entry(custRoot)
 c_firstname.place(relx=0.423, rely=0.065, height=20, relwidth=0.199)
 
-lastname = Label(root, text="Last Name: ", font=("bold", 9))
+lastname = Label(custRoot, text="Last Name: ", font=("bold", 9))
 lastname.place(relx=0.629, rely=0.065, height=21, width=68)
 
-c_lastname = Entry()
+c_lastname = Entry(custRoot)
 c_lastname.place(relx=0.709, rely=0.065, height=20, relwidth=0.233)
 
-passwrd = Label(root, text="Password: ", font=("bold", 9))
+passwrd = Label(custRoot, text="Password: ", font=("bold", 9))
 passwrd.place(relx=0.251, rely=0.21, height=19, width=60)
 
-c_password = Entry()
+c_password = Entry(custRoot)
 c_password.place(relx=0.697, rely=0.21, height=20, relwidth=0.245)
 
-confirm_passwrd = Label(root, text="Confirm Password: ", font=("bold", 9))
+confirm_passwrd = Label(custRoot, text="Confirm Password: ", font=("bold", 9))
 confirm_passwrd.place(relx=0.571, rely=0.21, height=21, width=109)
 
-c_confirm_passwrd = Entry()
+c_confirm_passwrd = Entry(custRoot)
 c_confirm_passwrd.place(relx=0.331, rely=0.21, height=20, relwidth=0.233)
 
-email = Label(root, text="Email: ", font=("bold", 9))
+email = Label(custRoot, text="Email: ", font=("bold", 9))
 email.place(relx=0.251, rely=0.113, height=21, width=41)
 
-c_email = Entry()
+c_email = Entry(custRoot)
 c_email.place(relx=0.331, rely=0.113, height=20, relwidth=0.279)
 
-telephone = Label(root, text="Phone: ", font=("bold", 9))
+telephone = Label(custRoot, text="Phone: ", font=("bold", 9))
 telephone.place(relx=0.617, rely=0.113, height=21, width=46)
 
-c_telephone = Entry()
+c_telephone = Entry(custRoot)
 c_telephone.place(relx=0.686, rely=0.113, height=20, relwidth=0.256)
 
-address = Label(root, text="Address: ", font=("bold", 9))
+address = Label(custRoot, text="Address: ", font=("bold", 9))
 address.place(relx=0.251, rely=0.258, height=21, width=54)
 
-c_address = Text()
+c_address = Text(custRoot)
 c_address.place(relx=0.331, rely=0.258, relheight=0.087, relwidth=0.61)
 
-username = Label(root, text="Username: ", font=("bold", 9))
+username = Label(custRoot, text="Username: ", font=("bold", 9))
 username.place(relx=0.251, rely=0.161, height=21, width=65)
 
-c_username = Entry()
+c_username = Entry(custRoot)
 c_username.place(relx=0.331, rely=0.161, height=20, relwidth=0.336)
 
-age = Label(root, text="Age: ", font=("bold", 9))
+age = Label(custRoot, text="Age: ", font=("bold", 9))
 age.place(relx=0.674, rely=0.161, height=21, width=33)
 
-c_age = Entry()
+c_age = Entry(custRoot)
 c_age.place(relx=0.72, rely=0.161, height=20, relwidth=0.039)
 
-money = Label(root, text="Money: ", font=("bold", 9))
+money = Label(custRoot, text="Money: ", font=("bold", 9))
 money.place(relx=0.777, rely=0.161, height=21, width=49)
 
-c_money = Entry()
+c_money = Entry(custRoot)
 c_money.place(relx=0.846, rely=0.161, height=20, relwidth=0.096)
 
 '''OPERATION BUTTONS'''
-add = Button(root, text="Add", font=(
+add = Button(custRoot, text="Add", font=(
     "italic", 10), bg="#d9d9d9", command=add)
 add.place(relx=0.297, rely=0.371, height=24, width=97)
 
-update = Button(root, text="Update", font=(
+update = Button(custRoot, text="Update", font=(
     "italic", 10), bg="#d9d9d9", command=update)
 update.place(relx=0.423, rely=0.371, height=24, width=99)
 
-delete = Button(root, text="Delete", font=(
+delete = Button(custRoot, text="Delete", font=(
     "italic", 10), bg="#d9d9d9", command=delete)
 delete.place(relx=0.549, rely=0.371, height=24, width=97)
 
-get = Button(root, text="Get Customer", font=(
+get = Button(custRoot, text="Get Customer", font=(
     "italic", 10), bg="#d9d9d9", command=get)
 get.place(relx=0.674, rely=0.371, height=24, width=97)
 
-rent = Button(root, text="Rent Operations", font=(
+rent = Button(custRoot, text="Rent Operations", font=(
     "italic", 10), bg="#d9d9d9")
 rent.place(relx=0.8, rely=0.371, height=24, width=96)
 
 '''LIST OUTPUT'''
-customer = Label(root, text="Customer Table", font=("Comic Sans MC", 9))
+customer = Label(custRoot, text="Customer Table", font=("Comic Sans MC", 9))
 customer.place(relx=0.537, rely=0.452, height=21, width=89)
 
-customer_list = ttk.Treeview(height=10, columns=5)
+customer_list = ttk.Treeview(custRoot, height=10, columns=5)
 customer_list.grid(row=4, column=0)
 
 customer_list.configure(columns="Col1 Col2 Col3 Col4 Col5 Col6 Col7 Col8 Col9")

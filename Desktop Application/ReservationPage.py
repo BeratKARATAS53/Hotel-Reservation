@@ -1,10 +1,14 @@
 import tkinter as tk
 from tkinter import *
-import tkinter.ttk
+import tkinter.ttk as ttk
 import tkinter.messagebox as Messagebox
 import mysql.connector as mysql
 
 from datetime import datetime
+
+
+def customerPage():
+    import CustomerPage
 
 
 def add():
@@ -90,15 +94,23 @@ def reserv_list():
         reservation_list.insert('', 0, text=reserv[0], value=(
             reserv[1], reserv[2], reserv[3], reserv[4]))
 
-    '''
-    cursor.execute("select * from extraservice")
-    extraservices = cursor.fetchall()
+    con.close()
 
-    for extraservice in extraservices:
-        insertService = str(
-            extraservice[1]) + '   ' + str(extraservice[2]) + '   ' + str(extraservice[3])
-        extra_service_list.insert(extra_service_list.size()+1, insertService)
-    '''
+
+def serv_list():
+    records = service_list.get_children()
+    for element in records:
+        service_list.delete(element)
+
+    con = mysql.connect(host="localhost", user="admin",
+                        password="Berat.190797", database="hotel_reservation")
+    cursor = con.cursor()
+    cursor.execute("select * from extraservice")
+    service = cursor.fetchall()
+
+    for serv in service:
+        service_list.insert('', 0, text=serv[0], value=(serv[1], serv[2]))
+
     con.close()
 
 
@@ -116,112 +128,130 @@ def get():
             "select * from reservation where id = " + reserv_id + "")
         reservation = cursor.fetchall()
 
+        cursor.execute("select r.room_number from room_reservation rr, room r where rr.room_id=r.id and rr.reservation_id = " + reserv_id + "")
+        room_no = cursor.fetchall()
+
         for reserve in reservation:
             r_start_date.insert(0, reserve[1])
             r_finish_date.insert(0, reserve[2])
             r_customer_id.insert(0, reserve[4])
+            r_room_number.insert(0, room_no)
 
         r_reserv_id.insert(0, "")
         Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
         con.close()
 
 
-root = tk.Tk()
-root.geometry("1008x674")
-root.title("Main Page")
+reservRoot = tk.Tk()
+reservRoot.geometry("845x587+204+81")
+reservRoot.minsize(120, 1)
+reservRoot.maxsize(1370, 749)
+reservRoot.resizable(1, 1)
+reservRoot.title("Reservation Page")
 
 '''SIDE BAR'''
-hotel = Button(root, text="HOTEL", font=(
+hotel = Button(reservRoot, text="HOTEL", font=(
     "bold", 10), bg="#d9d9d9")
 hotel.place(relx=0.024, rely=0.068, height=24, width=127)
 
-customer = Button(root, text="CUSTOMER", font=(
-    "bold", 10), bg="#80e5ff")
+customer = Button(reservRoot, text="CUSTOMER", font=(
+    "bold", 10), bg="#d9d9d9", command=customerPage)
 customer.place(relx=0.024, rely=0.136, height=24, width=127)
 
-reservation = Button(root, text="RESERVATION", font=(
-    "bold", 10), bg="#d9d9d9")
+reservation = Button(reservRoot, text="RESERVATION", font=(
+    "bold", 10), bg="#80ff00")
 reservation.place(relx=0.024, rely=0.204, height=24, width=127)
 
-TSeparator1 = tkinter.ttk.Separator()
+TSeparator1 = ttk.Separator(reservRoot)
 TSeparator1.place(relx=0.201, rely=0.034, relheight=0.92)
 TSeparator1.configure(orient="vertical")
 
-TSeparator2 = tkinter.ttk.Separator()
+TSeparator2 = ttk.Separator(reservRoot)
 TSeparator2.place(relx=0.213, rely=0.375, relwidth=0.71)
 
 '''INPUT TEXTS'''
-reserv_id = Label(root, text="ID: ", font=("bold", 9))
+reserv_id = Label(reservRoot, text="ID: ", font=("bold", 9))
 reserv_id.place(relx=0.225, rely=0.068, height=21, width=23)
 
-r_reserv_id = Entry()
-r_reserv_id.place(relx=0.26, rely=0.068, height=20, relwidth=0.064)
+r_reserv_id = Entry(reservRoot)
+r_reserv_id.place(relx=0.26, rely=0.068, height=20, relwidth=0.04)
 
-start_date = Label(root, text="Start Date: ", font=("bold", 9))
-start_date.place(relx=0.331, rely=0.068, height=21, width=63)
+start_date = Label(reservRoot, text="Start Date: ", font=("bold", 9))
+start_date.place(relx=0.308, rely=0.068, height=21, width=63)
 
-r_start_date = Entry()
-r_start_date.place(relx=0.414, rely=0.068, height=20, relwidth=0.099)
+r_start_date = Entry(reservRoot)
+r_start_date.place(relx=0.391, rely=0.068, height=20, relwidth=0.099)
 
-finish_date = Label(root, text="Finish Date: ", font=("bold", 9))
-finish_date.place(relx=0.509, rely=0.068, height=21, width=70)
+finish_date = Label(reservRoot, text="Finish Date: ", font=("bold", 9))
+finish_date.place(relx=0.497, rely=0.068, height=21, width=70)
 
-r_finish_date = Entry()
-r_finish_date.place(relx=0.592, rely=0.068, height=20, relwidth=0.099)
+r_finish_date = Entry(reservRoot)
+r_finish_date.place(relx=0.58, rely=0.068, height=20, relwidth=0.099)
 
-room_number = Label(root, text="Room Number: ", font=("bold", 9))
-room_number.place(relx=0.698, rely=0.068, height=21, width=63)
+room_number = Label(reservRoot, text="Room No: ", font=("bold", 9))
+room_number.place(relx=0.686, rely=0.068, height=21, width=63)
 
-r_room_number = Entry()
-r_room_number.place(relx=0.781, rely=0.068, height=20, relwidth=0.052)
+r_room_number = Entry(reservRoot)
+r_room_number.place(relx=0.769, rely=0.068, height=20, relwidth=0.064)
 
-customer_id = Label(root, text="Customer ID: ", font=("bold", 9))
+customer_id = Label(reservRoot, text="Customer ID: ", font=("bold", 9))
 customer_id.place(relx=0.698, rely=0.119, height=21, width=78)
 
-r_customer_id = Entry()
+r_customer_id = Entry(reservRoot)
 r_customer_id.place(relx=0.793, rely=0.119, height=20, relwidth=0.04)
 
 '''OPERATION BUTTONS'''
-add = Button(root, text="Add", font=(
+add = Button(reservRoot, text="Add", font=(
     "italic", 10), bg="#d9d9d9", command=add)
 add.place(relx=0.331, rely=0.307, height=24, width=97)
 
-update = Button(root, text="Update", font=(
+update = Button(reservRoot, text="Update", font=(
     "italic", 10), bg="#d9d9d9", command=update)
 update.place(relx=0.473, rely=0.307, height=24, width=99)
 
-delete = Button(root, text="Delete", font=(
+delete = Button(reservRoot, text="Delete", font=(
     "italic", 10), bg="#d9d9d9", command=delete)
 delete.place(relx=0.615, rely=0.307, height=24, width=97)
 
-get = Button(root, text="Get Reservation", font=(
+get = Button(reservRoot, text="Get Reservation", font=(
     "italic", 10), bg="#d9d9d9", command=get)
 get.place(relx=0.757, rely=0.307, height=24, width=97)
 
 '''LIST OUTPUT'''
-extra_services = Label(root, text="Extra Services: ", font=("bold", 9))
-room_number.place(relx=0.225, rely=0.119, height=21, width=83)
+extra_services = Label(reservRoot, text="Extra Services: ", font=("bold", 9))
+extra_services.place(relx=0.225, rely=0.117, height=21, width=83)
 
-reservation = Label(root, text="Reservation Table", font=("bold", 9))
+service_list = ttk.Treeview(reservRoot, height=10, columns=5)
+service_list.grid(row=4, column=0, columnspan=2)
+
+service_list.configure(columns="Col1 Col2")
+service_list.heading("#0", text='ID', anchor=N)
+service_list.column("#0", width='40')
+service_list.heading("Col1", text='Service', anchor=N)
+service_list.column("Col1", width='120')
+service_list.heading("Col2", text='Price', anchor=N)
+service_list.column("Col2", width='120')
+
+service_list.place(relx=0.331, rely=0.117, relheight=0.162, relwidth=0.304)
+serv_list()
+
+reservation = Label(reservRoot, text="Reservation Table", font=("bold", 9))
 reservation.place(relx=0.544, rely=0.392, height=21, width=98)
 
-reservation_list = tkinter.ttk.Treeview(height=10, columns=5)
+reservation_list = ttk.Treeview(reservRoot, height=10, columns=5)
 reservation_list.grid(row=4, column=0, columnspan=2)
 
 reservation_list.configure(columns="Col1 Col2 Col3 Col4")
-reservation_list.heading("#0", text='ID', anchor=W)
+reservation_list.heading("#0", text='ID', anchor=N)
 reservation_list.column("#0", width='20')
-reservation_list.heading("Col1", text='Start Date', anchor=W)
+reservation_list.heading("Col1", text='Start Date', anchor=N)
 reservation_list.column("Col1", width='120')
-reservation_list.heading("Col2", text='Finish Date', anchor=W)
+reservation_list.heading("Col2", text='Finish Date', anchor=N)
 reservation_list.column("Col2", width='120')
-reservation_list.heading("Col3", text='Price', anchor=W)
+reservation_list.heading("Col3", text='Price', anchor=N)
 reservation_list.column("Col3", width='100')
-reservation_list.heading("Col4", text='Customer ID', anchor=W)
+reservation_list.heading("Col4", text='Customer ID', anchor=N)
 reservation_list.column("Col4", width='100')
-
-tkinter.ttk.Button(text="Delete Record").grid(row=5, column=0)
-tkinter.ttk.Button(text="Edit Record").grid(row=5, column=1)
 
 reservation_list.place(relx=0.225, rely=0.426, relheight=0.513, relwidth=0.699)
 reserv_list()
