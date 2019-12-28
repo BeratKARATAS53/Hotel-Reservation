@@ -17,17 +17,20 @@ import mysql.connector as mysql
 def reservationPage():
     import ReservationPage
 
+def hotelPage():
+    import HotelPage
+
 def add():
-    firstname = c_firstname.get()
-    lastname = c_lastname.get()
-    passwrd = c_password.get()
-    confirm_passwrd = c_confirm_passwrd.get()
-    email = c_email.get()
-    address = c_address.get("1.0", END)
-    telephone = c_telephone.get()
-    age = c_age.get()
-    money = c_money.get()
-    username = c_username.get()
+    firstname = e_firstname.get()
+    lastname = e_lastname.get()
+    passwrd = e_password.get()
+    confirm_passwrd = e_confirm_passwrd.get()
+    email = e_email.get()
+    address = e_address.get("1.0", END)
+    telephone = e_telephone.get()
+    age = e_age.get()
+    money = e_money.get()
+    username = e_username.get()
 
     if(firstname == "" or lastname == "" or passwrd == "" or email == "" or address == ""
             or telephone == "" or age == "" or username == ""):
@@ -46,33 +49,33 @@ def add():
         con.commit()
         cust_list()
 
-        c_customer_id.delete(0, "end")
-        c_firstname.delete(0, "end")
-        c_lastname.delete(0, "end")
-        c_password.delete(0, "end")
-        c_confirm_passwrd.delete(0, "end")
-        c_email.delete(0, "end")
-        c_address.delete('1.0', END)
-        c_telephone.delete(0, "end")
-        c_money.delete(0, "end")
-        c_age.delete(0, "end")
-        c_username.delete(0, "end")
+        e_customer_id.delete(0, "end")
+        e_firstname.delete(0, "end")
+        e_lastname.delete(0, "end")
+        e_password.delete(0, "end")
+        e_confirm_passwrd.delete(0, "end")
+        e_email.delete(0, "end")
+        e_address.delete('1.0', END)
+        e_telephone.delete(0, "end")
+        e_money.delete(0, "end")
+        e_age.delete(0, "end")
+        e_username.delete(0, "end")
 
         con.close()
 
 
 def update():
-    customer_id = c_customer_id.get()
-    firstname = c_firstname.get()
-    lastname = c_lastname.get()
-    passwrd = c_password.get()
-    confirm_passwrd = c_confirm_passwrd.get()
-    email = c_email.get()
-    address = c_address.get("1.0", END)
-    telephone = c_telephone.get()
-    age = c_age.get()
-    money = c_money.get()
-    username = c_username.get()
+    customer_id = e_customer_id.get()
+    firstname = e_firstname.get()
+    lastname = e_lastname.get()
+    passwrd = e_password.get()
+    confirm_passwrd = e_confirm_passwrd.get()
+    email = e_email.get()
+    address = e_address.get("1.0", END)
+    telephone = e_telephone.get()
+    age = e_age.get()
+    money = e_money.get()
+    username = e_username.get()
 
     if(customer_id == "" or firstname == "" or lastname == "" or passwrd == "" or email == "" or address == ""
             or telephone == "" or age == "" or money == "" or username == ""):
@@ -86,7 +89,7 @@ def update():
 
         if(boolean[0][0] == 0):
             Messagebox.showinfo( "Fetch Status", "Fetch Failed! Record Not Found")
-            c_customer_id.delete(0, "end")
+            e_customer_id.delete(0, "end")
 
         else:
             cursor.execute("Call updatePerson('" + customer_id + "','" + firstname + "','" + lastname + "','" + passwrd
@@ -97,25 +100,25 @@ def update():
             con.commit()
             cust_list()
 
-            c_email.config(state="normal")
+            e_email.config(state="normal")
 
-            c_customer_id.delete(0, "end")
-            c_firstname.delete(0, "end")
-            c_lastname.delete(0, "end")
-            c_password.delete(0, "end")
-            c_confirm_passwrd.delete(0, "end")
-            c_email.delete(0, "end")
-            c_address.delete('1.0', END)
-            c_telephone.delete(0, "end")
-            c_money.delete(0, "end")
-            c_age.delete(0, "end")
-            c_username.delete(0, "end")
+            e_customer_id.delete(0, "end")
+            e_firstname.delete(0, "end")
+            e_lastname.delete(0, "end")
+            e_password.delete(0, "end")
+            e_confirm_passwrd.delete(0, "end")
+            e_email.delete(0, "end")
+            e_address.delete('1.0', END)
+            e_telephone.delete(0, "end")
+            e_money.delete(0, "end")
+            e_age.delete(0, "end")
+            e_username.delete(0, "end")
 
         con.close()
 
 
 def delete():
-    customer_id = c_customer_id.get()
+    customer_id = e_customer_id.get()
     if(customer_id == ""):
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
@@ -128,22 +131,22 @@ def delete():
 
         if(boolean[0][0] == 0):
             Messagebox.showinfo( "Fetch Status", "Fetch Failed! Record Not Found")
-            c_customer_id.delete(0, "end")
+            e_customer_id.delete(0, "end")
             
         else:
             cursor.execute("Call deletePerson(" + customer_id + ")")
 
-            c_customer_id.delete(0, "end")
-            c_firstname.delete(0, "end")
-            c_lastname.delete(0, "end")
-            c_password.delete(0, "end")
-            c_confirm_passwrd.delete(0, "end")
-            c_email.delete(0, "end")
-            c_address.delete('1.0', END)
-            c_telephone.delete(0, "end")
-            c_money.delete(0, "end")
-            c_age.delete(0, "end")
-            c_username.delete(0, "end")
+            e_customer_id.delete(0, "end")
+            e_firstname.delete(0, "end")
+            e_lastname.delete(0, "end")
+            e_password.delete(0, "end")
+            e_confirm_passwrd.delete(0, "end")
+            e_email.delete(0, "end")
+            e_address.delete('1.0', END)
+            e_telephone.delete(0, "end")
+            e_money.delete(0, "end")
+            e_age.delete(0, "end")
+            e_username.delete(0, "end")
 
             Messagebox.showinfo("Delete Status", "Delete Succesfully")
             con.commit()
@@ -171,20 +174,20 @@ def cust_list():
 
 
 def get():
-    c_email.config(state="normal")
+    e_email.config(state="normal")
 
-    c_firstname.delete(0, "end")
-    c_lastname.delete(0, "end")
-    c_password.delete(0, "end")
-    c_confirm_passwrd.delete(0, "end")
-    c_email.delete(0, "end")
-    c_address.delete('1.0', END)
-    c_telephone.delete(0, "end")
-    c_money.delete(0, "end")
-    c_age.delete(0, "end")
-    c_username.delete(0, "end")
+    e_firstname.delete(0, "end")
+    e_lastname.delete(0, "end")
+    e_password.delete(0, "end")
+    e_confirm_passwrd.delete(0, "end")
+    e_email.delete(0, "end")
+    e_address.delete('1.0', END)
+    e_telephone.delete(0, "end")
+    e_money.delete(0, "end")
+    e_age.delete(0, "end")
+    e_username.delete(0, "end")
 
-    customer_id = c_customer_id.get()
+    customer_id = e_customer_id.get()
     if(customer_id == ""):
         Messagebox.showinfo(
             "Fetch Status", "ID is compolsary for fetch")
@@ -197,7 +200,7 @@ def get():
 
         if(boolean[0][0] == 0):
             Messagebox.showinfo( "Fetch Status", "Fetch Failed! Record Not Found")
-            c_customer_id.delete(0, "end")
+            e_customer_id.delete(0, "end")
 
         else:
             cursor.execute(
@@ -205,18 +208,18 @@ def get():
             customer = cursor.fetchall()
 
             for cust in customer:
-                c_firstname.insert(0, cust[1])
-                c_lastname.insert(0, cust[2])
-                c_password.insert(0, cust[3])
-                c_confirm_passwrd.insert(0, cust[3])
-                c_email.insert(0, cust[4])
-                c_telephone.insert(0, cust[5])
-                c_address.insert(INSERT, cust[6])
-                c_username.insert(0, cust[9])
-                c_age.insert(0, cust[10])
-                c_money.insert(0, cust[12])
+                e_firstname.insert(0, cust[1])
+                e_lastname.insert(0, cust[2])
+                e_password.insert(0, cust[3])
+                e_confirm_passwrd.insert(0, cust[3])
+                e_email.insert(0, cust[4])
+                e_telephone.insert(0, cust[5])
+                e_address.insert(INSERT, cust[6])
+                e_username.insert(0, cust[9])
+                e_age.insert(0, cust[10])
+                e_money.insert(0, cust[12])
 
-                c_email.config(state="disabled")
+                e_email.config(state="disabled")
 
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
 
@@ -229,7 +232,7 @@ custRoot.title("Main Page")
 
 '''SIDE BAR'''
 hotel = Button(custRoot, text="HOTEL", font=(
-    "bold", 10), bg="#d9d9d9")
+    "bold", 10), bg="#d9d9d9", command=hotelPage)
 hotel.place(relx=0.023, rely=0.067, height=24, width=127)
 
 customer = Button(custRoot, text="CUSTOMER", font=(
@@ -251,68 +254,68 @@ TSeparator2.place(relx=0.217, rely=0.435, relwidth=0.743)
 customer_id = Label(custRoot, text="ID: ", font=("bold", 9))
 customer_id.place(relx=0.251, rely=0.065, height=21, width=24)
 
-c_customer_id = Entry(custRoot)
-c_customer_id.place(relx=0.286, rely=0.065, height=20, relwidth=0.039)
+e_customer_id = Entry(custRoot)
+e_customer_id.place(relx=0.286, rely=0.065, height=20, relwidth=0.039)
 
 firstname = Label(custRoot, text="First Name: ", font=("bold", 9))
 firstname.place(relx=0.331, rely=0.065, height=21, width=69)
 
-c_firstname = Entry(custRoot)
-c_firstname.place(relx=0.423, rely=0.065, height=20, relwidth=0.199)
+e_firstname = Entry(custRoot)
+e_firstname.place(relx=0.423, rely=0.065, height=20, relwidth=0.199)
 
 lastname = Label(custRoot, text="Last Name: ", font=("bold", 9))
 lastname.place(relx=0.629, rely=0.065, height=21, width=68)
 
-c_lastname = Entry(custRoot)
-c_lastname.place(relx=0.709, rely=0.065, height=20, relwidth=0.233)
+e_lastname = Entry(custRoot)
+e_lastname.place(relx=0.709, rely=0.065, height=20, relwidth=0.233)
 
 passwrd = Label(custRoot, text="Password: ", font=("bold", 9))
 passwrd.place(relx=0.251, rely=0.21, height=19, width=60)
 
-c_password = Entry(custRoot)
-c_password.place(relx=0.697, rely=0.21, height=20, relwidth=0.245)
+e_password = Entry(custRoot)
+e_password.place(relx=0.697, rely=0.21, height=20, relwidth=0.245)
 
 confirm_passwrd = Label(custRoot, text="Confirm Password: ", font=("bold", 9))
 confirm_passwrd.place(relx=0.571, rely=0.21, height=21, width=109)
 
-c_confirm_passwrd = Entry(custRoot)
-c_confirm_passwrd.place(relx=0.331, rely=0.21, height=20, relwidth=0.233)
+e_confirm_passwrd = Entry(custRoot)
+e_confirm_passwrd.place(relx=0.331, rely=0.21, height=20, relwidth=0.233)
 
 email = Label(custRoot, text="Email: ", font=("bold", 9))
 email.place(relx=0.251, rely=0.113, height=21, width=41)
 
-c_email = Entry(custRoot)
-c_email.place(relx=0.331, rely=0.113, height=20, relwidth=0.279)
+e_email = Entry(custRoot)
+e_email.place(relx=0.331, rely=0.113, height=20, relwidth=0.279)
 
 telephone = Label(custRoot, text="Phone: ", font=("bold", 9))
 telephone.place(relx=0.617, rely=0.113, height=21, width=46)
 
-c_telephone = Entry(custRoot)
-c_telephone.place(relx=0.686, rely=0.113, height=20, relwidth=0.256)
+e_telephone = Entry(custRoot)
+e_telephone.place(relx=0.686, rely=0.113, height=20, relwidth=0.256)
 
 address = Label(custRoot, text="Address: ", font=("bold", 9))
 address.place(relx=0.251, rely=0.258, height=21, width=54)
 
-c_address = Text(custRoot)
-c_address.place(relx=0.331, rely=0.258, relheight=0.087, relwidth=0.61)
+e_address = Text(custRoot)
+e_address.place(relx=0.331, rely=0.258, relheight=0.087, relwidth=0.61)
 
 username = Label(custRoot, text="Username: ", font=("bold", 9))
 username.place(relx=0.251, rely=0.161, height=21, width=65)
 
-c_username = Entry(custRoot)
-c_username.place(relx=0.331, rely=0.161, height=20, relwidth=0.336)
+e_username = Entry(custRoot)
+e_username.place(relx=0.331, rely=0.161, height=20, relwidth=0.336)
 
 age = Label(custRoot, text="Age: ", font=("bold", 9))
 age.place(relx=0.674, rely=0.161, height=21, width=33)
 
-c_age = Entry(custRoot)
-c_age.place(relx=0.72, rely=0.161, height=20, relwidth=0.039)
+e_age = Entry(custRoot)
+e_age.place(relx=0.72, rely=0.161, height=20, relwidth=0.039)
 
 money = Label(custRoot, text="Money: ", font=("bold", 9))
 money.place(relx=0.777, rely=0.161, height=21, width=49)
 
-c_money = Entry(custRoot)
-c_money.place(relx=0.846, rely=0.161, height=20, relwidth=0.096)
+e_money = Entry(custRoot)
+e_money.place(relx=0.846, rely=0.161, height=20, relwidth=0.096)
 
 '''OPERATION BUTTONS'''
 add = Button(custRoot, text="Add", font=(

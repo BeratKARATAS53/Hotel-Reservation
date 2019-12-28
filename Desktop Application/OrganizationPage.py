@@ -24,9 +24,9 @@ orgRoot.title("Hotel Organization Page")
 
 
 def add():
-    name = o_name.get()
-    price = o_price.get()
-    info = o_info.get("1.0", END)
+    name = e_name.get()
+    price = e_price.get()
+    info = e_info.get("1.0", END)
 
     if(name == "" or price == "" or info == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
@@ -41,18 +41,18 @@ def add():
         con.commit()
         org_list()
 
-        o_name.delete(0, "end")
-        o_info.delete('1.0', END)
-        o_price.delete(0, "end")
+        e_name.delete(0, "end")
+        e_info.delete('1.0', END)
+        e_price.delete(0, "end")
 
         con.close()
 
 
 def update():
-    org_id = o_org_id.get()
-    name = o_name.get()
-    price = o_price.get()
-    info = o_info.get("1.0", END)
+    org_id = e_org_id.get()
+    name = e_name.get()
+    price = e_price.get()
+    info = e_info.get("1.0", END)
 
     if(org_id == "" or name == "" or price == "" or info == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
@@ -67,7 +67,7 @@ def update():
         if(boolean[0][0] == 0):
             Messagebox.showinfo(
                 "Fetch Status", "Fetch Failed! Record Not Found")
-            o_org_id.delete(0, "end")
+            e_org_id.delete(0, "end")
 
         else:
             cursor.execute("Call updateOrganization('" + org_id +
@@ -77,15 +77,15 @@ def update():
             con.commit()
             org_list()
 
-        o_name.delete(0, "end")
-        o_info.delete('1.0', END)
-        o_price.delete(0, "end")
+        e_name.delete(0, "end")
+        e_info.delete('1.0', END)
+        e_price.delete(0, "end")
 
         con.close()
 
 
 def delete():
-    org_id = o_org_id.get()
+    org_id = e_org_id.get()
     if(org_id == ""):
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
@@ -100,15 +100,15 @@ def delete():
         if(boolean[0][0] == 0):
             Messagebox.showinfo(
                 "Fetch Status", "Fetch Failed! Record Not Found")
-            o_org_id.delete(0, "end")
+            e_org_id.delete(0, "end")
 
         else:
             cursor.execute("Call deleteOrganization(" + org_id + ")")
 
-            o_org_id.delete(0, "end")
-            o_name.delete(0, "end")
-            o_info.delete('1.0', END)
-            o_price.delete(0, "end")
+            e_org_id.delete(0, "end")
+            e_name.delete(0, "end")
+            e_info.delete('1.0', END)
+            e_price.delete(0, "end")
 
             Messagebox.showinfo("Delete Status", "Delete Succesfully")
             con.commit()
@@ -136,11 +136,11 @@ def org_list():
 
 
 def get():
-    o_name.delete(0, "end")
-    o_price.delete(0, "end")
-    o_info.delete('1.0', END)
+    e_name.delete(0, "end")
+    e_price.delete(0, "end")
+    e_info.delete('1.0', END)
 
-    org_id = o_org_id.get()
+    org_id = e_org_id.get()
     if(org_id == ""):
         Messagebox.showinfo(
             "Fetch Status", "ID is compolsary for fetch")
@@ -155,7 +155,7 @@ def get():
         if(boolean[0][0] == 0):
             Messagebox.showinfo(
                 "Fetch Status", "Fetch Failed! Record Not Found")
-            o_org_id.delete(0, "end")
+            e_org_id.delete(0, "end")
 
         else:
             cursor.execute(
@@ -163,9 +163,9 @@ def get():
             customer = cursor.fetchall()
 
             for cust in customer:
-                o_name.insert(0, cust[1])
-                o_info.insert(INSERT, cust[2])
-                o_price.insert(0, cust[3])
+                e_name.insert(0, cust[1])
+                e_info.insert(INSERT, cust[2])
+                e_price.insert(0, cust[3])
 
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
 
@@ -200,26 +200,26 @@ TSeparator2.place(relx=0.262, rely=0.326, relwidth=0.607)
 org_id = Label(orgRoot, text="ID: ", font=("bold", 9))
 org_id.place(relx=0.276, rely=0.091, height=21, width=23)
 
-o_org_id = Entry(orgRoot)
-o_org_id.place(relx=0.317, rely=0.091, height=20, relwidth=0.033)
+e_org_id = Entry(orgRoot)
+e_org_id.place(relx=0.317, rely=0.091, height=20, relwidth=0.033)
 
 name = Label(orgRoot, text="Name: ", font=("bold", 9))
 name.place(relx=0.359, rely=0.091, height=21, width=44)
 
-o_name = Entry(orgRoot)
-o_name.place(relx=0.428, rely=0.091, height=20, relwidth=0.309)
+e_name = Entry(orgRoot)
+e_name.place(relx=0.428, rely=0.091, height=20, relwidth=0.309)
 
 price = Label(orgRoot, text="Price: ", font=("bold", 9))
 price.place(relx=0.735, rely=0.091, height=21, width=38)
 
-o_price = Entry(orgRoot)
-o_price.place(relx=0.786, rely=0.091, height=20, relwidth=0.061)
+e_price = Entry(orgRoot)
+e_price.place(relx=0.786, rely=0.091, height=20, relwidth=0.061)
 
 info = Label(orgRoot, text="Information: ", font=("bold", 9))
 info.place(relx=0.276, rely=0.145, height=21, width=75)
 
-o_info = Text(orgRoot, font=("bold", 9))
-o_info.place(relx=0.386, rely=0.145, relheight=0.08, relwidth=0.461)
+e_info = Text(orgRoot, font=("bold", 9))
+e_info.place(relx=0.386, rely=0.145, relheight=0.08, relwidth=0.461)
 
 '''OPERATION BUTTONS'''
 add = Button(orgRoot, text="Add", font=(

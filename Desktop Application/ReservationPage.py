@@ -1,42 +1,48 @@
 try:
-    import Tkinter as tk
-    from Tkinter import *
-    import Tkinter.messagebox as Messagebox
-except ImportError:
     import tkinter as tk
     from tkinter import *
     import tkinter.messagebox as Messagebox
+except ImportError:
+    import Tkinter as tk
+    from Tkinter import *
+    import Tkinter.messagebox as Messagebox
 
 try:
-    import ttk
-    py3 = False
-except ImportError:
     import tkinter.ttk as ttk
+except ImportError:
+    import ttk
 
 import mysql.connector as mysql
-
 from datetime import datetime
 
+reservRoot = tk.Tk()
+reservRoot.geometry("845x587+204+81")
+reservRoot.minsize(120, 1)
+reservRoot.maxsize(1370, 749)
+reservRoot.resizable(1, 1)
+reservRoot.title("Reservation Page")
 
 def customerPage():
     import CustomerPage
 
+def hotelPage():
+    import HotelPage
 
 def add():
-    reserv_id = r_reserv_id.get()
-    start_date = r_start_date.get()
-    finish_date = r_finish_date.get()
-    room_number = r_room_number.get()
-    customer_id = r_customer_id.get()
+    reserv_id = e_reserv_id.get()
+    start_date = e_start_date.get()
+    finish_date = e_finish_date.get()
+    room_number = e_room_number.get()
+    customee_id = e_customee_id.get()
 
-    if(start_date == "" or finish_date == "" or room_number == "" or customer_id == ""):
+    if(start_date == "" or finish_date == "" or room_number == "" or customee_id == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
     else:
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("Call addReservation('" + start_date + "','" +
-                       finish_date + "'," + customer_id + ",'" + room_number + "')")
+                       finish_date + "'," + customee_id + ",'" + room_number + "')")
 
         Messagebox.showinfo("Insert Status", "Inserted Succesfully")
         con.commit()
@@ -45,13 +51,13 @@ def add():
 
 
 def update():
-    reserv_id = r_reserv_id.get()
-    start_date = r_start_date.get()
-    finish_date = r_finish_date.get()
-    room_number = r_room_number.get()
-    customer_id = r_customer_id.get()
+    reserv_id = e_reserv_id.get()
+    start_date = e_start_date.get()
+    finish_date = e_finish_date.get()
+    room_number = e_room_number.get()
+    customee_id = e_customee_id.get()
 
-    if(reserv_id == "" or start_date == "" or finish_date == "" or room_number == "" or customer_id == ""):
+    if(reserv_id == "" or start_date == "" or finish_date == "" or room_number == "" or customee_id == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
         con = mysql.connect(host="localhost", user="admin",
@@ -64,11 +70,11 @@ def update():
         if(boolean[0][0] == 0):
             Messagebox.showinfo(
                 "Fetch Status", "Fetch Failed! Record Not Found")
-            r_reserv_id.delete(0, "end")
+            e_reserv_id.delete(0, "end")
 
         else:
             cursor.execute("Call updateReservation('" + reserv_id + "','" + start_date + "','" +
-                           finish_date + "'," + customer_id + ",'" + room_number + "')")
+                           finish_date + "'," + customee_id + ",'" + room_number + "')")
 
             Messagebox.showinfo("Update Status", "Updated Succesfully")
             con.commit()
@@ -78,7 +84,7 @@ def update():
 
 
 def delete():
-    reserv_id = r_reserv_id.get()
+    reserv_id = e_reserv_id.get()
     if(reserv_id == ""):
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
@@ -93,16 +99,16 @@ def delete():
         if(boolean[0][0] == 0):
             Messagebox.showinfo(
                 "Fetch Status", "Fetch Failed! Record Not Found")
-            r_reserv_id.delete(0, "end")
+            e_reserv_id.delete(0, "end")
 
         else:
             cursor.execute("Call deleteReservation(" + reserv_id + ")")
 
-            r_reserv_id.insert(0, "")
-            r_start_date.insert(0, "")
-            r_finish_date.insert(0, "")
-            r_room_number.insert(0, "")
-            r_customer_id.insert(0, "")
+            e_reserv_id.insert(0, "")
+            e_start_date.insert(0, "")
+            e_finish_date.insert(0, "")
+            e_room_number.insert(0, "")
+            e_customee_id.insert(0, "")
 
             Messagebox.showinfo("Delete Status", "Delete Succesfully")
             con.commit()
@@ -158,12 +164,12 @@ def serv_list():
 
 
 def get():
-    r_start_date.delete(0, "end")
-    r_finish_date.delete(0, "end")
-    r_room_number.delete(0, "end")
-    r_customer_id.delete(0, "end")
+    e_start_date.delete(0, "end")
+    e_finish_date.delete(0, "end")
+    e_room_number.delete(0, "end")
+    e_customee_id.delete(0, "end")
 
-    reserv_id = r_reserv_id.get()
+    reserv_id = e_reserv_id.get()
 
     if(reserv_id == ""):
         Messagebox.showinfo(
@@ -179,7 +185,7 @@ def get():
         if(boolean[0][0] == 0):
             Messagebox.showinfo(
                 "Fetch Status", "Fetch Failed! Record Not Found")
-            r_reserv_id.delete(0, "end")
+            e_reserv_id.delete(0, "end")
 
         else:
             cursor.execute(
@@ -191,26 +197,18 @@ def get():
             room_no = cursor.fetchall()
 
             for reserve in reservation:
-                r_start_date.insert(0, reserve[1])
-                r_finish_date.insert(0, reserve[2])
-                r_customer_id.insert(0, reserve[4])
-                r_room_number.insert(0, room_no)
+                e_start_date.insert(0, reserve[1])
+                e_finish_date.insert(0, reserve[2])
+                e_customee_id.insert(0, reserve[4])
+                e_room_number.insert(0, room_no)
 
-            r_reserv_id.insert(0, "")
+            e_reserv_id.insert(0, "")
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
         con.close()
 
-
-reservRoot = tk.Tk()
-reservRoot.geometry("845x587+204+81")
-reservRoot.minsize(120, 1)
-reservRoot.maxsize(1370, 749)
-reservRoot.resizable(1, 1)
-reservRoot.title("Reservation Page")
-
 '''SIDE BAR'''
 hotel = Button(reservRoot, text="HOTEL", font=(
-    "bold", 10), bg="#d9d9d9")
+    "bold", 10), bg="#d9d9d9", command=hotelPage)
 hotel.place(relx=0.024, rely=0.068, height=24, width=127)
 
 customer = Button(reservRoot, text="CUSTOMER", font=(
@@ -232,32 +230,32 @@ TSeparator2.place(relx=0.213, rely=0.375, relwidth=0.71)
 reserv_id = Label(reservRoot, text="ID: ", font=("bold", 9))
 reserv_id.place(relx=0.225, rely=0.068, height=21, width=23)
 
-r_reserv_id = Entry(reservRoot)
-r_reserv_id.place(relx=0.26, rely=0.068, height=20, relwidth=0.04)
+e_reserv_id = Entry(reservRoot)
+e_reserv_id.place(relx=0.26, rely=0.068, height=20, relwidth=0.04)
 
 start_date = Label(reservRoot, text="Start Date: ", font=("bold", 9))
 start_date.place(relx=0.308, rely=0.068, height=21, width=63)
 
-r_start_date = Entry(reservRoot)
-r_start_date.place(relx=0.391, rely=0.068, height=20, relwidth=0.099)
+e_start_date = Entry(reservRoot)
+e_start_date.place(relx=0.391, rely=0.068, height=20, relwidth=0.099)
 
 finish_date = Label(reservRoot, text="Finish Date: ", font=("bold", 9))
 finish_date.place(relx=0.497, rely=0.068, height=21, width=70)
 
-r_finish_date = Entry(reservRoot)
-r_finish_date.place(relx=0.58, rely=0.068, height=20, relwidth=0.099)
+e_finish_date = Entry(reservRoot)
+e_finish_date.place(relx=0.58, rely=0.068, height=20, relwidth=0.099)
 
 room_number = Label(reservRoot, text="Room No: ", font=("bold", 9))
 room_number.place(relx=0.686, rely=0.068, height=21, width=63)
 
-r_room_number = Entry(reservRoot)
-r_room_number.place(relx=0.769, rely=0.068, height=20, relwidth=0.064)
+e_room_number = Entry(reservRoot)
+e_room_number.place(relx=0.769, rely=0.068, height=20, relwidth=0.064)
 
-customer_id = Label(reservRoot, text="Customer ID: ", font=("bold", 9))
-customer_id.place(relx=0.698, rely=0.119, height=21, width=78)
+customee_id = Label(reservRoot, text="Customer ID: ", font=("bold", 9))
+customee_id.place(relx=0.698, rely=0.119, height=21, width=78)
 
-r_customer_id = Entry(reservRoot)
-r_customer_id.place(relx=0.793, rely=0.119, height=20, relwidth=0.04)
+e_customee_id = Entry(reservRoot)
+e_customee_id.place(relx=0.793, rely=0.119, height=20, relwidth=0.04)
 
 '''OPERATION BUTTONS'''
 add = Button(reservRoot, text="Add", font=(
