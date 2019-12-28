@@ -1,7 +1,18 @@
-import tkinter as tk
-from tkinter import *
-import tkinter.ttk as ttk
-import tkinter.messagebox as Messagebox
+try:
+    import Tkinter as tk
+    from Tkinter import *
+    import Tkinter.messagebox as Messagebox
+except ImportError:
+    import tkinter as tk
+    from tkinter import *
+    import tkinter.messagebox as Messagebox
+
+try:
+    import ttk
+    py3 = False
+except ImportError:
+    import tkinter.ttk as ttk
+
 import mysql.connector as mysql
 
 from datetime import datetime
@@ -46,12 +57,22 @@ def update():
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
-        cursor.execute("Call updateReservation('" + reserv_id + "','" + start_date + "','" +
-                       finish_date + "'," + customer_id + ",'" + room_number + "')")
+        cursor.execute(
+            "select exists (select * from reservation where id = " + reserv_id + ")")
+        boolean = cursor.fetchall()
 
-        Messagebox.showinfo("Update Status", "Updated Succesfully")
-        con.commit()
-        reserv_list()
+        if(boolean[0][0] == 0):
+            Messagebox.showinfo(
+                "Fetch Status", "Fetch Failed! Record Not Found")
+            r_reserv_id.delete(0, "end")
+
+        else:
+            cursor.execute("Call updateReservation('" + reserv_id + "','" + start_date + "','" +
+                           finish_date + "'," + customer_id + ",'" + room_number + "')")
+
+            Messagebox.showinfo("Update Status", "Updated Succesfully")
+            con.commit()
+            reserv_list()
 
         con.close()
 
@@ -65,17 +86,27 @@ def delete():
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
-        cursor.execute("Call deleteReservation(" + reserv_id + ")")
+        cursor.execute(
+            "select exists (select * from reservation where id = " + reserv_id + ")")
+        boolean = cursor.fetchall()
 
-        r_reserv_id.insert(0, "")
-        r_start_date.insert(0, "")
-        r_finish_date.insert(0, "")
-        r_room_number.insert(0, "")
-        r_customer_id.insert(0, "")
+        if(boolean[0][0] == 0):
+            Messagebox.showinfo(
+                "Fetch Status", "Fetch Failed! Record Not Found")
+            r_reserv_id.delete(0, "end")
 
-        Messagebox.showinfo("Delete Status", "Delete Succesfully")
-        con.commit()
-        reserv_list()
+        else:
+            cursor.execute("Call deleteReservation(" + reserv_id + ")")
+
+            r_reserv_id.insert(0, "")
+            r_start_date.insert(0, "")
+            r_finish_date.insert(0, "")
+            r_room_number.insert(0, "")
+            r_customer_id.insert(0, "")
+
+            Messagebox.showinfo("Delete Status", "Delete Succesfully")
+            con.commit()
+            reserv_list()
         con.close()
 
 
@@ -105,7 +136,19 @@ def serv_list():
     con = mysql.connect(host="localhost", user="admin",
                         password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
-    cursor.execute("select * from extraservice")
+
+    """ Eğer Oda Özel Değil ise Yemek Servislerini Göstermemesi Gerek 
+    boolean = cursor.execute(
+        "select substring_index(substring_index(room_number,'-',-2),'-',1) from room where id=9")
+    boolean = cursor.fetchall()
+    food
+    if(boolean == 1):
+        cursor.execute(
+            "select * from extraservice where hotel_id = substring_index('1-0-100', '-', 1) order by id desc")
+        food = cursor.fetchall()
+    """
+    cursor.execute(
+        "select * from extraservice where hotel_id = substring_index('1-0-100', '-', 1) order by id desc")
     service = cursor.fetchall()
 
     for serv in service:
@@ -115,6 +158,11 @@ def serv_list():
 
 
 def get():
+    r_start_date.delete(0, "end")
+    r_finish_date.delete(0, "end")
+    r_room_number.delete(0, "end")
+    r_customer_id.delete(0, "end")
+
     reserv_id = r_reserv_id.get()
 
     if(reserv_id == ""):
@@ -125,20 +173,31 @@ def get():
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
-            "select * from reservation where id = " + reserv_id + "")
-        reservation = cursor.fetchall()
+            "select exists (select * from reservation where id = " + reserv_id + ")")
+        boolean = cursor.fetchall()
 
-        cursor.execute("select r.room_number from room_reservation rr, room r where rr.room_id=r.id and rr.reservation_id = " + reserv_id + "")
-        room_no = cursor.fetchall()
+        if(boolean[0][0] == 0):
+            Messagebox.showinfo(
+                "Fetch Status", "Fetch Failed! Record Not Found")
+            r_reserv_id.delete(0, "end")
 
-        for reserve in reservation:
-            r_start_date.insert(0, reserve[1])
-            r_finish_date.insert(0, reserve[2])
-            r_customer_id.insert(0, reserve[4])
-            r_room_number.insert(0, room_no)
+        else:
+            cursor.execute(
+                "select * from reservation where id = " + reserv_id + "")
+            reservation = cursor.fetchall()
 
-        r_reserv_id.insert(0, "")
-        Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
+            cursor.execute(
+                "select r.room_number from room_reservation rr, room r where rr.room_id=r.id and rr.reservation_id = " + reserv_id + "")
+            room_no = cursor.fetchall()
+
+            for reserve in reservation:
+                r_start_date.insert(0, reserve[1])
+                r_finish_date.insert(0, reserve[2])
+                r_customer_id.insert(0, reserve[4])
+                r_room_number.insert(0, room_no)
+
+            r_reserv_id.insert(0, "")
+            Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
         con.close()
 
 
@@ -226,10 +285,10 @@ service_list.grid(row=4, column=0, columnspan=2)
 
 service_list.configure(columns="Col1 Col2")
 service_list.heading("#0", text='ID', anchor=N)
-service_list.column("#0", width='40')
+service_list.column("#0", width='50', stretch=NO)
 service_list.heading("Col1", text='Service', anchor=N)
 service_list.column("Col1", width='120')
-service_list.heading("Col2", text='Price', anchor=N)
+service_list.heading("Col2", text='Price (₺)', anchor=N)
 service_list.column("Col2", width='120')
 
 service_list.place(relx=0.331, rely=0.117, relheight=0.162, relwidth=0.304)
@@ -243,15 +302,15 @@ reservation_list.grid(row=4, column=0, columnspan=2)
 
 reservation_list.configure(columns="Col1 Col2 Col3 Col4")
 reservation_list.heading("#0", text='ID', anchor=N)
-reservation_list.column("#0", width='20')
+reservation_list.column("#0", width='50', stretch=NO)
 reservation_list.heading("Col1", text='Start Date', anchor=N)
 reservation_list.column("Col1", width='120')
 reservation_list.heading("Col2", text='Finish Date', anchor=N)
 reservation_list.column("Col2", width='120')
-reservation_list.heading("Col3", text='Price', anchor=N)
-reservation_list.column("Col3", width='100')
+reservation_list.heading("Col3", text='Price (₺)', anchor=N)
+reservation_list.column("Col3", width='50')
 reservation_list.heading("Col4", text='Customer ID', anchor=N)
-reservation_list.column("Col4", width='100')
+reservation_list.column("Col4", width='80', stretch=NO)
 
 reservation_list.place(relx=0.225, rely=0.426, relheight=0.513, relwidth=0.699)
 reserv_list()
