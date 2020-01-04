@@ -149,12 +149,12 @@ def get_hotels():
     con = mysql.connect(host="localhost", user="admin",
                         password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
-    cursor.execute("select * from hotel_view order by id asc")
+    cursor.execute("select * from hotel_balance order by id asc")
     hotels = cursor.fetchall()
 
     for hotel in hotels:
         hotel_list.insert('', 0, text=hotel[0], value=(
-            hotel[1], hotel[2], hotel[3], hotel[4], hotel[5], hotel[6], hotel[7]))
+            hotel[1], hotel[2], hotel[3], hotel[4], hotel[5], hotel[6], hotel[8]))
 
     con.close()
 
