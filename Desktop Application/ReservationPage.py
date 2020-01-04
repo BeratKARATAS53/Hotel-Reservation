@@ -22,11 +22,18 @@ reservRoot.maxsize(1370, 749)
 reservRoot.resizable(1, 1)
 reservRoot.title("Reservation Page")
 
+
 def customerPage():
     import CustomerPage
 
+
 def hotelPage():
     import HotelPage
+
+
+def statisticPage():
+    import StatisticPage
+
 
 def add():
     reserv_id = e_reserv_id.get()
@@ -206,6 +213,7 @@ def get():
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
         con.close()
 
+
 '''SIDE BAR'''
 hotel = Button(reservRoot, text="HOTEL", font=(
     "bold", 10), bg="#d9d9d9", command=hotelPage)
@@ -218,6 +226,10 @@ customer.place(relx=0.024, rely=0.136, height=24, width=127)
 reservation = Button(reservRoot, text="RESERVATION", font=(
     "bold", 10), bg="#80ff00")
 reservation.place(relx=0.024, rely=0.204, height=24, width=127)
+
+statistics = Button(reservRoot, text="TABLE STATISTICS", font=(
+    "bold", 10), bg="#d9d9d9", command=statisticPage)
+statistics.place(relx=0.024, rely=0.274, height=24, width=127)
 
 TSeparator1 = ttk.Separator(reservRoot)
 TSeparator1.place(relx=0.201, rely=0.034, relheight=0.92)

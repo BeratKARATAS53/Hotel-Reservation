@@ -14,11 +14,14 @@ except ImportError:
 
 import mysql.connector as mysql
 
+def hotelPage():
+    import HotelPage
+
 def reservationPage():
     import ReservationPage
 
-def hotelPage():
-    import HotelPage
+def statisticPage():
+    import StatisticPage
 
 def add():
     firstname = e_firstname.get()
@@ -44,9 +47,10 @@ def add():
         cursor.execute("Call addPerson('" + firstname + "','" + lastname + "','" + passwrd
                        + "','" + email + "','" + address + "','" + telephone + "'," + age + ","
                        + money + ",'" + username + "','" + "' '" + "','customer')")
-
-        Messagebox.showinfo("Insert Status", "Inserted Succesfully")
         con.commit()
+        con.close()
+        
+        Messagebox.showinfo("Insert Status", "Inserted Succesfully")
         cust_list()
 
         e_customer_id.delete(0, "end")
@@ -61,7 +65,6 @@ def add():
         e_age.delete(0, "end")
         e_username.delete(0, "end")
 
-        con.close()
 
 
 def update():
@@ -242,6 +245,10 @@ customer.place(relx=0.023, rely=0.129, height=24, width=127)
 reservation = Button(custRoot, text="RESERVATION", font=(
     "bold", 10), bg="#d9d9d9", command=reservationPage)
 reservation.place(relx=0.023, rely=0.194, height=24, width=127)
+
+statistics = Button(custRoot, text="TABLE STATISTICS", font=(
+    "bold", 10), bg="#d9d9d9", command=statisticPage)
+statistics.place(relx=0.023, rely=0.260, height=24, width=127)
 
 TSeparator1 = ttk.Separator(custRoot)
 TSeparator1.place(relx=0.194, rely=0.032, relheight=0.919)

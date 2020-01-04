@@ -23,12 +23,15 @@ hotelRoot.resizable(1, 1)
 hotelRoot.title("Main Page")
 
 
+def customerPage():
+    import CustomerPage
+
+
 def reservationPage():
     import ReservationPage
 
-
-def customerPage():
-    import CustomerPage
+def statisticPage():
+    import StatisticPage
 
 
 def add():
@@ -215,6 +218,10 @@ reservation = Button(hotelRoot, text="RESERVATION", font=(
     "bold", 10), bg="#d9d9d9", command=reservationPage)
 reservation.place(relx=0.02, rely=0.189, height=24, width=147)
 
+statistics = Button(hotelRoot, text="TABLE STATISTICS", font=(
+    "bold", 10), bg="#d9d9d9", command=statisticPage)
+statistics.place(relx=0.02, rely=0.249, height=24, width=147)
+
 TSeparator1 = ttk.Separator(hotelRoot)
 TSeparator1.place(relx=0.179, rely=0.032, relheight=0.82)
 TSeparator1.configure(orient="vertical")
@@ -294,7 +301,7 @@ get.place(relx=0.645, rely=0.3, height=24, width=97)
 
 operation = Button(hotelRoot, text="Other Operations", font=(
     "italic", 10), bg="#d9d9d9")
-operation.place(relx=0.755, rely=0.3, height=24, width=97)
+operation.place(relx=0.755, rely=0.3, height=24, width=127)
 
 '''LIST OUTPUT'''
 hotels = Label(hotelRoot, text="Hotel Table", font=("Comic Sans MC", 9))
