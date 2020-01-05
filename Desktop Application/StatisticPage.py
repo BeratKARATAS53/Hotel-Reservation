@@ -61,12 +61,10 @@ def rows_list():
     s_countTable.insert(0, countTable)
 
     for rows in numberofRows:
-        numberofRows_list.insert(
-            '', 0, text=rows[0], value=(rows[1]))
+        numberofRows_list.insert('', 0, text=rows[0], value=rows[1])
 
     for size in tablesize:
-        totalsize_list.insert(
-            '', 0, text=size[1], value=(size[2]))
+        totalsize_list.insert('', 0, text=size[1], value=size[2])
 
     con.close()
 

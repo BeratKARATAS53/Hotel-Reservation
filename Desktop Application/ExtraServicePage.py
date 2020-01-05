@@ -21,14 +21,18 @@ ServiceRoot.maxsize(1370, 749)
 ServiceRoot.resizable(1, 1)
 ServiceRoot.title("Room Extra Service Page")
 
+
 def organizationPage():
     import OrganizationPage
+
 
 def roomPage():
     import HotelRoomPage
 
+
 def employeePage():
     import EmployeeManagerPage
+
 
 '''SIDE BAR'''
 employee = Button(ServiceRoot, text="EMPLOYEES", font=(
@@ -36,7 +40,7 @@ employee = Button(ServiceRoot, text="EMPLOYEES", font=(
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(ServiceRoot, text="ROOMS", font=(
-    "bold", 10), bg="#d9d9d9", command= roomPage)
+    "bold", 10), bg="#d9d9d9", command=roomPage)
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(ServiceRoot, text="EXTRA SERVICES", font=(
@@ -44,7 +48,7 @@ extra_services = Button(ServiceRoot, text="EXTRA SERVICES", font=(
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(ServiceRoot, text="ORGANIZATIONS", font=(
-    "bold", 10), bg="#d9d9d9", command= organizationPage)
+    "bold", 10), bg="#d9d9d9", command=organizationPage)
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(ServiceRoot)
@@ -157,7 +161,8 @@ food_get = Button(ServiceRoot, text="Get Extra", font=(
 food_get.place(relx=0.880, rely=0.250, height=24, width=85)
 
 '''LIST OUTPUT'''
-ext_serv = Label(ServiceRoot, text="Extra Service Table", font=("Comic Sans MC", 9))
+ext_serv = Label(ServiceRoot, text="Extra Service Table",
+                 font=("Comic Sans MC", 9))
 ext_serv.place(relx=0.280, rely=0.33, height=31, width=140)
 
 ext_serv_list = ttk.Treeview(ServiceRoot, height=10, columns=5)
@@ -167,7 +172,8 @@ ext_serv_list.place(relx=0.189, rely=0.380, relheight=0.38, relwidth=0.370)
 
 
 '''LIST OUTPUT'''
-food_serv = Label(ServiceRoot, text="Food Service Table", font=("Comic Sans MC", 9))
+food_serv = Label(ServiceRoot, text="Food Service Table",
+                  font=("Comic Sans MC", 9))
 food_serv.place(relx=0.610, rely=0.33, height=31, width=140)
 
 food_serv_list = ttk.Treeview(ServiceRoot, height=10, columns=5)

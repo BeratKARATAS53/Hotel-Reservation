@@ -21,11 +21,14 @@ staffRoot.maxsize(1370, 749)
 staffRoot.resizable(1, 1)
 staffRoot.title("Hotel Employees Page")
 
+
 def organizationPage():
     import OrganizationPage
 
+
 def extraServicePage():
     import ExtraServicePage
+
 
 def roomPage():
     import HotelRoomPage
@@ -37,15 +40,15 @@ employee = Button(staffRoot, text="EMPLOYEES", font=(
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(staffRoot, text="ROOMS", font=(
-    "bold", 10), bg="#d9d9d9",command = roomPage)
+    "bold", 10), bg="#d9d9d9", command=roomPage)
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(staffRoot, text="EXTRA SERVICES", font=(
-    "bold", 10), bg="#d9d9d9",command = extraServicePage )
+    "bold", 10), bg="#d9d9d9", command=extraServicePage)
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(staffRoot, text="ORGANIZATIONS", font=(
-    "bold", 10), bg="#d9d9d9", command= organizationPage)
+    "bold", 10), bg="#d9d9d9", command=organizationPage)
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(staffRoot)

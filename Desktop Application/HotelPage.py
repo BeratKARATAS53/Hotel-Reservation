@@ -30,8 +30,13 @@ def customerPage():
 def reservationPage():
     import ReservationPage
 
+
 def statisticPage():
     import StatisticPage
+
+
+def otherOperations():
+    import EmployeeManagerPage
 
 
 def add():
@@ -189,7 +194,7 @@ def get():
 
         else:
             cursor.execute(
-                "select * from hotel_view where id = " + hotel_id + "")
+                "select * from hotel_balance where id = " + hotel_id + "")
             hotels = cursor.fetchall()
 
             for hotel in hotels:
@@ -202,6 +207,51 @@ def get():
 
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
 
+        con.close()
+
+
+def otherOperationsFunc():
+
+    e_name.delete(0, "end")
+    e_telephone.delete(0, "end")
+    e_address.delete('1.0', END)
+    e_info.delete('1.0', END)
+    e_hotel_type.delete(0, "end")
+    e_stars.delete(0, "end")
+
+    hotel_id = e_hotel_id.get()
+    if(hotel_id == ""):
+        Messagebox.showinfo(
+            "Fetch Status", "ID is compolsary for fetch")
+    else:
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
+        cursor = con.cursor()
+        cursor.execute(
+            "select exists (select * from hotel where id = " + hotel_id + ")")
+        boolean = cursor.fetchall()
+
+        if(boolean[0][0] == 0):
+            Messagebox.showinfo(
+                "Fetch Status", "Fetch Failed! Record Not Found")
+            e_hotel_id.delete(0, "end")
+
+        else:
+            cursor.execute(
+                "select * from hotel_balance where id = " + hotel_id + "")
+            hotels = cursor.fetchall()
+
+            for hotel in hotels:
+                e_name.insert(0, hotel[1])
+                e_address.insert(INSERT, hotel[2])
+                e_telephone.insert(0, hotel[3])
+                e_info.insert(INSERT, hotel[4])
+                e_stars.insert(0, hotel[5])
+                e_hotel_type.insert(INSERT, hotel[6])
+
+            Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
+
+            otherOperations()
         con.close()
 
 
@@ -300,7 +350,7 @@ get = Button(hotelRoot, text="Get hotel", font=(
 get.place(relx=0.645, rely=0.3, height=24, width=97)
 
 operation = Button(hotelRoot, text="Other Operations", font=(
-    "italic", 10), bg="#d9d9d9")
+    "italic", 10), bg="#d9d9d9", command=otherOperationsFunc)
 operation.place(relx=0.755, rely=0.3, height=24, width=127)
 
 '''LIST OUTPUT'''

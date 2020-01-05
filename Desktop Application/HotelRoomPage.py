@@ -21,14 +21,18 @@ hotelRoomRoot.maxsize(1370, 749)
 hotelRoomRoot.resizable(1, 1)
 hotelRoomRoot.title("Hotel Room Page")
 
+
 def organizationPage():
     import OrganizationPage
+
 
 def employeePage():
     import EmployeeManagerPage
 
+
 def extraServicePage():
     import ExtraServicePage
+
 
 '''SIDE BAR'''
 employee = Button(hotelRoomRoot, text="EMPLOYEES", font=(
@@ -40,11 +44,11 @@ room = Button(hotelRoomRoot, text="ROOMS", font=(
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(hotelRoomRoot, text="EXTRA SERVICES", font=(
-    "bold", 10), bg="#d9d9d9", command= extraServicePage)
+    "bold", 10), bg="#d9d9d9", command=extraServicePage)
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(hotelRoomRoot, text="ORGANIZATIONS", font=(
-    "bold", 10), bg="#d9d9d9", command= organizationPage)
+    "bold", 10), bg="#d9d9d9", command=organizationPage)
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(hotelRoomRoot)
@@ -83,8 +87,8 @@ e_capacity.place(relx=0.520, rely=0.158, height=20, relwidth=0.044)
 room_number = Label(hotelRoomRoot, text="Room Number: ", font=("bold", 9))
 room_number.place(relx=0.570, rely=0.158, height=21, width=91)
 
-e_room_number  = Text(hotelRoomRoot)
-e_room_number.place(relx=0.660, rely=0.158,height=20, relwidth=0.044)
+e_room_number = Text(hotelRoomRoot)
+e_room_number.place(relx=0.660, rely=0.158, height=20, relwidth=0.044)
 
 '''COMBOBOX'''
 
