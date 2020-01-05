@@ -410,17 +410,12 @@ delimiter ;
 
 drop procedure if exists addreservation;
 delimiter $$
-create procedure addreservation(in start_date date, in finish_date date, in customer_id integer, in room_number varchar(10))
+create procedure addreservation(in start_date date, in finish_date date, in customer_id integer, in room_number varchar(10), in total_price float)
 begin
 	declare reservation_id INT DEFAULT 0;
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
 	declare person_money FLOAT DEFAULT 0;
-	declare room_service_money FLOAT DEFAULT 0;
-	declare room_money FLOAT DEFAULT 0;
-	declare diff_day INT DEFAULT 0;
-	declare total_price FLOAT DEFAULT 0;
-	set diff_day := (select day(finish_date) - day(start_date));
 	if exists (select * from room rm where rm.room_number=room_number) then
 		if(strcmp((select status from room rm where rm.room_number=room_number),'available') = 0) then
 			select id into room_id from room rm where rm.room_number=room_number;
@@ -429,11 +424,6 @@ begin
 					and r.start_date=start_date and r.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
 					select money into person_money from balance where id=balanceId;
-					if exists (select * from room_extraservice roomex where roomex.room_id=room_id) then
-						select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
-					end if;
-					select room_price into room_money from room where id=room_id;
-					set total_price := (select ((diff_day*room_money)+room_service_money));
 					if(person_money > total_price) then
 						insert into reservation(start_date, finish_date, price, customer_id)
 						values(start_date, finish_date, total_price, customer_id);

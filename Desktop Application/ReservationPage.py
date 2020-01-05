@@ -41,6 +41,7 @@ def add():
     finish_date = e_finish_date.get()
     room_number = e_room_number.get()
     customee_id = e_customee_id.get()
+    total_price = e_price.get()
 
     if(start_date == "" or finish_date == "" or room_number == "" or customee_id == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
@@ -49,7 +50,7 @@ def add():
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("Call addReservation('" + start_date + "','" +
-                       finish_date + "'," + customee_id + ",'" + room_number + "')")
+                       finish_date + "'," + customee_id + ",'" + room_number + "',"+ total_price + ")")
 
         Messagebox.showinfo("Insert Status", "Inserted Succesfully")
         con.commit()
@@ -192,19 +193,23 @@ def serv_list():
     e_price.config(state="normal")
     e_price.delete(0, "end")
 
+    start_date = e_start_date.get()
+    finish_date = e_finish_date.get()
     room_number = e_room_number.get()
-    if(room_number == ""):
+    
+    if(start_date == "" or finish_date == "" or room_number == ""):
         Messagebox.showinfo(
-            "Fetch Status", "Room Number is compolsary for fetch")
+            "Fetch Status", "Start Date, Finish Date, and Room Number is compolsary for fetch")
     else:
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
+        cursor.execute("(select day('" + finish_date +"') - day('" + start_date + "'))")
+        difference_date = cursor.fetchall()
 
         cursor.execute("select room_price from room where room_number = '" + room_number + "'")
         price = cursor.fetchall()
-        e_price.insert(0, price)
-        e_price.insert("end", " (₺)")
+        e_price.insert(0, float(price[0][0])*int(difference_date[0][0]))
         e_price.config(state="disabled")
 
         cursor.execute("select substring_index(substring_index('" + room_number + "','-',-2),'-',1)")
@@ -226,38 +231,71 @@ def serv_list():
 
 
 def addService():
+    start_date = e_start_date.get()
+    finish_date = e_finish_date.get()
     service_id = e_service_id.get()
     room_number = e_room_number.get()
-    if(service_id == ""):
-        Messagebox.showinfo("Insert Status", "Service Must Be Selected!")
+    if(start_date == "" or finish_date == "" or service_id == ""):
+        Messagebox.showinfo("Insert Status", "Start Date, Finish Date, and Service ID Must Be Entered!")
     else:
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
-        cursor.execute("select id from room where room_number = '" + room_number + "'")
-        room_id = cursor.fetchall()
-        
-        cursor.execute("Call addroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
 
-        Messagebox.showinfo("Insert Status", "Inserted Succesfully")
-        con.commit()
-        con.close()
+        cursor.execute(
+            "select exists (select * from extraservice where id = " + service_id + " and hotel_id = substring_index('" + room_number + "', '-', 1))")
+        boolean = cursor.fetchall()
+        
+        if(boolean[0][0] == 0):
+            Messagebox.showinfo("Fetch Status", "Fetch Failed! Service Not Found")
+            e_service_id.delete(0, "end")
+        else:
+            cursor.execute("select id from room where room_number = '" + room_number + "'")
+            room_id = cursor.fetchall()
+
+
+            cursor.execute("select service_price from extraservice where id = '" + service_id + "'")
+            service_price = cursor.fetchall()
+            
+            cursor.execute("Call addroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
+
+            Messagebox.showinfo("Insert Status", "Inserted Succesfully")
+            
+            e_price.config(state="normal")
+            room_price = float(e_price.get()) + service_price[0][0]
+            e_price.delete(0, "end")
+            e_price.insert(0, room_price)
+            e_price.config(state="disabled")
+
+            con.commit()
+            con.close()
 
 def deleteService():
+    start_date = e_start_date.get()
+    finish_date = e_finish_date.get()
     service_id = e_service_id.get()
     room_number = e_room_number.get()
-    if(service_id == ""):
-        Messagebox.showinfo("Insert Status", "Service Must Be Selected!")
+    if(start_date == "" or finish_date == "" or service_id == ""):
+        Messagebox.showinfo("Delete Status", "Start Date, Finish Date, and Service ID Must Be Entered!")
     else:
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("select id from room where room_number = '" + room_number + "'")
         room_id = cursor.fetchall()
+        cursor.execute("select service_price from extraservice where id = '" + service_id + "'")
+        service_price = cursor.fetchall()
         
         cursor.execute("Call deleteroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
 
         Messagebox.showinfo("Delete Status", "Deleted Succesfully")
+
+        e_price.config(state="normal")
+        room_price = float(e_price.get()) - service_price[0][0]
+        e_price.delete(0, "end")
+        e_price.insert(0, room_price)
+        e_price.config(state="disabled")
+
         con.commit()
         con.close()
 
@@ -330,11 +368,11 @@ customee_id.place(relx=0.712, rely=0.187, height=21, width=78)
 e_customee_id = Entry(reservRoot)
 e_customee_id.place(relx=0.842, rely=0.187, height=20, relwidth=0.031)
 
-price = Label(reservRoot, text="Room Price: ", font=("calibri", 9))
-price.place(relx=0.712, rely=0.243, height=21, width=73)
+price = Label(reservRoot, text="Room Price (₺): ", font=("calibri", 9))
+price.place(relx=0.717, rely=0.243, height=21, width=80)
 
 e_price = Entry(reservRoot)
-e_price.place(relx=0.816, rely=0.243,height=20, relwidth=0.057)
+e_price.place(relx=0.825, rely=0.243,height=20, relwidth=0.05)
 
 service_id = Label(reservRoot, text="Service ID: ", font=("calibri", 9))
 service_id.place(relx=0.246, rely=0.336, height=21, width=62)
