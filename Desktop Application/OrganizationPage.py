@@ -174,19 +174,19 @@ def get():
 
 '''SIDE BAR'''
 employee = Button(orgRoot, text="EMPLOYEES", font=(
-    "bold", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#d9d9d9")
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(orgRoot, text="ROOMS", font=(
-    "bold", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#d9d9d9")
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(orgRoot, text="EXTRA SERVICES", font=(
-    "bold", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#d9d9d9")
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(orgRoot, text="ORGANIZATIONS", font=(
-    "bold", 10), bg="#80ff00")
+    "calibri", 10), bg="#80ff00")
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(orgRoot)
@@ -197,49 +197,49 @@ TSeparator2 = ttk.Separator(orgRoot)
 TSeparator2.place(relx=0.262, rely=0.326, relwidth=0.607)
 
 '''INPUT TEXTS'''
-org_id = Label(orgRoot, text="ID: ", font=("bold", 9))
+org_id = Label(orgRoot, text="ID: ", font=("calibri", 9))
 org_id.place(relx=0.276, rely=0.091, height=21, width=23)
 
 e_org_id = Entry(orgRoot)
 e_org_id.place(relx=0.317, rely=0.091, height=20, relwidth=0.033)
 
-name = Label(orgRoot, text="Name: ", font=("bold", 9))
+name = Label(orgRoot, text="Name: ", font=("calibri", 9))
 name.place(relx=0.359, rely=0.091, height=21, width=44)
 
 e_name = Entry(orgRoot)
 e_name.place(relx=0.428, rely=0.091, height=20, relwidth=0.309)
 
-price = Label(orgRoot, text="Price: ", font=("bold", 9))
+price = Label(orgRoot, text="Price: ", font=("calibri", 9))
 price.place(relx=0.735, rely=0.091, height=21, width=38)
 
 e_price = Entry(orgRoot)
 e_price.place(relx=0.786, rely=0.091, height=20, relwidth=0.061)
 
-info = Label(orgRoot, text="Information: ", font=("bold", 9))
+info = Label(orgRoot, text="Information: ", font=("calibri", 9))
 info.place(relx=0.276, rely=0.145, height=21, width=75)
 
-e_info = Text(orgRoot, font=("bold", 9))
+e_info = Text(orgRoot, font=("calibri", 9))
 e_info.place(relx=0.386, rely=0.145, relheight=0.08, relwidth=0.461)
 
 '''OPERATION BUTTONS'''
 add = Button(orgRoot, text="Add", font=(
-    "italic", 10), bg="#d9d9d9", command=add)
+    "calibri", 10), bg="#d9d9d9", command=add)
 add.place(relx=0.303, rely=0.254, height=24, width=97)
 
 update = Button(orgRoot, text="Update", font=(
-    "italic", 10), bg="#d9d9d9", command=update)
+    "calibri", 10), bg="#d9d9d9", command=update)
 update.place(relx=0.441, rely=0.254, height=24, width=99)
 
 delete = Button(orgRoot, text="Delete", font=(
-    "italic", 10), bg="#d9d9d9", command=delete)
+    "calibri", 10), bg="#d9d9d9", command=delete)
 delete.place(relx=0.579, rely=0.254, height=24, width=97)
 
 get = Button(orgRoot, text="Get Organization", font=(
-    "italic", 10), bg="#d9d9d9", command=get)
+    "calibri", 10), bg="#d9d9d9", command=get)
 get.place(relx=0.717, rely=0.254, height=24, width=100)
 
 '''LIST OUTPUT'''
-organization = Label(orgRoot, text="Customer Table", font=("bold", 9))
+organization = Label(orgRoot, text="Customer Table", font=("calibri", 9))
 organization.place(relx=0.483, rely=0.344, height=21, width=105)
 
 organization_list = ttk.Treeview(orgRoot, height=10, columns=5)

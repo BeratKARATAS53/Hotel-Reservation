@@ -71,19 +71,19 @@ def rows_list():
 
 '''SIDE BAR'''
 hotel = Button(statRoot, text="HOTEL", font=(
-    "bold", 10), bg="#d9d9d9", command=mainPage)
+    "calibri", 10), bg="#d9d9d9", command=mainPage)
 hotel.place(relx=0.023, rely=0.08, height=24, width=147)
 
 customer = Button(statRoot, text="CUSTOMER", font=(
-    "bold", 10), bg="#d9d9d9", command=customerPage)
+    "calibri", 10), bg="#d9d9d9", command=customerPage)
 customer.place(relx=0.023, rely=0.161, height=24, width=147)
 
 reservation = Button(statRoot, text="RESERVATION", font=(
-    "bold", 10), bg="#d9d9d9", command=reservationPage)
+    "calibri", 10), bg="#d9d9d9", command=reservationPage)
 reservation.place(relx=0.023, rely=0.241, height=24, width=147)
 
 statistics = Button(statRoot, text="TABLE STATISTICS", font=(
-    "bold", 10), bg="#80ff00")
+    "calibri", 10), bg="#80ff00")
 statistics.place(relx=0.023, rely=0.321, height=24, width=147)
 
 TSeparator1 = ttk.Separator(statRoot)
@@ -103,11 +103,11 @@ TSeparator3_2.configure(orient="vertical")
 
 '''INPUT TEXTS'''
 statisticLabel = Label(
-    statRoot, text="Statistics of All Tables & Views ", font=("bold", 9))
+    statRoot, text="Statistics of All Tables & Views ", font=("calibri", 9))
 statisticLabel.place(relx=0.475, rely=0.06, height=21, width=175)
 
 countTable = Label(
-    statRoot, text="Count of Tables & Views", font=("bold", 9))
+    statRoot, text="Count of Tables & Views", font=("calibri", 9))
 countTable.place(relx=0.22, rely=0.161, height=21, width=155)
 
 s_countTable = Entry(statRoot)
@@ -115,7 +115,7 @@ s_countTable.place(relx=0.287, rely=0.201, height=20, relwidth=0.051)
 
 '''LIST OUTPUT'''
 numberofRows = Label(
-    statRoot, text="Number of Rows in Each Table & Views", font=("bold", 9))
+    statRoot, text="Number of Rows in Each Table & Views", font=("calibri", 9))
 numberofRows.place(relx=0.425, rely=0.141, height=21, width=218)
 
 numberofRows_list = ttk.Treeview(statRoot, height=10, columns=2)
@@ -131,7 +131,7 @@ numberofRows_list.place(relx=0.425, rely=0.201,
                         relheight=0.416, relwidth=0.257)
 
 totalsizeLabel = Label(
-    statRoot, text="Total Size of All Tables & Views", font=("bold", 9))
+    statRoot, text="Total Size of All Tables & Views", font=("calibri", 9))
 totalsizeLabel.place(relx=0.725, rely=0.141, height=21, width=175)
 
 totalsize_list = ttk.Treeview(statRoot, height=10, columns=2)

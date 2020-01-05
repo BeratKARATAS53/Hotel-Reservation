@@ -235,19 +235,19 @@ custRoot.title("Main Page")
 
 '''SIDE BAR'''
 hotel = Button(custRoot, text="HOTEL", font=(
-    "bold", 10), bg="#d9d9d9", command=hotelPage)
+    "calibri", 10), bg="#d9d9d9", command=hotelPage)
 hotel.place(relx=0.023, rely=0.067, height=24, width=127)
 
 customer = Button(custRoot, text="CUSTOMER", font=(
-    "bold", 10), bg="#80ff00")
+    "calibri", 10), bg="#80ff00")
 customer.place(relx=0.023, rely=0.129, height=24, width=127)
 
 reservation = Button(custRoot, text="RESERVATION", font=(
-    "bold", 10), bg="#d9d9d9", command=reservationPage)
+    "calibri", 10), bg="#d9d9d9", command=reservationPage)
 reservation.place(relx=0.023, rely=0.194, height=24, width=127)
 
 statistics = Button(custRoot, text="TABLE STATISTICS", font=(
-    "bold", 10), bg="#d9d9d9", command=statisticPage)
+    "calibri", 10), bg="#d9d9d9", command=statisticPage)
 statistics.place(relx=0.023, rely=0.260, height=24, width=127)
 
 TSeparator1 = ttk.Separator(custRoot)
@@ -258,67 +258,67 @@ TSeparator2 = ttk.Separator(custRoot)
 TSeparator2.place(relx=0.217, rely=0.435, relwidth=0.743)
 
 '''INPUT TEXTS'''
-customer_id = Label(custRoot, text="ID: ", font=("bold", 9))
+customer_id = Label(custRoot, text="ID: ", font=("calibri", 9))
 customer_id.place(relx=0.251, rely=0.065, height=21, width=24)
 
 e_customer_id = Entry(custRoot)
 e_customer_id.place(relx=0.286, rely=0.065, height=20, relwidth=0.039)
 
-firstname = Label(custRoot, text="First Name: ", font=("bold", 9))
+firstname = Label(custRoot, text="First Name: ", font=("calibri", 9))
 firstname.place(relx=0.331, rely=0.065, height=21, width=69)
 
 e_firstname = Entry(custRoot)
 e_firstname.place(relx=0.423, rely=0.065, height=20, relwidth=0.199)
 
-lastname = Label(custRoot, text="Last Name: ", font=("bold", 9))
+lastname = Label(custRoot, text="Last Name: ", font=("calibri", 9))
 lastname.place(relx=0.629, rely=0.065, height=21, width=68)
 
 e_lastname = Entry(custRoot)
 e_lastname.place(relx=0.709, rely=0.065, height=20, relwidth=0.233)
 
-passwrd = Label(custRoot, text="Password: ", font=("bold", 9))
+passwrd = Label(custRoot, text="Password: ", font=("calibri", 9))
 passwrd.place(relx=0.251, rely=0.21, height=19, width=60)
 
 e_password = Entry(custRoot)
 e_password.place(relx=0.697, rely=0.21, height=20, relwidth=0.245)
 
-confirm_passwrd = Label(custRoot, text="Confirm Password: ", font=("bold", 9))
+confirm_passwrd = Label(custRoot, text="Confirm Password: ", font=("calibri", 9))
 confirm_passwrd.place(relx=0.571, rely=0.21, height=21, width=109)
 
 e_confirm_passwrd = Entry(custRoot)
 e_confirm_passwrd.place(relx=0.331, rely=0.21, height=20, relwidth=0.233)
 
-email = Label(custRoot, text="Email: ", font=("bold", 9))
+email = Label(custRoot, text="Email: ", font=("calibri", 9))
 email.place(relx=0.251, rely=0.113, height=21, width=41)
 
 e_email = Entry(custRoot)
 e_email.place(relx=0.331, rely=0.113, height=20, relwidth=0.279)
 
-telephone = Label(custRoot, text="Phone: ", font=("bold", 9))
+telephone = Label(custRoot, text="Phone: ", font=("calibri", 9))
 telephone.place(relx=0.617, rely=0.113, height=21, width=46)
 
 e_telephone = Entry(custRoot)
 e_telephone.place(relx=0.686, rely=0.113, height=20, relwidth=0.256)
 
-address = Label(custRoot, text="Address: ", font=("bold", 9))
+address = Label(custRoot, text="Address: ", font=("calibri", 9))
 address.place(relx=0.251, rely=0.258, height=21, width=54)
 
 e_address = Text(custRoot)
 e_address.place(relx=0.331, rely=0.258, relheight=0.087, relwidth=0.61)
 
-username = Label(custRoot, text="Username: ", font=("bold", 9))
+username = Label(custRoot, text="Username: ", font=("calibri", 9))
 username.place(relx=0.251, rely=0.161, height=21, width=65)
 
 e_username = Entry(custRoot)
 e_username.place(relx=0.331, rely=0.161, height=20, relwidth=0.336)
 
-age = Label(custRoot, text="Age: ", font=("bold", 9))
+age = Label(custRoot, text="Age: ", font=("calibri", 9))
 age.place(relx=0.674, rely=0.161, height=21, width=33)
 
 e_age = Entry(custRoot)
 e_age.place(relx=0.72, rely=0.161, height=20, relwidth=0.039)
 
-money = Label(custRoot, text="Money: ", font=("bold", 9))
+money = Label(custRoot, text="Money: ", font=("calibri", 9))
 money.place(relx=0.777, rely=0.161, height=21, width=49)
 
 e_money = Entry(custRoot)
@@ -326,23 +326,23 @@ e_money.place(relx=0.846, rely=0.161, height=20, relwidth=0.096)
 
 '''OPERATION BUTTONS'''
 add = Button(custRoot, text="Add", font=(
-    "italic", 10), bg="#d9d9d9", command=add)
+    "calibri", 10), bg="#d9d9d9", command=add)
 add.place(relx=0.297, rely=0.371, height=24, width=97)
 
 update = Button(custRoot, text="Update", font=(
-    "italic", 10), bg="#d9d9d9", command=update)
+    "calibri", 10), bg="#d9d9d9", command=update)
 update.place(relx=0.423, rely=0.371, height=24, width=99)
 
 delete = Button(custRoot, text="Delete", font=(
-    "italic", 10), bg="#d9d9d9", command=delete)
+    "calibri", 10), bg="#d9d9d9", command=delete)
 delete.place(relx=0.549, rely=0.371, height=24, width=97)
 
 get = Button(custRoot, text="Get Customer", font=(
-    "italic", 10), bg="#d9d9d9", command=get)
+    "calibri", 10), bg="#d9d9d9", command=get)
 get.place(relx=0.674, rely=0.371, height=24, width=97)
 
 rent = Button(custRoot, text="Rent Operations", font=(
-    "italic", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#d9d9d9")
 rent.place(relx=0.8, rely=0.371, height=24, width=96)
 
 '''LIST OUTPUT'''
