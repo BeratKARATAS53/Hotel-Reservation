@@ -16,7 +16,7 @@ import mysql.connector as mysql
 from datetime import datetime
 
 reservRoot = tk.Tk()
-reservRoot.geometry("845x587+204+81")
+reservRoot.geometry("772x536+261+104")
 reservRoot.minsize(120, 1)
 reservRoot.maxsize(1370, 749)
 reservRoot.resizable(1, 1)
@@ -141,35 +141,6 @@ def reserv_list():
     con.close()
 
 
-def serv_list():
-    records = service_list.get_children()
-    for element in records:
-        service_list.delete(element)
-
-    con = mysql.connect(host="localhost", user="admin",
-                        password="Berat.190797", database="hotel_reservation")
-    cursor = con.cursor()
-
-    """ Eğer Oda Özel Değil ise Yemek Servislerini Göstermemesi Gerek 
-    boolean = cursor.execute(
-        "select substring_index(substring_index(room_number,'-',-2),'-',1) from room where id=9")
-    boolean = cursor.fetchall()
-    food
-    if(boolean == 1):
-        cursor.execute(
-            "select * from extraservice where hotel_id = substring_index('1-0-100', '-', 1) order by id desc")
-        food = cursor.fetchall()
-    """
-    cursor.execute(
-        "select * from extraservice where hotel_id = substring_index('1-0-100', '-', 1) order by id desc")
-    service = cursor.fetchall()
-
-    for serv in service:
-        service_list.insert('', 0, text=serv[0], value=(serv[1], serv[2]))
-
-    con.close()
-
-
 def get():
     e_start_date.delete(0, "end")
     e_finish_date.delete(0, "end")
@@ -214,81 +185,197 @@ def get():
         con.close()
 
 
+def serv_list():
+    records = service_list.get_children()
+    for element in records:
+        service_list.delete(element)
+    e_price.config(state="normal")
+    e_price.delete(0, "end")
+
+    room_number = e_room_number.get()
+    if(room_number == ""):
+        Messagebox.showinfo(
+            "Fetch Status", "Room Number is compolsary for fetch")
+    else:
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
+        cursor = con.cursor()
+
+        cursor.execute("select room_price from room where room_number = '" + room_number + "'")
+        price = cursor.fetchall()
+        e_price.insert(0, price)
+        e_price.insert("end", " (₺)")
+        e_price.config(state="disabled")
+
+        cursor.execute("select substring_index(substring_index('" + room_number + "','-',-2),'-',1)")
+        boolean = cursor.fetchall()
+        if(boolean[0][0] == 0):
+            cursor.execute(
+                "select * from extraservice where hotel_id = substring_index('" + room_number + "', '-', 1) and id not in (select f.service_id from foodservice f)")
+            notFood = cursor.fetchall()
+            for noo in notFood:
+                service_list.insert('', 0, text=noo[0], value=(noo[1], noo[2]))
+        
+        cursor.execute(
+            "select * from extraservice where hotel_id = substring_index('" + room_number + "', '-', 1) order by id desc")
+        service = cursor.fetchall()
+        for serv in service:
+            service_list.insert('', 0, text=serv[0], value=(serv[1], serv[2]))
+            
+        con.close()
+
+
+def addService():
+    service_id = e_service_id.get()
+    room_number = e_room_number.get()
+    if(service_id == ""):
+        Messagebox.showinfo("Insert Status", "Service Must Be Selected!")
+    else:
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
+        cursor = con.cursor()
+        cursor.execute("select id from room where room_number = '" + room_number + "'")
+        room_id = cursor.fetchall()
+        
+        cursor.execute("Call addroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
+
+        Messagebox.showinfo("Insert Status", "Inserted Succesfully")
+        con.commit()
+        con.close()
+
+def deleteService():
+    service_id = e_service_id.get()
+    room_number = e_room_number.get()
+    if(service_id == ""):
+        Messagebox.showinfo("Insert Status", "Service Must Be Selected!")
+    else:
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
+        cursor = con.cursor()
+        cursor.execute("select id from room where room_number = '" + room_number + "'")
+        room_id = cursor.fetchall()
+        
+        cursor.execute("Call deleteroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
+
+        Messagebox.showinfo("Delete Status", "Deleted Succesfully")
+        con.commit()
+        con.close()
+
 '''SIDE BAR'''
 hotel = Button(reservRoot, text="HOTEL", font=(
-    "bold", 10), bg="#d9d9d9", command=hotelPage)
-hotel.place(relx=0.024, rely=0.068, height=24, width=127)
+    "calibri", 10), bg="#d9d9d9", command=hotelPage)
+hotel.place(relx=0.026, rely=0.075, height=24, width=127)
 
 customer = Button(reservRoot, text="CUSTOMER", font=(
-    "bold", 10), bg="#d9d9d9", command=customerPage)
-customer.place(relx=0.024, rely=0.136, height=24, width=127)
+    "calibri", 10), bg="#d9d9d9", command=customerPage)
+customer.place(relx=0.026, rely=0.149, height=24, width=127)
 
 reservation = Button(reservRoot, text="RESERVATION", font=(
-    "bold", 10), bg="#80ff00")
-reservation.place(relx=0.024, rely=0.204, height=24, width=127)
+    "calibri", 10), bg="#80ff00")
+reservation.place(relx=0.026, rely=0.224, height=24, width=127)
 
 statistics = Button(reservRoot, text="TABLE STATISTICS", font=(
-    "bold", 10), bg="#d9d9d9", command=statisticPage)
-statistics.place(relx=0.024, rely=0.274, height=24, width=127)
+    "calibri", 10), bg="#d9d9d9", command=statisticPage)
+statistics.place(relx=0.026, rely=0.299, height=24, width=127)
 
 TSeparator1 = ttk.Separator(reservRoot)
-TSeparator1.place(relx=0.201, rely=0.034, relheight=0.92)
+TSeparator1.place(relx=0.22, rely=0.056, relheight=0.858)
 TSeparator1.configure(orient="vertical")
 
 TSeparator2 = ttk.Separator(reservRoot)
-TSeparator2.place(relx=0.213, rely=0.375, relwidth=0.71)
+TSeparator2.place(relx=0.233, rely=0.485, relwidth=0.699)
+
+TSeparator3_1 = ttk.Separator(reservRoot)
+TSeparator3_1.place(relx=0.233, rely=0.392, relwidth=0.453)
+
+TSeparator3_2 = ttk.Separator(reservRoot)
+TSeparator3_2.place(relx=0.233, rely=0.131, relwidth=0.453)
+
+TSeparator3_3 = ttk.Separator(reservRoot)
+TSeparator3_3.place(relx=0.687, rely=0.131, relheight=0.261)
+TSeparator3_3.configure(orient="vertical")
+
+TSeparator3_4 = ttk.Separator(reservRoot)
+TSeparator3_4.place(relx=0.233, rely=0.131, relheight=0.261)
+TSeparator3_4.configure(orient="vertical")
 
 '''INPUT TEXTS'''
-reserv_id = Label(reservRoot, text="ID: ", font=("bold", 9))
-reserv_id.place(relx=0.225, rely=0.068, height=21, width=23)
+reserv_id = Label(reservRoot, text="ID: ", font=("calibri", 9))
+reserv_id.place(relx=0.246, rely=0.075, height=21, width=23)
 
 e_reserv_id = Entry(reservRoot)
-e_reserv_id.place(relx=0.26, rely=0.068, height=20, relwidth=0.04)
+e_reserv_id.place(relx=0.285, rely=0.075,height=20, relwidth=0.044)
 
-start_date = Label(reservRoot, text="Start Date: ", font=("bold", 9))
-start_date.place(relx=0.308, rely=0.068, height=21, width=63)
+start_date = Label(reservRoot, text="Start Date: ", font=("calibri", 9))
+start_date.place(relx=0.337, rely=0.075, height=21, width=63)
 
 e_start_date = Entry(reservRoot)
-e_start_date.place(relx=0.391, rely=0.068, height=20, relwidth=0.099)
+e_start_date.place(relx=0.427, rely=0.075, height=20, relwidth=0.109)
 
-finish_date = Label(reservRoot, text="Finish Date: ", font=("bold", 9))
-finish_date.place(relx=0.497, rely=0.068, height=21, width=70)
+finish_date = Label(reservRoot, text="Finish Date: ", font=("calibri", 9))
+finish_date.place(relx=0.544, rely=0.075, height=21, width=70)
 
 e_finish_date = Entry(reservRoot)
-e_finish_date.place(relx=0.58, rely=0.068, height=20, relwidth=0.099)
+e_finish_date.place(relx=0.648, rely=0.075, height=20, relwidth=0.109)
 
-room_number = Label(reservRoot, text="Room No: ", font=("bold", 9))
-room_number.place(relx=0.686, rely=0.068, height=21, width=63)
+room_number = Label(reservRoot, text="Room No: ", font=("calibri", 9))
+room_number.place(relx=0.712, rely=0.131, height=21, width=63)
 
 e_room_number = Entry(reservRoot)
-e_room_number.place(relx=0.769, rely=0.068, height=20, relwidth=0.064)
+e_room_number.place(relx=0.803, rely=0.131, height=20, relwidth=0.07)
 
-customee_id = Label(reservRoot, text="Customer ID: ", font=("bold", 9))
-customee_id.place(relx=0.698, rely=0.119, height=21, width=78)
+customee_id = Label(reservRoot, text="Customer ID: ", font=("calibri", 9))
+customee_id.place(relx=0.712, rely=0.187, height=21, width=78)
 
 e_customee_id = Entry(reservRoot)
-e_customee_id.place(relx=0.793, rely=0.119, height=20, relwidth=0.04)
+e_customee_id.place(relx=0.842, rely=0.187, height=20, relwidth=0.031)
+
+price = Label(reservRoot, text="Room Price: ", font=("calibri", 9))
+price.place(relx=0.712, rely=0.243, height=21, width=73)
+
+e_price = Entry(reservRoot)
+e_price.place(relx=0.816, rely=0.243,height=20, relwidth=0.057)
+
+service_id = Label(reservRoot, text="Service ID: ", font=("calibri", 9))
+service_id.place(relx=0.246, rely=0.336, height=21, width=62)
+
+e_service_id = Entry(reservRoot)
+e_service_id.place(relx=0.337, rely=0.336, height=20, relwidth=0.031)
 
 '''OPERATION BUTTONS'''
 add = Button(reservRoot, text="Add", font=(
-    "italic", 10), bg="#d9d9d9", command=add)
-add.place(relx=0.331, rely=0.307, height=24, width=97)
+    "calibri", 10), bg="#d9d9d9", command=add)
+add.place(relx=0.324, rely=0.429, height=24, width=97)
 
 update = Button(reservRoot, text="Update", font=(
-    "italic", 10), bg="#d9d9d9", command=update)
-update.place(relx=0.473, rely=0.307, height=24, width=99)
+    "calibri", 10), bg="#d9d9d9", command=update)
+update.place(relx=0.466, rely=0.429, height=24, width=99)
 
 delete = Button(reservRoot, text="Delete", font=(
-    "italic", 10), bg="#d9d9d9", command=delete)
-delete.place(relx=0.615, rely=0.307, height=24, width=97)
+    "calibri", 10), bg="#d9d9d9", command=delete)
+delete.place(relx=0.609, rely=0.429, height=24, width=97)
 
 get = Button(reservRoot, text="Get Reservation", font=(
-    "italic", 10), bg="#d9d9d9", command=get)
-get.place(relx=0.757, rely=0.307, height=24, width=97)
+    "calibri", 10), bg="#d9d9d9", command=get)
+get.place(relx=0.751, rely=0.429, height=24, width=97)
+
+'''SERVICE OPERATION BUTTONS'''
+addService = Button(reservRoot, text="Add Service", font=(
+    "calibri", 10), bg="#caffb3", command=addService)
+addService.place(relx=0.389, rely=0.336, height=24, width=84)
+
+deleteService = Button(reservRoot, text="Delete Service", font=(
+    "calibri", 10), bg="#ffaeae", command=deleteService)
+deleteService.place(relx=0.518, rely=0.336, height=24, width=84)
+
+getService = Button(reservRoot, text="Get Services", font=(
+    "calibri", 10), bg="#b3ecff", command=serv_list)
+getService.place(relx=0.777, rely=0.075, height=24, width=74)
 
 '''LIST OUTPUT'''
-extra_services = Label(reservRoot, text="Extra Services: ", font=("bold", 9))
-extra_services.place(relx=0.225, rely=0.117, height=21, width=83)
+
+extra_services = Label(reservRoot, text="Extra Services: ", font=("calibri", 9))
+extra_services.place(relx=0.246, rely=0.149, height=21, width=83)
 
 service_list = ttk.Treeview(reservRoot, height=10, columns=5)
 service_list.grid(row=4, column=0, columnspan=2)
@@ -297,15 +384,14 @@ service_list.configure(columns="Col1 Col2")
 service_list.heading("#0", text='ID', anchor=N)
 service_list.column("#0", width='50', stretch=NO)
 service_list.heading("Col1", text='Service', anchor=N)
-service_list.column("Col1", width='120')
+service_list.column("Col1", width='100')
 service_list.heading("Col2", text='Price (₺)', anchor=N)
-service_list.column("Col2", width='120')
+service_list.column("Col2", width='75')
 
-service_list.place(relx=0.331, rely=0.117, relheight=0.162, relwidth=0.304)
-serv_list()
+service_list.place(relx=0.363, rely=0.149, relheight=0.181, relwidth=0.306)
 
-reservation = Label(reservRoot, text="Reservation Table", font=("bold", 9))
-reservation.place(relx=0.544, rely=0.392, height=21, width=98)
+reservation = Label(reservRoot, text="Reservation Table", font=("calibri", 9))
+reservation.place(relx=0.518, rely=0.504, height=21, width=98)
 
 reservation_list = ttk.Treeview(reservRoot, height=10, columns=5)
 reservation_list.grid(row=4, column=0, columnspan=2)
@@ -322,7 +408,8 @@ reservation_list.column("Col3", width='50')
 reservation_list.heading("Col4", text='Customer ID', anchor=N)
 reservation_list.column("Col4", width='80', stretch=NO)
 
-reservation_list.place(relx=0.225, rely=0.426, relheight=0.513, relwidth=0.699)
+reservation_list.place(relx=0.259, rely=0.56, relheight=0.274
+                , relwidth=0.667)
 reserv_list()
 
 tk.mainloop()
