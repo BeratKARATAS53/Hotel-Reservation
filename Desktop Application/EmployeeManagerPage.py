@@ -48,8 +48,8 @@ def add():
     elif(passwrd != confirm_passwrd):
         Messagebox.showinfo("Password Status", "Password Mismatch")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("Call addPerson('" + firstname + "','" + lastname + "','" + passwrd
                        + "','" + email + "','" + address + "','" + telephone + "'," + "0" + ","
@@ -80,8 +80,8 @@ def man_list():
     for element in records:
         manager_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="root",
-                        password="12345", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="admin",
+                        password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
     cursor.execute("select * from manager_all_info order by id asc")
     manager = cursor.fetchall()
@@ -97,8 +97,8 @@ def emp_list():
     for element in records:
         employee_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="root",
-                        password="12345", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="admin",
+                        password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
     cursor.execute("select * from employee_all_info order by id asc")
     employee = cursor.fetchall()
@@ -126,8 +126,8 @@ def update():
             or telephone == ""  or salary == "" ):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         if ( employee_type == "manager"):
             cursor.execute("select exists (select * from manager_all_info where id = " + manager_id + ")")

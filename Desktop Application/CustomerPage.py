@@ -14,14 +14,27 @@ except ImportError:
 
 import mysql.connector as mysql
 
+
+custRoot = tk.Tk()
+custRoot.geometry("885x620+237+110")
+custRoot.minsize(120, 1)
+custRoot.maxsize(1370, 749)
+custRoot.resizable(1, 1)
+custRoot.configure(background='#EBEDEF')
+custRoot.title("Customer Page")
+
+
 def hotelPage():
     import HotelPage
+
 
 def reservationPage():
     import ReservationPage
 
+
 def statisticPage():
     import StatisticPage
+
 
 def add():
     firstname = e_firstname.get()
@@ -117,7 +130,7 @@ def update():
             e_age.delete(0, "end")
             e_username.delete(0, "end")
 
-        con.close()
+            con.close()
 
 
 def delete():
@@ -226,28 +239,24 @@ def get():
 
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
 
-        con.close()
+            con.close()
 
-
-custRoot = tk.Tk()
-custRoot.geometry("875x620+237+110")
-custRoot.title("Main Page")
 
 '''SIDE BAR'''
 hotel = Button(custRoot, text="HOTEL", font=(
-    "calibri", 10), bg="#d9d9d9", command=hotelPage)
+    "calibri", 10), bg="#FEF9E7", command=hotelPage)
 hotel.place(relx=0.023, rely=0.067, height=24, width=127)
 
 customer = Button(custRoot, text="CUSTOMER", font=(
-    "calibri", 10), bg="#80ff00")
+    "calibri", 10), bg="#F1C40F")
 customer.place(relx=0.023, rely=0.129, height=24, width=127)
 
 reservation = Button(custRoot, text="RESERVATION", font=(
-    "calibri", 10), bg="#d9d9d9", command=reservationPage)
+    "calibri", 10), bg="#FEF9E7", command=reservationPage)
 reservation.place(relx=0.023, rely=0.194, height=24, width=127)
 
 statistics = Button(custRoot, text="TABLE STATISTICS", font=(
-    "calibri", 10), bg="#d9d9d9", command=statisticPage)
+    "calibri", 10), bg="#FEF9E7", command=statisticPage)
 statistics.place(relx=0.023, rely=0.260, height=24, width=127)
 
 TSeparator1 = ttk.Separator(custRoot)
@@ -326,24 +335,24 @@ e_money.place(relx=0.846, rely=0.161, height=20, relwidth=0.096)
 
 '''OPERATION BUTTONS'''
 add = Button(custRoot, text="Add", font=(
-    "calibri", 10), bg="#d9d9d9", command=add)
+    "calibri", 10), bg="#7DCEA0", command=add)
 add.place(relx=0.297, rely=0.371, height=24, width=97)
 
 update = Button(custRoot, text="Update", font=(
-    "calibri", 10), bg="#d9d9d9", command=update)
+    "calibri", 10), bg="#5DADE2", command=update)
 update.place(relx=0.423, rely=0.371, height=24, width=99)
 
 delete = Button(custRoot, text="Delete", font=(
-    "calibri", 10), bg="#d9d9d9", command=delete)
+    "calibri", 10), bg="#F1948A", command=delete)
 delete.place(relx=0.549, rely=0.371, height=24, width=97)
 
 get = Button(custRoot, text="Get Customer", font=(
-    "calibri", 10), bg="#d9d9d9", command=get)
+    "calibri", 10), bg="#BB8FCE", command=get)
 get.place(relx=0.674, rely=0.371, height=24, width=97)
 
-rent = Button(custRoot, text="Rent Operations", font=(
-    "calibri", 10), bg="#d9d9d9")
-rent.place(relx=0.8, rely=0.371, height=24, width=96)
+refresh = Button(custRoot, text="Refresh Page", font=(
+    "calibri", 10), bg="#b3ecff", command=cust_list)
+refresh.place(relx=0.8, rely=0.371, height=24, width=96)
 
 '''LIST OUTPUT'''
 customer = Label(custRoot, text="Customer Table", font=("Comic Sans MC", 9))

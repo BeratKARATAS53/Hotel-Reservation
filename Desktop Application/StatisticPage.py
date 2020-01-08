@@ -20,6 +20,7 @@ statRoot.minsize(120, 1)
 statRoot.maxsize(1370, 749)
 statRoot.resizable(1, 1)
 statRoot.title("Table Statistics Page")
+statRoot.configure(background='#EBEDEF')
 
 
 def mainPage():
@@ -71,19 +72,19 @@ def rows_list():
 
 '''SIDE BAR'''
 hotel = Button(statRoot, text="HOTEL", font=(
-    "calibri", 10), bg="#d9d9d9", command=mainPage)
+    "calibri", 10), bg="#FEF9E7", command=mainPage)
 hotel.place(relx=0.023, rely=0.08, height=24, width=147)
 
 customer = Button(statRoot, text="CUSTOMER", font=(
-    "calibri", 10), bg="#d9d9d9", command=customerPage)
+    "calibri", 10), bg="#FEF9E7", command=customerPage)
 customer.place(relx=0.023, rely=0.161, height=24, width=147)
 
 reservation = Button(statRoot, text="RESERVATION", font=(
-    "calibri", 10), bg="#d9d9d9", command=reservationPage)
+    "calibri", 10), bg="#FEF9E7", command=reservationPage)
 reservation.place(relx=0.023, rely=0.241, height=24, width=147)
 
 statistics = Button(statRoot, text="TABLE STATISTICS", font=(
-    "calibri", 10), bg="#80ff00")
+    "calibri", 10), bg="#F1C40F")
 statistics.place(relx=0.023, rely=0.321, height=24, width=147)
 
 TSeparator1 = ttk.Separator(statRoot)

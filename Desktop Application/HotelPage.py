@@ -21,6 +21,7 @@ hotelRoot.minsize(120, 1)
 hotelRoot.maxsize(1370, 749)
 hotelRoot.resizable(1, 1)
 hotelRoot.title("Main Page")
+hotelRoot.configure(background='#EBEDEF')
 
 
 def customerPage():
@@ -257,19 +258,19 @@ def otherOperationsFunc():
 
 '''SIDE BAR'''
 hotel = Button(hotelRoot, text="HOTEL", font=(
-    "calibri", 10), bg="#80ff00")
+    "calibri", 10), bg="#F1C40F")
 hotel.place(relx=0.02, rely=0.063, height=24, width=147)
 
 customer = Button(hotelRoot, text="CUSTOMER", font=(
-    "calibri", 10), bg="#d9d9d9", command=customerPage)
+    "calibri", 10), bg="#FEF9E7", command=customerPage)
 customer.place(relx=0.02, rely=0.126, height=24, width=147)
 
 reservation = Button(hotelRoot, text="RESERVATION", font=(
-    "calibri", 10), bg="#d9d9d9", command=reservationPage)
+    "calibri", 10), bg="#FEF9E7", command=reservationPage)
 reservation.place(relx=0.02, rely=0.189, height=24, width=147)
 
 statistics = Button(hotelRoot, text="TABLE STATISTICS", font=(
-    "calibri", 10), bg="#d9d9d9", command=statisticPage)
+    "calibri", 10), bg="#FEF9E7", command=statisticPage)
 statistics.place(relx=0.02, rely=0.249, height=24, width=147)
 
 TSeparator1 = ttk.Separator(hotelRoot)
@@ -334,23 +335,23 @@ e_stars.place(relx=0.884, rely=0.063, relheight=0.03, relwidth=0.035)
 
 '''OPERATION BUTTONS'''
 add = Button(hotelRoot, text="Add", font=(
-    "calibri", 10), bg="#d9d9d9", command=add)
+    "calibri", 10), bg="#7DCEA0", command=add)
 add.place(relx=0.318, rely=0.3, height=24, width=97)
 
 update = Button(hotelRoot, text="Update", font=(
-    "calibri", 10), bg="#d9d9d9", command=update)
+    "calibri", 10), bg="#5DADE2", command=update)
 update.place(relx=0.427, rely=0.3, height=24, width=99)
 
 delete = Button(hotelRoot, text="Delete", font=(
-    "calibri", 10), bg="#d9d9d9", command=delete)
+    "calibri", 10), bg="#F1948A", command=delete)
 delete.place(relx=0.536, rely=0.3, height=24, width=97)
 
 get = Button(hotelRoot, text="Get hotel", font=(
-    "calibri", 10), bg="#d9d9d9", command=get)
+    "calibri", 10), bg="#BB8FCE", command=get)
 get.place(relx=0.645, rely=0.3, height=24, width=97)
 
 operation = Button(hotelRoot, text="Other Operations", font=(
-    "calibri", 10), bg="#d9d9d9", command=otherOperationsFunc)
+    "calibri", 10), bg="#b3ecff", command=otherOperationsFunc)
 operation.place(relx=0.755, rely=0.3, height=24, width=127)
 
 '''LIST OUTPUT'''
