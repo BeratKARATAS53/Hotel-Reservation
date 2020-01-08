@@ -30,6 +30,7 @@ call addperson('Gozde', 'Korkmaz', '76YW20vyFx', 'korkmazgozde991@example.com', 
 call addperson('Kadir', 'Kaya', '9CHsA3GqIe', 'kadir_kaya144@example.com', 'Keklik cesme Mahallesi No:337 Nazilli, Aydin', '+908515477416', 34, 6000, 'kadir444', 'Hampton By Hilton Kahramanmaras', 'customer');
 call addperson('Sibel', 'Arslan', 'G5qcQx9320', 'arslansibel742@example.com', 'senlik Mahallesi No:914 semdinli, Hakkari', '+908511169165', 40, 2400, 'sibel954', 'Pine Bay Holiday Resort', 'customer');
 call addperson('Cemal', 'Kose', 'osFMgUyvRt', 'kosecemal@example.com', 'Gazi Emir Sokagi No:349 Develi, Kayseri', '+908516800932', 31, 3000, 'KoseCemal', 'Ramada Encore Izmir', 'customer');
+call addperson('ads', 'das', 'das', '231@example.com', 'dsa Emir Sokagi No:349 Develi, Kayseri', '+758231', '0', 3000, 'null', 'Ramada Encore Izmir', 'employee');
 
 /*Employee*/
 call addperson('Kubra', 'ozer', 'OyYdHaK8ew', 'ozerkubra789@example.com', 'Fatih Bulvari No:989 Dalaman, Mugla', '+908513178115', 28, 1200, 'kubraozer', 'Grand Makel Topkapi', 'employee');
@@ -58,7 +59,6 @@ call addperson('Aykut', 'Erdogan', 'zaOEdXbKjx', 'aykut_erdogan244@example.com',
 
 /*----------------------------------------------------------------------------------*/
 /*ROOM TABLE*/
-delimiter ;
 /*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
 call addroom('Kose Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 50 m², Banyo : 1 banyo', 500, 100, 'available', 4, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Grand Makel Topkapi' , 'Special');
 call addroom('Suit Oda, Yatak : 2 cift kisilik yatak, 2 tek kisilik yatak, Buyukluk : 70 m², Banyo : 1 banyo', 400, 200, 'available', 6, 'Ekstra yatak: 1 bebek yatagi, Manzara : Dag/Pist', 'Divan Adana', 'special');
@@ -117,17 +117,17 @@ call addroom_extraservice(1, 1);
 /*----------------------------------------------------------------------------------*/
 /*REZERVATION TABLE*/
 /*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
-call addreservation(curdate(), curdate()+1, 1, '1-1-100');
-call addreservation(curdate(), curdate()+1, 1, '1-1-100');
-call addreservation(curdate(), curdate()+2, 2, '1-1-100');
-call addreservation(curdate(), curdate()+3, 3, '1-1-100');
-call addreservation(curdate(), curdate()+4, 4, '1-1-100');
-call addreservation(curdate(), curdate()+5, 5, '4-0-400');
-call addreservation(curdate(), curdate()+6, 6, '4-0-400');
-call addreservation(curdate(), curdate()+7, 7, '4-0-400');
-call addreservation(curdate(), curdate()+8, 8, '4-0-400');
-call addreservation(curdate(), curdate()+9, 9, '4-0-400');
-call addreservation(curdate(), curdate()+10, 10, '4-0-400');
+call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
+call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
+call addreservation(curdate(), curdate()+2, 2, '1-1-100', 500);
+call addreservation(curdate(), curdate()+3, 3, '1-1-100', 500);
+call addreservation(curdate(), curdate()+4, 4, '1-1-100', 500);
+call addreservation(curdate(), curdate()+5, 5, '4-0-400', 500);
+call addreservation(curdate(), curdate()+6, 6, '4-0-400', 500);
+call addreservation(curdate(), curdate()+7, 7, '4-0-400', 500);
+call addreservation(curdate(), curdate()+8, 8, '4-0-400', 500);
+call addreservation(curdate(), curdate()+9, 9, '4-0-400', 500);
+call addreservation(curdate(), curdate()+10, 10, '4-0-400', 500);
 
 /*----------------------------------------------------------------------------------*/
 /*ORGANIZATION TABLE*/
