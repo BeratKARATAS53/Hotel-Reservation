@@ -21,6 +21,7 @@ reservRoot.minsize(120, 1)
 reservRoot.maxsize(1370, 749)
 reservRoot.resizable(1, 1)
 reservRoot.title("Reservation Page")
+reservRoot.configure(background='#EBEDEF')
 
 
 def customerPage():
@@ -49,13 +50,28 @@ def add():
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
-        cursor.execute("Call addReservation('" + start_date + "','" +
-                       finish_date + "'," + customee_id + ",'" + room_number + "',"+ total_price + ")")
+        cursor.execute("Select r.status From room r Where r.room_number = '" + room_number + "'")
+        room_status = cursor.fetchall()
+        print(room_status)
 
-        Messagebox.showinfo("Insert Status", "Inserted Succesfully")
-        con.commit()
-        reserv_list()
-        con.close()
+        if(room_status[0][0] == 'not available'):
+            Messagebox.showinfo("Fetch Status", "Room Not Available For Booking")
+        else:
+            cursor.execute("Call addReservation('" + start_date + "','" +
+                        finish_date + "'," + customee_id + ",'" + room_number + "',"+ total_price + ")")
+
+            Messagebox.showinfo("Insert Status", "Inserted Succesfully")
+            con.commit()
+            reserv_list()
+
+            e_reserv_id.delete(0, "end")
+            e_start_date.delete(0, "end")
+            e_finish_date.delete(0, "end")
+            e_room_number.delete(0, "end")
+            e_customee_id.delete(0, "end")
+            e_price.delete(0, "end")
+                
+            con.close()
 
 
 def update():
@@ -64,6 +80,7 @@ def update():
     finish_date = e_finish_date.get()
     room_number = e_room_number.get()
     customee_id = e_customee_id.get()
+    total_price = e_price.get()
 
     if(reserv_id == "" or start_date == "" or finish_date == "" or room_number == "" or customee_id == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
@@ -71,24 +88,26 @@ def update():
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
-        cursor.execute(
-            "select exists (select * from reservation where id = " + reserv_id + ")")
-        boolean = cursor.fetchall()
+        cursor.execute("Call deleteReservation(" + reserv_id + ")")
+        con.commit()
+        cursor.execute("Call addReservation('" + start_date + "','" +
+                       finish_date + "'," + customee_id + ",'" + room_number + "',"+ total_price + ")")
 
-        if(boolean[0][0] == 0):
-            Messagebox.showinfo(
-                "Fetch Status", "Fetch Failed! Record Not Found")
-            e_reserv_id.delete(0, "end")
+        Messagebox.showinfo("Update Status", "Updated Succesfully")
+        con.commit()
+        reserv_list()
 
-        else:
-            cursor.execute("Call updateReservation('" + reserv_id + "','" + start_date + "','" +
-                           finish_date + "'," + customee_id + ",'" + room_number + "')")
-
-            Messagebox.showinfo("Update Status", "Updated Succesfully")
-            con.commit()
-            reserv_list()
+        e_reserv_id.delete(0, "end")
+        e_start_date.delete(0, "end")
+        e_finish_date.delete(0, "end")
+        e_room_number.delete(0, "end")
+        e_customee_id.delete(0, "end")
+        e_price.config(state="normal")
+        e_price.delete(0, "end")
 
         con.close()
+
+
 
 
 def delete():
@@ -117,11 +136,14 @@ def delete():
             e_finish_date.insert(0, "")
             e_room_number.insert(0, "")
             e_customee_id.insert(0, "")
+            e_price.config(state="normal")
+            e_price.delete(0, "end")
 
-            Messagebox.showinfo("Delete Status", "Delete Succesfully")
+            Messagebox.showinfo("Delete Status", "Deleted Succesfully")
             con.commit()
             reserv_list()
-        con.close()
+
+            con.close()
 
 
 def reserv_list():
@@ -147,6 +169,9 @@ def get():
     e_finish_date.delete(0, "end")
     e_room_number.delete(0, "end")
     e_customee_id.delete(0, "end")
+
+    e_price.config(state="normal")
+    e_price.delete(0, "end")
 
     reserv_id = e_reserv_id.get()
 
@@ -178,12 +203,15 @@ def get():
             for reserve in reservation:
                 e_start_date.insert(0, reserve[1])
                 e_finish_date.insert(0, reserve[2])
+                e_price.insert(0, reserve[3])
                 e_customee_id.insert(0, reserve[4])
                 e_room_number.insert(0, room_no)
 
+            e_price.config(state="disabled")
+
             e_reserv_id.insert(0, "")
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
-        con.close()
+            con.close()
 
 
 def serv_list():
@@ -206,10 +234,13 @@ def serv_list():
         cursor = con.cursor()
         cursor.execute("(select day('" + finish_date +"') - day('" + start_date + "'))")
         difference_date = cursor.fetchall()
+        diff = difference_date[0][0]
+        if(diff == 0):
+            diff = 1
 
         cursor.execute("select room_price from room where room_number = '" + room_number + "'")
         price = cursor.fetchall()
-        e_price.insert(0, float(price[0][0])*int(difference_date[0][0]))
+        e_price.insert(0, float(price[0][0])*diff)
         e_price.config(state="disabled")
 
         cursor.execute("select substring_index(substring_index('" + room_number + "','-',-2),'-',1)")
@@ -259,7 +290,7 @@ def addService():
             
             cursor.execute("Call addroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
 
-            Messagebox.showinfo("Insert Status", "Inserted Succesfully")
+            Messagebox.showinfo("Insert Status", "Service Inserted Succesfully")
             
             e_price.config(state="normal")
             room_price = float(e_price.get()) + service_price[0][0]
@@ -288,7 +319,7 @@ def deleteService():
         
         cursor.execute("Call deleteroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
 
-        Messagebox.showinfo("Delete Status", "Deleted Succesfully")
+        Messagebox.showinfo("Delete Status", "Service Deleted Succesfully")
 
         e_price.config(state="normal")
         room_price = float(e_price.get()) - service_price[0][0]
@@ -301,19 +332,19 @@ def deleteService():
 
 '''SIDE BAR'''
 hotel = Button(reservRoot, text="HOTEL", font=(
-    "calibri", 10), bg="#d9d9d9", command=hotelPage)
+    "calibri", 10), bg="#FEF9E7", command=hotelPage)
 hotel.place(relx=0.026, rely=0.075, height=24, width=127)
 
 customer = Button(reservRoot, text="CUSTOMER", font=(
-    "calibri", 10), bg="#d9d9d9", command=customerPage)
+    "calibri", 10), bg="#FEF9E7", command=customerPage)
 customer.place(relx=0.026, rely=0.149, height=24, width=127)
 
 reservation = Button(reservRoot, text="RESERVATION", font=(
-    "calibri", 10), bg="#80ff00")
+    "calibri", 10), bg="#F1C40F")
 reservation.place(relx=0.026, rely=0.224, height=24, width=127)
 
 statistics = Button(reservRoot, text="TABLE STATISTICS", font=(
-    "calibri", 10), bg="#d9d9d9", command=statisticPage)
+    "calibri", 10), bg="#FEF9E7", command=statisticPage)
 statistics.place(relx=0.026, rely=0.299, height=24, width=127)
 
 TSeparator1 = ttk.Separator(reservRoot)
@@ -382,19 +413,19 @@ e_service_id.place(relx=0.337, rely=0.336, height=20, relwidth=0.031)
 
 '''OPERATION BUTTONS'''
 add = Button(reservRoot, text="Add", font=(
-    "calibri", 10), bg="#d9d9d9", command=add)
+    "calibri", 10), bg="#7DCEA0", command=add)
 add.place(relx=0.324, rely=0.429, height=24, width=97)
 
 update = Button(reservRoot, text="Update", font=(
-    "calibri", 10), bg="#d9d9d9", command=update)
+    "calibri", 10), bg="#5DADE2", command=update)
 update.place(relx=0.466, rely=0.429, height=24, width=99)
 
 delete = Button(reservRoot, text="Delete", font=(
-    "calibri", 10), bg="#d9d9d9", command=delete)
+    "calibri", 10), bg="#F1948A", command=delete)
 delete.place(relx=0.609, rely=0.429, height=24, width=97)
 
 get = Button(reservRoot, text="Get Reservation", font=(
-    "calibri", 10), bg="#d9d9d9", command=get)
+    "calibri", 10), bg="#BB8FCE", command=get)
 get.place(relx=0.751, rely=0.429, height=24, width=97)
 
 '''SERVICE OPERATION BUTTONS'''
