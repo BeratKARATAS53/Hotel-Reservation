@@ -52,7 +52,6 @@ def add():
         cursor = con.cursor()
         cursor.execute("Select r.status From room r Where r.room_number = '" + room_number + "'")
         room_status = cursor.fetchall()
-        print(room_status)
 
         if(room_status[0][0] == 'not available'):
             Messagebox.showinfo("Fetch Status", "Room Not Available For Booking")
@@ -284,22 +283,28 @@ def addService():
             cursor.execute("select id from room where room_number = '" + room_number + "'")
             room_id = cursor.fetchall()
 
-
             cursor.execute("select service_price from extraservice where id = '" + service_id + "'")
             service_price = cursor.fetchall()
             
-            cursor.execute("Call addroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
+            cursor.execute("select exists (select * from room_extraservice where room_id = '" + str(room_id[0][0]) + "' and service_id = '" + str(service_id) + "')")
+            existsRoomExtra = cursor.fetchall()
+            print(existsRoomExtra)
 
-            Messagebox.showinfo("Insert Status", "Service Inserted Succesfully")
-            
-            e_price.config(state="normal")
-            room_price = float(e_price.get()) + service_price[0][0]
-            e_price.delete(0, "end")
-            e_price.insert(0, room_price)
-            e_price.config(state="disabled")
+            if(existsRoomExtra[0][0] == 1):
+                Messagebox.showinfo("Insert Status", "Service Already Added!")
+            else:
+                cursor.execute("Call addroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
 
-            con.commit()
-            con.close()
+                Messagebox.showinfo("Insert Status", "Service Inserted Succesfully")
+                
+                e_price.config(state="normal")
+                room_price = float(e_price.get()) + service_price[0][0]
+                e_price.delete(0, "end")
+                e_price.insert(0, room_price)
+                e_price.config(state="disabled")
+
+                con.commit()
+                con.close()
 
 def deleteService():
     start_date = e_start_date.get()
@@ -317,18 +322,25 @@ def deleteService():
         cursor.execute("select service_price from extraservice where id = '" + service_id + "'")
         service_price = cursor.fetchall()
         
-        cursor.execute("Call deleteroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
+        cursor.execute("select exists (select * from room_extraservice where room_id = '" + str(room_id[0][0]) + 
+                        "' and service_id = '" + str(service_id) + "')")
+        existsRoomExtra = cursor.fetchall()
 
-        Messagebox.showinfo("Delete Status", "Service Deleted Succesfully")
+        if(existsRoomExtra[0][0] == 0):
+            Messagebox.showinfo("Delete Status", "You Cannot Delete a Service That is Not!")
+        else:
+            cursor.execute("Call deleteroom_extraservice('" + str(room_id[0][0]) + "','" + str(service_id) + "')")
 
-        e_price.config(state="normal")
-        room_price = float(e_price.get()) - service_price[0][0]
-        e_price.delete(0, "end")
-        e_price.insert(0, room_price)
-        e_price.config(state="disabled")
+            Messagebox.showinfo("Delete Status", "Service Deleted Succesfully")
 
-        con.commit()
-        con.close()
+            e_price.config(state="normal")
+            room_price = float(e_price.get()) - service_price[0][0]
+            e_price.delete(0, "end")
+            e_price.insert(0, room_price)
+            e_price.config(state="disabled")
+
+            con.commit()
+            con.close()
 
 '''SIDE BAR'''
 hotel = Button(reservRoot, text="HOTEL", font=(
