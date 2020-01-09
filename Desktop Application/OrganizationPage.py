@@ -24,27 +24,52 @@ orgRoot.configure(background='#EBEDEF')
 orgRoot.title("Hotel Organization Page")
 
 
+def extraservicePage():
+    import ExtraServicePage
+
+
+def roomPage():
+    import HotelRoomPage
+
+
+def employeePage():
+    import EmployeeManagerPage
+
+
 def add():
     name = e_name.get()
     price = e_price.get()
     info = e_info.get("1.0", END)
+    hotel_id = e_hotel_id.get()
 
-    if(name == "" or price == "" or info == ""):
+    if(name == "" or price == "" or info == "" or hotel_id == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
     else:
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
-        cursor.execute("Call addOrganization('" + name +
-                       "'," + info + ",'" + price + "')")
+        cursor.execute(
+            "select exists (select * from hotel where id = " + hotel_id + ")")
+        existsHotel = cursor.fetchall()
 
-        Messagebox.showinfo("Insert Status", "Inserted Succesfully")
-        con.commit()
-        org_list()
+        if(existsHotel[0][0] == 0):
+            Messagebox.showinfo("Insert Status", "Otel Not Found!")
+        else:
+            cursor.execute(
+                "select name from hotel where id = " + hotel_id + "")
+            hotel_name = cursor.fetchall()
+            
+            cursor.execute("Call addOrganization('" + name + "','" + info + "','" + price + "','" + hotel_name[0][0] + "')")
 
-        e_name.delete(0, "end")
-        e_info.delete('1.0', END)
-        e_price.delete(0, "end")
+            Messagebox.showinfo("Insert Status", "Inserted Succesfully")
+            con.commit()
+            org_list()
+
+            e_name.delete(0, "end")
+            e_info.delete('1.0', END)
+            e_price.delete(0, "end")
+            e_org_id.delete(0, "end")
+            e_hotel_id.delete(0, "end")
 
         con.close()
 
@@ -54,35 +79,49 @@ def update():
     name = e_name.get()
     price = e_price.get()
     info = e_info.get("1.0", END)
+    hotel_id = e_hotel_id.get()
 
-    if(org_id == "" or name == "" or price == "" or info == ""):
+    if(org_id == "" or name == "" or price == "" or info == "" or hotel_id == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
         con = mysql.connect(host="localhost", user="admin",
                             password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
-            "select exists (select * from organization where id = " + org_id + ")")
-        boolean = cursor.fetchall()
+            "select exists (select * from hotel where id = " + hotel_id + ")")
+        existsHotel = cursor.fetchall()
 
-        if(boolean[0][0] == 0):
-            Messagebox.showinfo(
-                "Fetch Status", "Fetch Failed! Record Not Found")
-            e_org_id.delete(0, "end")
-
+        if(existsHotel[0][0] == 0):
+            Messagebox.showinfo("Insert Status", "Otel Not Found!")
         else:
-            cursor.execute("Call updateOrganization('" + org_id +
-                           "','" + name + "','" + price + "','" + info + "')")
+            cursor.execute(
+                "select exists (select * from organization where id = " + org_id + ")")
+            boolean = cursor.fetchall()
 
-            Messagebox.showinfo("Update Status", "Updated Succesfully")
-            con.commit()
-            org_list()
+            if(boolean[0][0] == 0):
+                Messagebox.showinfo(
+                    "Fetch Status", "Fetch Failed! Organization Not Found")
+                e_org_id.delete(0, "end")
 
-        e_name.delete(0, "end")
-        e_info.delete('1.0', END)
-        e_price.delete(0, "end")
+            else:
+                cursor.execute(
+                    "select name from hotel where id = " + hotel_id + "")
+                hotel_name = cursor.fetchall()
+                cursor.execute("Call updateOrganization('" + org_id + "','" + name + "','" + info + "','" + price + "')")
 
-        con.close()
+                Messagebox.showinfo("Update Status", "Updated Succesfully")
+                con.commit()
+                org_list()
+
+                e_name.delete(0, "end")
+                e_info.delete('1.0', END)
+                e_price.delete(0, "end")
+                e_hotel_id.delete(0, "end")
+                e_org_id.delete(0, "end")
+
+                con.close()
+            print("2.else")
+        print("1.else")
 
 
 def delete():
@@ -115,7 +154,7 @@ def delete():
             con.commit()
             org_list()
 
-        con.close()
+            con.close()
 
 
 def org_list():
@@ -140,6 +179,7 @@ def get():
     e_name.delete(0, "end")
     e_price.delete(0, "end")
     e_info.delete('1.0', END)
+    e_hotel_id.delete(0, "end")
 
     org_id = e_org_id.get()
     if(org_id == ""):
@@ -161,29 +201,53 @@ def get():
         else:
             cursor.execute(
                 "select * from organization where id = " + org_id + "")
-            customer = cursor.fetchall()
+            organizations = cursor.fetchall()
 
-            for cust in customer:
-                e_name.insert(0, cust[1])
-                e_info.insert(INSERT, cust[2])
-                e_price.insert(0, cust[3])
+            for org in organizations:
+                e_name.insert(0, org[1])
+                e_info.insert(INSERT, org[2])
+                e_price.insert(0, org[3])
+                e_hotel_id.insert(0, org[4])
 
             Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
 
-        con.close()
+            con.close()
 
+
+def show_hotel_org():
+    hotel_id = e_hotel_id.get()
+    if(hotel_id == ""):
+        Messagebox.showinfo(
+            "Fetch Status", "ID is compolsary for fetch")
+    else:
+        records = organization_list.get_children()
+        for element in records:
+            organization_list.delete(element)
+
+        con = mysql.connect(host="localhost", user="admin",
+                                password="Berat.190797", database="hotel_reservation")
+        cursor = con.cursor()
+
+        cursor.execute("select * from organization where hotel_id = " + hotel_id + " order by id asc")
+        organization = cursor.fetchall()
+
+        for org in organization:
+            organization_list.insert(
+                '', 0, text=org[0], value=(org[1], org[2], org[3]))
+
+        con.close()
 
 '''SIDE BAR'''
 employee = Button(orgRoot, text="EMPLOYEES", font=(
-    "calibri", 10), bg="#FEF9E7")
+    "calibri", 10), bg="#FEF9E7", command=employeePage)
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(orgRoot, text="ROOMS", font=(
-    "calibri", 10), bg="#FEF9E7")
+    "calibri", 10), bg="#FEF9E7", command=roomPage)
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(orgRoot, text="EXTRA SERVICES", font=(
-    "calibri", 10), bg="#FEF9E7")
+    "calibri", 10), bg="#FEF9E7", command=extraservicePage)
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(orgRoot, text="ORGANIZATIONS", font=(
@@ -214,30 +278,40 @@ price = Label(orgRoot, text="Price: ", font=("calibri", 9))
 price.place(relx=0.735, rely=0.091, height=21, width=38)
 
 e_price = Entry(orgRoot)
-e_price.place(relx=0.786, rely=0.091, height=20, relwidth=0.061)
+e_price.place(relx=0.786, rely=0.091,height=20, relwidth=0.074)
 
 info = Label(orgRoot, text="Information: ", font=("calibri", 9))
 info.place(relx=0.276, rely=0.145, height=21, width=75)
 
 e_info = Text(orgRoot, font=("calibri", 9))
-e_info.place(relx=0.386, rely=0.145, relheight=0.08, relwidth=0.461)
+e_info.place(relx=0.4, rely=0.145, relheight=0.098, relwidth=0.461)
+
+hotel_id = Label(orgRoot, text="Hotel ID: ", font=("calibri", 9))
+hotel_id.place(relx=0.276, rely=0.199, height=21, width=52)
+
+e_hotel_id = Entry(orgRoot)
+e_hotel_id.place(relx=0.359, rely=0.199,height=20, relwidth=0.033)
 
 '''OPERATION BUTTONS'''
 add = Button(orgRoot, text="Add", font=(
     "calibri", 10), bg="#7DCEA0", command=add)
-add.place(relx=0.303, rely=0.254, height=24, width=97)
+add.place(relx=0.29, rely=0.272, height=24, width=77)
 
 update = Button(orgRoot, text="Update", font=(
     "calibri", 10), bg="#5DADE2", command=update)
-update.place(relx=0.441, rely=0.254, height=24, width=99)
+update.place(relx=0.4, rely=0.272, height=24, width=79)
 
 delete = Button(orgRoot, text="Delete", font=(
     "calibri", 10), bg="#F1948A", command=delete)
-delete.place(relx=0.579, rely=0.254, height=24, width=97)
+delete.place(relx=0.51, rely=0.272, height=24, width=77)
 
-get = Button(orgRoot, text="Get Organization", font=(
+get = Button(orgRoot, text="Get Org.", font=(
     "calibri", 10), bg="#BB8FCE", command=get)
-get.place(relx=0.717, rely=0.254, height=24, width=100)
+get.place(relx=0.621, rely=0.272, height=24, width=85)
+
+show = Button(orgRoot, text="Hotel Org.", font=(
+    "calibri", 10), bg="#cc9564", command=show_hotel_org)
+show.place(relx=0.745, rely=0.272, height=24, width=77)
 
 '''LIST OUTPUT'''
 organization = Label(orgRoot, text="Customer Table", font=("calibri", 9))
