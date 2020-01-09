@@ -32,8 +32,8 @@ def add():
     if(name == "" or price == "" or info == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("Call addOrganization('" + name +
                        "'," + info + ",'" + price + "')")
@@ -58,8 +58,8 @@ def update():
     if(org_id == "" or name == "" or price == "" or info == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from organization where id = " + org_id + ")")
@@ -91,8 +91,8 @@ def delete():
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from organization where id = " + org_id + ")")
@@ -123,8 +123,8 @@ def org_list():
     for element in records:
         organization_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
     cursor.execute("select * from organization order by id asc")
     organization = cursor.fetchall()
@@ -146,8 +146,8 @@ def get():
         Messagebox.showinfo(
             "Fetch Status", "ID is compolsary for fetch")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from organization where id = " + org_id + ")")

@@ -49,8 +49,8 @@ def add():
     elif(passwrd != confirm_passwrd):
         Messagebox.showinfo("Password Status", "Password Mismatch")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("select name from hotel where id= '" + hotel_id + "'")
         hotel_name = cursor.fetchall()
@@ -97,8 +97,8 @@ def get():
         Messagebox.showinfo(
             "Fetch Status", "ID is compolsary for fetch")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         if(emp_type == "manager"):
             cursor.execute("select exists (select * from manager_all_info where id = " + emp_id + ")") 
@@ -156,8 +156,8 @@ def man_list():
     for element in records:
         manager_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="root",
-                        password="12345", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="admin",
+                        password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
     cursor.execute("select * from manager_all_info order by id asc")
     manager = cursor.fetchall()
@@ -173,8 +173,8 @@ def emp_list():
     for element in records:
         employee_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="root",
-                        password="12345", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="admin",
+                        password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
     cursor.execute("select * from employee_all_info order by id asc")
     employee = cursor.fetchall()
@@ -202,8 +202,8 @@ def update():
             or telephone == ""  or salary == "" ):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         if ( employee_type == "manager"):
             cursor.execute("select exists (select * from manager_all_info where id = " + emp_id + ")")
@@ -246,8 +246,8 @@ def delete():
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         if ( emp_type == "manager"):
             cursor.execute("select exists (select * from manager_all_info where id = " + emp_id + ")")
@@ -281,19 +281,19 @@ def delete():
 
 '''SIDE BAR'''
 employee = Button(staffRoot, text="EMPLOYEES", font=(
-    "bold", 10,"bold"), bg="#F1C40F")
+    "calibri", 10), bg="#F1C40F")
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(staffRoot, text="ROOMS", font=(
-    "bold", 10), bg="#FEF9E7",command = roomPage)
+    "calibri", 10), bg="#FEF9E7",command = roomPage)
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(staffRoot, text="EXTRA SERVICES", font=(
-    "bold", 10), bg="#FEF9E7",command = extraServicePage )
+    "calibri", 10), bg="#FEF9E7",command = extraServicePage )
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(staffRoot, text="ORGANIZATIONS", font=(
-    "bold", 10), bg="#FEF9E7", command= organizationPage)
+    "calibri", 10), bg="#FEF9E7", command= organizationPage)
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(staffRoot)
@@ -304,77 +304,77 @@ TSeparator2 = ttk.Separator(staffRoot)
 TSeparator2.place(relx=0.188, rely=0.354, relwidth=0.780)
 
 '''INPUT TEXTS'''
-emp_id = Label(staffRoot, text="ID: ", font=("bold", 9))
+emp_id = Label(staffRoot, text="ID: ", font=("calibri", 9))
 emp_id.place(relx=0.201, rely=0.065, height=21, width=24)
 emp_id.configure(background="#EBEDEF")
 
 e_emp_id = Entry(staffRoot)
 e_emp_id.place(relx=0.236, rely=0.065, height=20, relwidth=0.039)
 
-firstname = Label(staffRoot, text="First Name: ", font=("bold", 9))
+firstname = Label(staffRoot, text="First Name: ", font=("calibri", 9))
 firstname.place(relx=0.285, rely=0.065, height=21, width=69)
 firstname.configure(background="#EBEDEF")
 
 e_firstname = Entry(staffRoot)
 e_firstname.place(relx=0.360, rely=0.065, height=20, relwidth=0.150)
 
-lastname = Label(staffRoot, text="Last Name: ", font=("bold", 9))
+lastname = Label(staffRoot, text="Last Name: ", font=("calibri", 9))
 lastname.place(relx=0.520, rely=0.065, height=21, width=68)
 lastname.configure(background="#EBEDEF")
 
 e_lastname = Entry(staffRoot)
 e_lastname.place(relx=0.600, rely=0.065, height=20, relwidth=0.150)
 
-telephone = Label(staffRoot, text="Phone: ", font=("bold", 9))
+telephone = Label(staffRoot, text="Phone: ", font=("calibri", 9))
 telephone.place(relx=0.760, rely=0.065, height=21, width=46)
 telephone.configure(background="#EBEDEF")
 
 e_telephone = Entry(staffRoot)
 e_telephone.place(relx=0.810, rely=0.065, height=20, relwidth=0.130)
 
-email = Label(staffRoot, text="Email: ", font=("bold", 9))
+email = Label(staffRoot, text="Email: ", font=("calibri", 9))
 email.place(relx=0.201, rely=0.113, height=21, width=41)
 email.configure(background="#EBEDEF")
 
 e_email = Entry(staffRoot)
 e_email.place(relx=0.256, rely=0.113, height=20, relwidth=0.254)
 
-passwrd = Label(staffRoot, text="Password: ", font=("bold", 9))
+passwrd = Label(staffRoot, text="Password: ", font=("calibri", 9))
 passwrd.place(relx=0.520, rely=0.113, height=19, width=60)
 passwrd.configure(background="#EBEDEF")
 
 e_password = Entry(staffRoot)
 e_password.place(relx=0.585, rely=0.113, height=20, relwidth=0.110)
 
-confirm_passwrd = Label(staffRoot, text="Confirm Password: ", font=("bold", 9))
+confirm_passwrd = Label(staffRoot, text="Confirm Password: ", font=("calibri", 9))
 confirm_passwrd.place(relx=0.700, rely=0.113, height=21, width=109)
 confirm_passwrd.configure(background="#EBEDEF")
 
 e_confirm_passwrd = Entry(staffRoot)
 e_confirm_passwrd.place(relx=0.810, rely=0.113, height=20, relwidth=0.130)
 
-address = Label(staffRoot, text="Address: ", font=("bold", 9))
+address = Label(staffRoot, text="Address: ", font=("calibri", 9))
 address.place(relx=0.201, rely=0.160, height=21, width=54)
 address.configure(background="#EBEDEF")
 
 e_address = Text(staffRoot)
 e_address.place(relx=0.256, rely=0.160, relheight=0.100, relwidth=0.35)
 
-salary = Label(staffRoot, text=" Salary: ", font=("bold", 9))
+salary = Label(staffRoot, text=" Salary: ", font=("calibri", 9))
 salary.place(relx=0.610, rely=0.161, height=21, width=40)
 salary.configure(background="#EBEDEF")
 
 e_salary = Entry(staffRoot)
 e_salary.place(relx=0.660, rely=0.161, height=20, relwidth=0.049)
 
-hotel_id = Label(staffRoot, text="Hotel ID: ", font=("bold", 9))
+hotel_id = Label(staffRoot, text="Hotel ID: ", font=("calibri", 9))
 hotel_id.place(relx=0.610, rely=0.209, height=21, width=60)
 
 e_hotel_id= Entry(staffRoot)
 e_hotel_id.place(relx=0.670, rely=0.209, height=21, relwidth=0.037)
 
 '''COMBOBOX'''
-emp_type = Label(staffRoot, text="Employee Type: ", font=("bold", 9))
+emp_type = Label(staffRoot, text="Employee Type: ", font=("calibri", 9))
 emp_type.place(relx=0.720, rely=0.158, height=21, width=90)
 emp_type.configure(background="#EBEDEF")
 
@@ -388,23 +388,23 @@ e_emp_type.current(0)
 
 '''OPERATION BUTTONS'''
 add = Button(staffRoot, text="Add", font=(
-    "italic", 10,"bold"),  bg="#7DCEA0", command = add)
+    "italic", 10),  bg="#7DCEA0", command = add)
 add.place(relx=0.337, rely=0.291, height=24, width=97)
 
 update = Button(staffRoot, text="Update", font=(
-    "italic", 10,"bold"), bg="#5DADE2",command=update)
+    "italic", 10), bg="#5DADE2",command=update)
 update.place(relx=0.435, rely=0.291, height=24, width=99)
 
 delete = Button(staffRoot, text="Delete", font=(
-    "italic", 10,"bold"), bg="#F1948A", command=delete)
+    "italic", 10), bg="#F1948A", command=delete)
 delete.place(relx=0.536, rely=0.291, height=24, width=97)
 
 get = Button(staffRoot, text="Get Staff", font=(
-    "italic", 10,"bold"), bg="#BB8FCE", command=get)
+    "italic", 10), bg="#BB8FCE", command=get)
 get.place(relx=0.635, rely=0.291, height=24, width=97)
 
 '''LIST OUTPUT'''
-manager = Label(staffRoot, text="Manager Table", font=("Comic Sans MC", 9,"bold"))
+manager = Label(staffRoot, text="Manager Table", font=("Comic Sans MC", 9))
 manager.place(relx=0.480, rely=0.36, height=31, width=90)
 manager.configure(background="#EBEDEF")
 
@@ -432,7 +432,7 @@ manager_list.place(relx=0.189, rely=0.415, relheight=0.18, relwidth=0.750)
 man_list()
 
 #--------------------------------------------------------------------------
-emp = Label(staffRoot, text="Employee Table", font=("Comic Sans MC", 9,"bold"))
+emp = Label(staffRoot, text="Employee Table", font=("Comic Sans MC", 9))
 emp.place(relx=0.480, rely=0.60, height=31, width=90)
 emp.configure(background="#EBEDEF")
 

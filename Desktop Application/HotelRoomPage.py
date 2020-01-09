@@ -38,8 +38,8 @@ def get_rooms():
     for element in records:
         room_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="root",
-                        password="12345", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="admin",
+                        password="Berat.190797", database="hotel_reservation")
     cursor = con.cursor()
 
     cursor.execute("select * from room where hotel_id='" + hotel_id + " order by id asc'")
@@ -63,8 +63,8 @@ def get():
         Messagebox.showinfo(
             "Fetch Status", "ID is compolsary for fetch")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from room where id = " + room_id + ")")
@@ -108,8 +108,8 @@ def add():
              or room_number == "" or room_type == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("select name from hotel where id= '" + hotel_id + "'")
         hotel_name = cursor.fetchall()
@@ -146,8 +146,8 @@ def update():
                     or room_number == "" or room_type == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from room where id = " + room_id + ")")
@@ -183,8 +183,8 @@ def delete():
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
     else:
-        con = mysql.connect(host="localhost", user="root",
-                            password="12345", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="admin",
+                            password="Berat.190797", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from room where id = " + room_id + ")")
@@ -212,19 +212,19 @@ def delete():
 
 '''SIDE BAR'''
 employee = Button(hotelRoomRoot, text="EMPLOYEES", font=(
-    "bold", 10), bg="#FEF9E7", command=employeePage)
+    "calibri", 10), bg="#FEF9E7", command=employeePage)
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(hotelRoomRoot, text="ROOMS", font=(
-    "bold", 10), bg="#F1C40F")
+    "calibri", 10), bg="#F1C40F")
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(hotelRoomRoot, text="EXTRA SERVICES", font=(
-    "bold", 10), bg="#FEF9E7", command= extraServicePage)
+    "calibri", 10), bg="#FEF9E7", command= extraServicePage)
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(hotelRoomRoot, text="ORGANIZATIONS", font=(
-    "bold", 10), bg="#FEF9E7", command= organizationPage)
+    "calibri", 10), bg="#FEF9E7", command= organizationPage)
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(hotelRoomRoot)
@@ -235,38 +235,38 @@ TSeparator2 = ttk.Separator(hotelRoomRoot)
 TSeparator2.place(relx=0.188, rely=0.284, relwidth=0.635)
 
 '''INPUT TEXTS'''
-room_id = Label(hotelRoomRoot, text="ID: ", font=("bold", 9))
+room_id = Label(hotelRoomRoot, text="ID: ", font=("calibri", 9))
 room_id.place(relx=0.199, rely=0.063, height=21, width=23)
 
 e_room_id = Entry(hotelRoomRoot)
 e_room_id.place(relx=0.228, rely=0.063, height=20, relwidth=0.034)
 
-room_info = Label(hotelRoomRoot, text="Room Info: ", font=("bold", 9))
+room_info = Label(hotelRoomRoot, text="Room Info: ", font=("calibri", 9))
 room_info.place(relx=0.275, rely=0.063, height=21, width=68)
 
 e_room_info = Entry(hotelRoomRoot)
 e_room_info.place(relx=0.348, rely=0.063, relheight=0.08, relwidth=0.330)
 
-price = Label(hotelRoomRoot, text="Price: ", font=("bold", 9))
+price = Label(hotelRoomRoot, text="Price: ", font=("calibri", 9))
 price.place(relx=0.690, rely=0.063, height=21, width=38)
 
 e_price = Entry(hotelRoomRoot)
 e_price.place(relx=0.740, rely=0.063, height=20, relwidth=0.120)
 
 
-capacity = Label(hotelRoomRoot, text="Capacity: ", font=("bold", 9))
+capacity = Label(hotelRoomRoot, text="Capacity: ", font=("calibri", 9))
 capacity.place(relx=0.410, rely=0.158, height=21, width=58)
 
 e_capacity = Text(hotelRoomRoot)
 e_capacity.place(relx=0.475, rely=0.158, height=20, relwidth=0.040)
 
-room_number = Label(hotelRoomRoot, text="Room Number: ", font=("bold", 9))
+room_number = Label(hotelRoomRoot, text="Room Number: ", font=("calibri", 9))
 room_number.place(relx=0.525, rely=0.158, height=21, width=91)
 
 e_room_number  = Text(hotelRoomRoot)
 e_room_number.place(relx=0.625, rely=0.158,height=20, relwidth=0.075)
 
-hotel_id = Label(hotelRoomRoot, text="Hotel ID: ", font=("bold", 9))
+hotel_id = Label(hotelRoomRoot, text="Hotel ID: ", font=("calibri", 9))
 hotel_id.place(relx=0.199, rely=0.221, height=21, width=50)
 
 e_hotel_id = Entry(hotelRoomRoot)
@@ -274,7 +274,7 @@ e_hotel_id.place(relx=0.260, rely=0.221, height=20, relwidth=0.034)
 
 '''COMBOBOX'''
 
-status = Label(hotelRoomRoot, text="Status: ", font=("bold", 9))
+status = Label(hotelRoomRoot, text="Status: ", font=("calibri", 9))
 status.place(relx=0.199, rely=0.158, height=21, width=44)
 
 box_value = StringVar()
@@ -285,7 +285,7 @@ e_status.place(relx=0.260, rely=0.158, relheight=0.033, relwidth=0.142)
 e_status['values'] = ('available', 'not available')
 e_status.current(0)
 
-room_type = Label(hotelRoomRoot, text="Room Type: ", font=("bold", 9))
+room_type = Label(hotelRoomRoot, text="Room Type: ", font=("calibri", 9))
 room_type.place(relx=0.705, rely=0.158, height=21, width=72)
 
 box_value = StringVar()
