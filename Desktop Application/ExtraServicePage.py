@@ -335,59 +335,6 @@ def food_list():
 
     con.close()
 
-def update():
-    emp_id = e_emp_id.get()
-    firstname = e_firstname.get()
-    lastname = e_lastname.get()
-    passwrd = e_password.get()
-    confirm_passwrd = e_confirm_passwrd.get()
-    email = e_email.get()
-    address = e_address.get("1.0", END)
-    telephone = e_telephone.get()
-    salary = e_salary.get()
-    employee_type = e_emp_type.get()
-
-
-    if(emp_id == "" or firstname == "" or lastname == "" or passwrd == "" or email == "" or address == ""
-            or telephone == ""  or salary == "" ):
-        Messagebox.showinfo("Update Status", "All Fields Are Required!")
-    else:
-        con = mysql.connect(host="localhost", user="admin",
-                            password="Berat.190797", database="hotel_reservation")
-        cursor = con.cursor()
-        if ( employee_type == "manager"):
-            cursor.execute("select exists (select * from manager_all_info where id = " + manager_id + ")")
-        else:
-            cursor.execute("select exists (select * from employee_all_info where id = " + employee_id + ")")
-        boolean = cursor.fetchall()
-
-        if(boolean[0][0] == 0):
-            Messagebox.showinfo( "Fetch Status", "Fetch Failed! Record Not Found")
-            e_emp_id.delete(0, "end")
-
-        else:
-            cursor.execute("Call updatePerson('" + customer_id + "','" + firstname + "','" + lastname + "','" + passwrd
-                        + "','" + email + "','" + address + "','" + telephone + "'," + age + ","
-                        + money + ",'" + username + "','" + "' '" + "','customer')")
-
-            Messagebox.showinfo("Update Status", "Updated Succesfully")
-            con.commit()
-            cust_list()
-
-            e_email.config(state="normal")
-
-            e_customer_id.delete(0, "end")
-            e_firstname.delete(0, "end")
-            e_lastname.delete(0, "end")
-            e_password.delete(0, "end")
-            e_confirm_passwrd.delete(0, "end")
-            e_email.delete(0, "end")
-            e_address.delete('1.0', END)
-            e_telephone.delete(0, "end")
-            e_salary.delete(0, "end")
-
-
-        con.close()
 
 '''SIDE BAR'''
 employee = Button(ServiceRoot, text="EMPLOYEES", font=(

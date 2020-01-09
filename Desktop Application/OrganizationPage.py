@@ -119,9 +119,7 @@ def update():
                 e_hotel_id.delete(0, "end")
                 e_org_id.delete(0, "end")
 
-                con.close()
-            print("2.else")
-        print("1.else")
+        con.close()
 
 
 def delete():

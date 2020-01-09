@@ -54,7 +54,7 @@ def add():
         cursor = con.cursor()
         cursor.execute("select name from hotel where id= '" + hotel_id + "'")
         hotel_name = cursor.fetchall()
-        #print(hotel_name[0][0])
+        
         #call addperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_name, :person_type)*/
         cursor.execute("Call addPerson('" + firstname + "','" + lastname + "','" + passwrd
                        + "','" + email + "','" + address + "','" + telephone + "'," + "0" + ","
