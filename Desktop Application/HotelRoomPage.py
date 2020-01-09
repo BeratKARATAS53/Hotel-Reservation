@@ -25,11 +25,14 @@ hotelRoomRoot.title("Hotel Room Page")
 def organizationPage():
     import OrganizationPage
 
+
 def employeePage():
     import EmployeeManagerPage
 
+
 def extraServicePage():
     import ExtraServicePage
+
 
 def get_rooms():
     hotel_id = e_hotel_id.get()
@@ -56,8 +59,9 @@ def get():
     e_price.delete(0, "end")
     e_capacity.delete("1.0", END)
     e_room_number.delete("1.0", END)
+    e_status.delete(0, "end")
+    e_room_type.delete(0, "end")
    
-
     room_id  = e_room_id.get()
     if(room_id == ""):
         Messagebox.showinfo(
@@ -81,7 +85,6 @@ def get():
             rooms = cursor.fetchall()
 
             for room in rooms:
-                #print(room[1],room[2],room[3],room[4],room[5],room[6])
                 e_room_info.insert(INSERT, room[1])
                 e_price.insert(0, room[2])
                 e_status.insert(0, room[4])
@@ -97,7 +100,7 @@ def get():
 def add():
     hotel_id = e_hotel_id.get()
     room_id = e_room_id.get()
-    room_info = e_room_info.get()
+    room_info = e_room_info.get("1.0", END)
     price = e_price.get()
     capacity = e_capacity.get("1.0", END)
     status = e_status.get()
@@ -123,7 +126,7 @@ def add():
         
         e_hotel_id.delete(0, "end")
         e_room_id.delete(0, "end")
-        e_room_info.delete(0, "end")
+        e_room_info.delete('1.0', END)
         e_price.delete(0, "end")
         e_capacity.delete("1.0", END)
         e_status.delete(0, "end")
@@ -135,7 +138,7 @@ def add():
 def update():
     hotel_id = e_hotel_id.get()
     room_id = e_room_id.get()
-    room_info = e_room_info.get()
+    room_info = e_room_info.get("1.0", END)
     price = e_price.get()
     capacity = e_capacity.get("1.0", END)
     status = e_status.get()
@@ -168,7 +171,7 @@ def update():
 
             e_hotel_id.delete(0, "end")
             e_room_id.delete(0, "end")
-            e_room_info.delete(0, "end")
+            e_room_info.delete('1.0', END)
             e_price.delete(0, "end")
             e_capacity.delete("1.0", END)
             e_status.delete(0, "end")
@@ -199,7 +202,7 @@ def delete():
             cursor.execute("Call deleteroom(" + room_id + ")")
 
             e_room_id.delete(0, "end")
-            e_room_info.delete(0, "end")
+            e_room_info.delete('1.0', END)
             e_price.delete(0, "end")
             e_capacity.delete("1.0", END)
             e_room_number.delete("1.0", END)
@@ -244,7 +247,7 @@ e_room_id.place(relx=0.228, rely=0.063, height=20, relwidth=0.034)
 room_info = Label(hotelRoomRoot, text="Room Info: ", font=("calibri", 9))
 room_info.place(relx=0.275, rely=0.063, height=21, width=68)
 
-e_room_info = Entry(hotelRoomRoot)
+e_room_info = Text(hotelRoomRoot)
 e_room_info.place(relx=0.348, rely=0.063, relheight=0.08, relwidth=0.330)
 
 price = Label(hotelRoomRoot, text="Price: ", font=("calibri", 9))
@@ -252,7 +255,6 @@ price.place(relx=0.690, rely=0.063, height=21, width=38)
 
 e_price = Entry(hotelRoomRoot)
 e_price.place(relx=0.740, rely=0.063, height=20, relwidth=0.120)
-
 
 capacity = Label(hotelRoomRoot, text="Capacity: ", font=("calibri", 9))
 capacity.place(relx=0.410, rely=0.158, height=21, width=58)
@@ -277,9 +279,9 @@ e_hotel_id.place(relx=0.260, rely=0.221, height=20, relwidth=0.034)
 status = Label(hotelRoomRoot, text="Status: ", font=("calibri", 9))
 status.place(relx=0.199, rely=0.158, height=21, width=44)
 
-box_value = StringVar()
+status_box_value = StringVar()
 e_status = ttk.Combobox(
-    hotelRoomRoot, textvariable=box_value, state='readonly')
+    hotelRoomRoot, textvariable=status_box_value, state='readonly')
 e_status.place(relx=0.260, rely=0.158, relheight=0.033, relwidth=0.142)
 
 e_status['values'] = ('available', 'not available')
