@@ -288,7 +288,6 @@ def addService():
             
             cursor.execute("select exists (select * from room_extraservice where room_id = '" + str(room_id[0][0]) + "' and service_id = '" + str(service_id) + "')")
             existsRoomExtra = cursor.fetchall()
-            print(existsRoomExtra)
 
             if(existsRoomExtra[0][0] == 1):
                 Messagebox.showinfo("Insert Status", "Service Already Added!")
