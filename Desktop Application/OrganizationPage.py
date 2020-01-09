@@ -20,6 +20,7 @@ orgRoot.geometry("725x552+248+111")
 orgRoot.minsize(120, 1)
 orgRoot.maxsize(1370, 749)
 orgRoot.resizable(1, 1)
+orgRoot.configure(background='#EBEDEF')
 orgRoot.title("Hotel Organization Page")
 
 
@@ -31,8 +32,8 @@ def add():
     if(name == "" or price == "" or info == ""):
         Messagebox.showinfo("Insert Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="admin",
-                            password="Berat.190797", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="root",
+                            password="12345", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute("Call addOrganization('" + name +
                        "'," + info + ",'" + price + "')")
@@ -57,8 +58,8 @@ def update():
     if(org_id == "" or name == "" or price == "" or info == ""):
         Messagebox.showinfo("Update Status", "All Fields Are Required!")
     else:
-        con = mysql.connect(host="localhost", user="admin",
-                            password="Berat.190797", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="root",
+                            password="12345", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from organization where id = " + org_id + ")")
@@ -90,8 +91,8 @@ def delete():
         Messagebox.showinfo(
             "Delete Status", "ID is compolsary for delete")
     else:
-        con = mysql.connect(host="localhost", user="admin",
-                            password="Berat.190797", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="root",
+                            password="12345", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from organization where id = " + org_id + ")")
@@ -122,8 +123,8 @@ def org_list():
     for element in records:
         organization_list.delete(element)
 
-    con = mysql.connect(host="localhost", user="admin",
-                        password="Berat.190797", database="hotel_reservation")
+    con = mysql.connect(host="localhost", user="root",
+                            password="12345", database="hotel_reservation")
     cursor = con.cursor()
     cursor.execute("select * from organization order by id asc")
     organization = cursor.fetchall()
@@ -145,8 +146,8 @@ def get():
         Messagebox.showinfo(
             "Fetch Status", "ID is compolsary for fetch")
     else:
-        con = mysql.connect(host="localhost", user="admin",
-                            password="Berat.190797", database="hotel_reservation")
+        con = mysql.connect(host="localhost", user="root",
+                            password="12345", database="hotel_reservation")
         cursor = con.cursor()
         cursor.execute(
             "select exists (select * from organization where id = " + org_id + ")")
@@ -174,19 +175,19 @@ def get():
 
 '''SIDE BAR'''
 employee = Button(orgRoot, text="EMPLOYEES", font=(
-    "calibri", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#FEF9E7")
 employee.place(relx=0.028, rely=0.091, height=24, width=127)
 
 room = Button(orgRoot, text="ROOMS", font=(
-    "calibri", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#FEF9E7")
 room.place(relx=0.028, rely=0.163, height=24, width=127)
 
 extra_services = Button(orgRoot, text="EXTRA SERVICES", font=(
-    "calibri", 10), bg="#d9d9d9")
+    "calibri", 10), bg="#FEF9E7")
 extra_services.place(relx=0.028, rely=0.236, height=24, width=127)
 
 organizations = Button(orgRoot, text="ORGANIZATIONS", font=(
-    "calibri", 10), bg="#80ff00")
+    "calibri", 10), bg="#F1C40F")
 organizations.place(relx=0.028, rely=0.308, height=24, width=127)
 
 TSeparator1 = ttk.Separator(orgRoot)
@@ -223,19 +224,19 @@ e_info.place(relx=0.386, rely=0.145, relheight=0.08, relwidth=0.461)
 
 '''OPERATION BUTTONS'''
 add = Button(orgRoot, text="Add", font=(
-    "calibri", 10), bg="#d9d9d9", command=add)
+    "calibri", 10), bg="#7DCEA0", command=add)
 add.place(relx=0.303, rely=0.254, height=24, width=97)
 
 update = Button(orgRoot, text="Update", font=(
-    "calibri", 10), bg="#d9d9d9", command=update)
+    "calibri", 10), bg="#5DADE2", command=update)
 update.place(relx=0.441, rely=0.254, height=24, width=99)
 
 delete = Button(orgRoot, text="Delete", font=(
-    "calibri", 10), bg="#d9d9d9", command=delete)
+    "calibri", 10), bg="#F1948A", command=delete)
 delete.place(relx=0.579, rely=0.254, height=24, width=97)
 
 get = Button(orgRoot, text="Get Organization", font=(
-    "calibri", 10), bg="#d9d9d9", command=get)
+    "calibri", 10), bg="#BB8FCE", command=get)
 get.place(relx=0.717, rely=0.254, height=24, width=100)
 
 '''LIST OUTPUT'''

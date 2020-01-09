@@ -115,11 +115,13 @@ def get():
                     e_firstname.insert(0, man[1])
                     e_lastname.insert(0, man[2])
                     e_password.insert(0, man[3])
+                    e_confirm_passwrd.insert(0, man[3])
                     e_email.insert(0, man[4])
                     e_telephone.insert(0, man[5])
                     e_address.insert(INSERT, man[6])
                     e_salary.insert(0, man[12])
                     e_hotel_id.insert(0, man[9])
+                    e_email.config(state="disabled")
 
                 Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
         else:
@@ -137,11 +139,13 @@ def get():
                     e_firstname.insert(0, emp[1])
                     e_lastname.insert(0, emp[2])
                     e_password.insert(0, emp[3])
+                    e_confirm_passwrd.insert(0, emp[3])
                     e_email.insert(0, emp[4])
                     e_telephone.insert(0, emp[5])
                     e_address.insert(INSERT, emp[6])
                     e_salary.insert(0, emp[12])
                     e_hotel_id.insert(0, emp[9])
+                    e_email.config(state="disabled")
 
                 Messagebox.showinfo("Fetch Status", "Fetch Succesfully")
 
