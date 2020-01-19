@@ -143,7 +143,6 @@ call addorganization('Festival', 'Festival Alani Stant Kiralama Hizmetleri, Guve
 call addorganization('Nisan', 'Catering, cicek, Davetiye, Dekor, DJ, Fotograf', 5000, 'Pine Bay Holiday Resort');
 call addorganization('Davet', 'Otantik sahne ve konsepte uygun muzisyen ekibi, Sinevizyon gosterimi', 1000, 'Ramada Encore Izmir');
 
-call updateorganization(:organization_id, :name, :org_info, :price)
 /*----------------------------------------------------------------------------------*/
 /*RENT ORGANIZATION TABLE*/
 /*call addrentorganization(:customer_id, :organization_id)*/
