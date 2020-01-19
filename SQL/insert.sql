@@ -30,6 +30,7 @@ call addperson('Gozde', 'Korkmaz', '76YW20vyFx', 'korkmazgozde991@example.com', 
 call addperson('Kadir', 'Kaya', '9CHsA3GqIe', 'kadir_kaya144@example.com', 'Keklik cesme Mahallesi No:337 Nazilli, Aydin', '+908515477416', 34, 6000, 'kadir444', 'Hampton By Hilton Kahramanmaras', 'customer');
 call addperson('Sibel', 'Arslan', 'G5qcQx9320', 'arslansibel742@example.com', 'senlik Mahallesi No:914 semdinli, Hakkari', '+908511169165', 40, 2400, 'sibel954', 'Pine Bay Holiday Resort', 'customer');
 call addperson('Cemal', 'Kose', 'osFMgUyvRt', 'kosecemal@example.com', 'Gazi Emir Sokagi No:349 Develi, Kayseri', '+908516800932', 31, 3000, 'KoseCemal', 'Ramada Encore Izmir', 'customer');
+call addperson('ads', 'das', 'das', '231@example.com', 'dsa Emir Sokagi No:349 Develi, Kayseri', '+758231', '0', 3000, 'null', 'Ramada Encore Izmir', 'employee');
 
 /*Employee*/
 call addperson('Kubra', 'ozer', 'OyYdHaK8ew', 'ozerkubra789@example.com', 'Fatih Bulvari No:989 Dalaman, Mugla', '+908513178115', 28, 1200, 'kubraozer', 'Grand Makel Topkapi', 'employee');
@@ -58,7 +59,6 @@ call addperson('Aykut', 'Erdogan', 'zaOEdXbKjx', 'aykut_erdogan244@example.com',
 
 /*----------------------------------------------------------------------------------*/
 /*ROOM TABLE*/
-delimiter ;
 /*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
 call addroom('Kose Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 50 m², Banyo : 1 banyo', 500, 100, 'available', 4, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Grand Makel Topkapi' , 'Special');
 call addroom('Suit Oda, Yatak : 2 cift kisilik yatak, 2 tek kisilik yatak, Buyukluk : 70 m², Banyo : 1 banyo', 400, 200, 'available', 6, 'Ekstra yatak: 1 bebek yatagi, Manzara : Dag/Pist', 'Divan Adana', 'special');
@@ -74,60 +74,60 @@ call addroom('Kral Dairesi, Yatak : 1 cift kisilik yatak, 4 tek kisilik yatak, B
 
 /*----------------------------------------------------------------------------------*/
 /*EXTRA_SERVICE TABLE*/
-/*call addextraservice(:service, :service_price, :service_point, :room_number)*/
-call addextraservice('Temizlik', 50, 5, '1-1-100', @service_id);
-call addextraservice('Tasima', 100, 6, '1-1-100', @service_id);
-call addextraservice('Wifi', 10 , 9, '1-1-100', @service_id);
-call addextraservice('Kuru Temizleme', 60, 2, '3-0-300', @service_id);
-call addextraservice('Kargo', 25, 3, '3-0-300', @service_id);
-call addextraservice('Temizlik', 50, 5, '5-1-101', @service_id);
-call addextraservice('Tasima', 100, 4, '5-1-101', @service_id);
-call addextraservice('wifi', 10, 7, '5-1-101', @service_id);
-call addextraservice('Kuru Temizleme', 60, 3, '9-0-401', @service_id);
-call addextraservice('Kargo', 25, 4, '9-0-401', @service_id);
+/*call addextraservice(:service, :service_price, :service_point, :hotel_id)*/
+call addextraservice('Temizlik', 50, 5, 1, @service_id);
+call addextraservice('Tasima', 100, 6, 1, @service_id);
+call addextraservice('Wifi', 10 , 9, 1, @service_id);
+call addextraservice('Kuru Temizleme', 60, 2, 1, @service_id);
+call addextraservice('Kargo', 25, 3, 3, @service_id);
+call addextraservice('Temizlik', 50, 5, 3, @service_id);
+call addextraservice('Tasima', 100, 4, 5, @service_id);
+call addextraservice('wifi', 10, 7, 4, @service_id);
+call addextraservice('Kuru Temizleme', 60, 3, 2, @service_id);
+call addextraservice('Kargo', 25, 4, 10, @service_id);
 
 /*----------------------------------------------------------------------------------*/
 /*FOOD_SERVICE TABLE*/
-/*call addfoodservice(:service, :service_price, :service_point, :food_detail, :room_number)*/
-call addfoodservice('Kahvalti', 30, 9, ' Beyaz Peynir, Kasar Peyniri, Siyah Zeytin, Su Boregi, Sucuk & Salam & Sosis sis, Recel, Yumurta, cay', '1-1-100');
-call addfoodservice('Aksam yemegi', 50, 7, 'corba, Etli Yemek, Sebzeli Yemek Salata, Icecek', '1-1-100');
-call addfoodservice('oglen yemegi', 40, 5, 'Borek, Izgara, Icecek, Kofte', '5-1-101');
-call addfoodservice('Brunch', 65, 10, 'Hamur isleri, Zeytinyaglilar, Aperitifler, Tatlilar, Pastalar, Kuru meyve', '5-1-101');
-call addfoodservice('Acik Bufe', 100, 8, 'Peynir ve Zeytin cesitleri, Hamur Isleri, Pizza, Pogaca, Borek cesitleri, Kizartma cesitleri, Ayrica Yoresel ve Organik urunler', '5-1-101');
-call addfoodservice('Tatli Servisi', 75, 6, 'sekerpare, Tulumba, Revani, Baklava, Sutlu Tatlilar', '5-1-101');
-call addfoodservice('Hint Mutfagi', 200, 3, 'Samosa, Paratha, Biryani, Tandoori', '7-1-301');
-call addfoodservice('Geleneksel Turk Mutfagi', 350, 10, 'Etli cig kofte, Tas kebabi, Patlican musakka, Mucver, Kebap, Doner', '7-1-301');
-call addfoodservice('Italyan Mutfagi', 300, 5, 'Pizza, Spagetti, Lazanya, Chicken Parmigiana', '7-1-301');
-call addfoodservice('Uzak Dogu Mutfagi', 250, 8, 'Sushi,Tom Yum Goong, Dak Kkochi, Kim Chi', '6-1-101');
+/*call addfoodservice(:service, :service_price, :service_point, :food_detail, :hotel_id)*/
+call addfoodservice('Kahvalti', 30, 9, ' Beyaz Peynir, Kasar Peyniri, Siyah Zeytin, Su Boregi, Sucuk & Salam & Sosis sis, Recel, Yumurta, cay', 1);
+call addfoodservice('Aksam yemegi', 50, 7, 'corba, Etli Yemek, Sebzeli Yemek Salata, Icecek', 1);
+call addfoodservice('oglen yemegi', 40, 5, 'Borek, Izgara, Icecek, Kofte', 1);
+call addfoodservice('Brunch', 65, 10, 'Hamur isleri, Zeytinyaglilar, Aperitifler, Tatlilar, Pastalar, Kuru meyve', 3);
+call addfoodservice('Acik Bufe', 100, 8, 'Peynir ve Zeytin cesitleri, Hamur Isleri, Pizza, Pogaca, Borek cesitleri, Kizartma cesitleri, Ayrica Yoresel ve Organik urunler', 5);
+call addfoodservice('Tatli Servisi', 75, 6, 'sekerpare, Tulumba, Revani, Baklava, Sutlu Tatlilar', 3);
+call addfoodservice('Hint Mutfagi', 200, 3, 'Samosa, Paratha, Biryani, Tandoori', 4);
+call addfoodservice('Geleneksel Turk Mutfagi', 350, 10, 'Etli cig kofte, Tas kebabi, Patlican musakka, Mucver, Kebap, Doner', 4);
+call addfoodservice('Italyan Mutfagi', 300, 5, 'Pizza, Spagetti, Lazanya, Chicken Parmigiana', 2);
+call addfoodservice('Uzak Dogu Mutfagi', 250, 8, 'Sushi,Tom Yum Goong, Dak Kkochi, Kim Chi', 10);
 
 /*----------------------------------------------------------------------------------*/
 /*ADD ROOM EXTRA_SERVICE TABLE*/
 /*call addroom_extraservice(:room_id, :service_id)*/
-call addroom_extraservice(1, 10);
+call addroom_extraservice(1, 1);
 call addroom_extraservice(2, 9);
 call addroom_extraservice(3, 8);
 call addroom_extraservice(4, 7);
 call addroom_extraservice(5, 6);
 call addroom_extraservice(6, 5);
 call addroom_extraservice(7, 4);
-call addroom_extraservice(8, 3);
-call addroom_extraservice(8, 2);
-call addroom_extraservice(10, 1);
+call addroom_extraservice(1, 3);
+call addroom_extraservice(1, 2);
+call addroom_extraservice(1, 1);
 
 /*----------------------------------------------------------------------------------*/
 /*REZERVATION TABLE*/
 /*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
-call addreservation(curdate(), curdate()+1, 1, '1-1-100');
-call addreservation(curdate(), curdate()+1, 1, '1-1-100');
-call addreservation(curdate(), curdate()+2, 2, '1-1-100');
-call addreservation(curdate(), curdate()+3, 3, '1-1-100');
-call addreservation(curdate(), curdate()+4, 4, '1-1-100');
-call addreservation(curdate(), curdate()+5, 5, '4-0-400');
-call addreservation(curdate(), curdate()+6, 6, '4-0-400');
-call addreservation(curdate(), curdate()+7, 7, '4-0-400');
-call addreservation(curdate(), curdate()+8, 8, '4-0-400');
-call addreservation(curdate(), curdate()+9, 9, '4-0-400');
-call addreservation(curdate(), curdate()+10, 10, '4-0-400');
+call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
+call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
+call addreservation(curdate(), curdate()+2, 2, '1-1-100', 500);
+call addreservation(curdate(), curdate()+3, 3, '1-1-100', 500);
+call addreservation(curdate(), curdate()+4, 4, '1-1-100', 500);
+call addreservation(curdate(), curdate()+5, 5, '4-0-400', 500);
+call addreservation(curdate(), curdate()+6, 6, '4-0-400', 500);
+call addreservation(curdate(), curdate()+7, 7, '4-0-400', 500);
+call addreservation(curdate(), curdate()+8, 8, '4-0-400', 500);
+call addreservation(curdate(), curdate()+9, 9, '4-0-400', 500);
+call addreservation(curdate(), curdate()+10, 10, '4-0-400', 500);
 
 /*----------------------------------------------------------------------------------*/
 /*ORGANIZATION TABLE*/
@@ -143,6 +143,7 @@ call addorganization('Festival', 'Festival Alani Stant Kiralama Hizmetleri, Guve
 call addorganization('Nisan', 'Catering, cicek, Davetiye, Dekor, DJ, Fotograf', 5000, 'Pine Bay Holiday Resort');
 call addorganization('Davet', 'Otantik sahne ve konsepte uygun muzisyen ekibi, Sinevizyon gosterimi', 1000, 'Ramada Encore Izmir');
 
+call updateorganization(:organization_id, :name, :org_info, :price)
 /*----------------------------------------------------------------------------------*/
 /*RENT ORGANIZATION TABLE*/
 /*call addrentorganization(:customer_id, :organization_id)*/

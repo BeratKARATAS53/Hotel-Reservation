@@ -138,13 +138,13 @@ create table if not exists extraservice (
    	service varchar(255) not null,
    	service_price float not null,
    	service_point int,
-   	room_number varchar(10) not null
+   	hotel_id int not null
 );
 
 create table if not exists extraservice_deleted (
    	id int auto_increment primary key,
    	service varchar(255) not null,
-   	room_number varchar(10) not null,
+   	hotel_id int not null,
    	date_time timestamp
 );
 
@@ -410,17 +410,13 @@ delimiter ;
 
 drop procedure if exists addreservation;
 delimiter $$
-create procedure addreservation(in start_date date, in finish_date date, in customer_id integer, in room_number varchar(10))
+create procedure addreservation(in start_date date, in finish_date date, in customer_id integer, in room_number varchar(10),
+	in total_price float)
 begin
 	declare reservation_id INT DEFAULT 0;
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
 	declare person_money FLOAT DEFAULT 0;
-	declare room_service_money FLOAT DEFAULT 0;
-	declare room_money FLOAT DEFAULT 0;
-	declare diff_day INT DEFAULT 0;
-	declare total_price FLOAT DEFAULT 0;
-	set diff_day := (select day(finish_date) - day(start_date));
 	if exists (select * from room rm where rm.room_number=room_number) then
 		if(strcmp((select status from room rm where rm.room_number=room_number),'available') = 0) then
 			select id into room_id from room rm where rm.room_number=room_number;
@@ -429,11 +425,6 @@ begin
 					and r.start_date=start_date and r.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
 					select money into person_money from balance where id=balanceId;
-					if exists (select * from room_extraservice roomex where roomex.room_id=room_id) then
-						select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
-					end if;
-					select room_price into room_money from room where id=room_id;
-					set total_price := (select ((diff_day*room_money)+room_service_money));
 					if(person_money > total_price) then
 						insert into reservation(start_date, finish_date, price, customer_id)
 						values(start_date, finish_date, total_price, customer_id);
@@ -452,31 +443,19 @@ delimiter ;
 drop procedure if exists updatereservation;
 delimiter $$
 create procedure updatereservation(in reservation_id integer, in start_date date, in finish_date date, in customer_id integer,
-	in room_number varchar(10))
+	in room_number varchar(10), in total_price float, in person_money float)
 begin
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
-	declare person_money FLOAT DEFAULT 0;
-	declare room_service_money FLOAT DEFAULT 0;
-	declare room_money FLOAT DEFAULT 0;
-	declare reservation_money INT DEFAULT 0;
-	declare diff_day INT DEFAULT 0;
-	declare total_price FLOAT DEFAULT 0;
-	set diff_day := (select day(finish_date) - day(start_date));
+	declare reservation_money FLOAT DEFAULT 0;
 	if exists (select * from reservation r where r.id=reservation_id) then
 		if exists (select * from room rm where rm.room_number=room_number) then
-			if(strcmp((select status from room rm where rm.room_number=room_number),'available') = 0) then
+			if((select strcmp((select status from room rm where rm.room_number=room_number),'available')) = 0) then
 				select id into room_id from room rm where rm.room_number=room_number;
 				if not exists (select * from room_reservation rr, reservation res where rr.reservation_id=res.id and rr.room_id=room_id
 					and res.start_date=start_date and res.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
-					select money into person_money from balance where id=balanceId;
-					if exists (select * from room_extraservice roomex where roomex.room_id=room_id) then
-						select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
-					end if;
-					select room_price into room_money from room where id=room_id;
-					set person_money := (select person_money+reservation_money);
-					set total_price := (select ((diff_day*room_money)+room_service_money));
+					select price into reservation_money from reservation r where r.id=reservation_id;
 					if(person_money > total_price) then
 						delete from reservation r where r.id=reservation_id;
 						insert into reservation(start_date, finish_date, price, customer_id)
@@ -588,12 +567,12 @@ delimiter ;
 
 drop procedure if exists addextraservice;
 delimiter $$
-create procedure addextraservice(in service varchar(255), in service_price float, in service_point integer, in room_number varchar(10),
+create procedure addextraservice(in service varchar(255), in service_price float, in service_point integer, in hotel_id int,
 	out service_id integer)
 begin
-	if not exists (select * from extraservice e where e.service=service and e.room_number=room_number) then
-		if exists (select * from room r where r.room_number=room_number) then
-			insert into extraservice(service, service_price, service_point, room_number) values(service, service_price, service_point, room_number);
+	if not exists (select * from extraservice e where e.service=service and e.hotel_id=hotel_id) then
+		if exists (select * from hotel h where h.id=hotel_id) then
+			insert into extraservice(service, service_price, service_point, hotel_id) values(service, service_price, service_point, hotel_id);
 			set service_id := (select MAX(id) from extraservice);
 		end if;
 	end if;
@@ -603,9 +582,9 @@ delimiter ;
 drop procedure if exists updateextraservice;
 delimiter $$
 create procedure updateextraservice(in service_id integer, in service varchar(255), in service_price float, in service_point integer,
-	in room_number varchar(10))
+	in hotel_id int)
 begin
-	if exists (select * from extraservice e where e.service=service and e.room_number=room_number) then
+	if exists (select * from extraservice e where e.service=service and e.hotel_id=hotel_id) then
 		update extraservice set extraservice.service=service, extraservice.service_point=service_point, 
 			extraservice.service_price=service_price where extraservice.id=service_id;
 	end if;
@@ -625,13 +604,11 @@ delimiter ;
 drop procedure if exists addfoodservice;
 delimiter $$
 create procedure addfoodservice(in service varchar(255), in service_price float, in service_point integer, in food_detail varchar(255),
-	in room_number varchar(10))
+	in hotel_id int)
 begin
-	if not exists (select * from extraservice e where e.service=service and e.room_number=room_number) then
-		if exists (select * from room r, specialroom s where r.id=s.room_id and r.room_number=room_number) then
-			call addextraservice(service, service_price, service_point, room_number, @service_id);
-			insert into foodservice(food_detail, service_id) values(food_detail, (select @service_id));
-		end if;
+	if not exists (select * from extraservice e where e.service=service and e.hotel_id=hotel_id) then
+		call addextraservice(service, service_price, service_point, hotel_id, @service_id);
+		insert into foodservice(food_detail, service_id) values(food_detail, (select @service_id));
 	end if;
 end
 delimiter ;
@@ -639,12 +616,12 @@ delimiter ;
 drop procedure if exists updatefoodservice;
 delimiter $$
 create procedure updatefoodservice(in food_id integer, in service varchar(255), in service_price float, in service_point integer,
-	in food_detail varchar(255), in room_number varchar(10))
+	in food_detail varchar(255), in hotel_id int)
 begin
 	declare serviceId INT default 0;
 	if exists (select * from foodservice f where f.id=food_id) then
 		select service_id into serviceId from foodservice f where f.id=food_id;
-		call updateextraservice(serviceId, service, service_price, service_point, room_number);
+		call updateextraservice(serviceId, service, service_price, service_point, hotel_id);
 		update foodservice set foodservice.food_detail=food_detail where foodservice.id=food_id;
 	end if;
 end
@@ -668,7 +645,7 @@ create procedure addroom_extraservice(in room_id integer, in service_id integer)
 begin
 	declare service_money FLOAT DEFAULT 0;
 	if not exists (select * from room_extraservice re where re.room_id=room_id and re.service_id=service_id) then
-		if(strcmp((select room_number from extraservice e where e.id=service_id),(select room_number from room r where r.id=room_id)) = 0) then
+		if(strcmp((select hotel_id from extraservice e where e.id=service_id),(select substring_index(room_number,'-',1) from room where id=room_id)) = 0) then
 			select service_price into service_money from extraservice e where e.id=service_id;
 			insert into room_extraservice(room_id, service_id, service_price) values(room_id, service_id, service_money);
 		end if;
@@ -717,7 +694,7 @@ drop trigger if exists extraservice_deleted
 delimiter $$
 create trigger extraservice_deleted after delete on extraservice for each row
 begin
-	insert into extraservice_deleted(service, room_number, date_time) values (old.service, old.room_number, current_timestamp());
+	insert into extraservice_deleted(service, hotel_id, date_time) values (old.service, old.hotel_id, current_timestamp());
 end
 delimiter ;
 
