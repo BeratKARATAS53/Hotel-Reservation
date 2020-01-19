@@ -32,7 +32,7 @@ install the following application: https://www.activestate.com/products/tcl/
 ```
 
 ##### Web Application
-Download Appserv. It contains Mysql & Php.: [AppServ][appserv]
+Download Appserv. It contains Mysql & Php: [AppServ][appserv]
 
 You can run both 2 applications with the program you want (such as PyCharm, Sublime Text, etc.)
 But we developed it using VS Code: [VSCode][vscode]
