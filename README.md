@@ -27,7 +27,8 @@ Download Pyhton: [Python][pythonDown]
 Download Page GUI builder: [Page GUI Builder][page-builder]
 
 ```sh
-If you get "wish.exe" error while running the page GUI application, you should also install the following application: https://www.activestate.com/products/tcl/
+If you get "wish.exe" error while running the page GUI application, you should also
+install the following application: https://www.activestate.com/products/tcl/
 ```
 
 ##### Web Application
