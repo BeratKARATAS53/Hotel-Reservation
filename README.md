@@ -23,8 +23,8 @@ And of course Pet Adoption project itself is open source with a [private reposit
 ### Installation
 
 ##### Desktop Application
-Download Pyhton: [Python][pythonDown]
-Download Page GUI builder: [Page GUI Builder][page-builder]
+* Download Pyhton: [Python][pythonDown]
+* Download Page GUI builder: [Page GUI Builder][page-builder]
 
 ```sh
 If you get "wish.exe" error while running the page GUI application, you should also
@@ -32,7 +32,7 @@ install the following application: https://www.activestate.com/products/tcl/
 ```
 
 ##### Web Application
-Download Appserv. It contains Mysql & Php: [AppServ][appserv]
+* Download Appserv. It contains Mysql & Php: [AppServ][appserv]
 
 You can run both 2 applications with the program you want (such as PyCharm, Sublime Text, etc.)
 But we developed it using VS Code: [VSCode][vscode]
