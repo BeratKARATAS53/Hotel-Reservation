@@ -152,7 +152,7 @@ def delete():
             con.commit()
             org_list()
 
-            con.close()
+        con.close()
 
 
 def org_list():
