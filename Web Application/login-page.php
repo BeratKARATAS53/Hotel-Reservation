@@ -8,8 +8,8 @@
 </head>
 
 <body>
-  <div class="form">
-    <center class="title">
+  <div class="newForm">
+    <center class="newTitle">
       <p>LOGIN</p>
     </center>
     <form id="form1" name="form1" action="login-func.php" method="post">
@@ -18,7 +18,7 @@
       <label>&nbsp;</label>
       <input type="submit" name="submit" id="submit" value="LOGIN">
     </form>
-    <center><a href="register-page.php"><br>
+    <center><a href="register-page-customer.php"><br>
         Aren't You Member? Register</a></center>
   </div>
 </body>
