@@ -8,6 +8,7 @@ include('db.php');
     <meta charset="utf-8">
     <title>Member Page</title>
     <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
@@ -16,11 +17,13 @@ include('db.php');
         <a href="rooms.php">Rooms</a>
         <a href="hotels.php">Hotels</a>
 
-        <?php
-        include("search.php"); ?>
+        <a style="float:right" href="register-customer.php">Register</a>
+        <a style="float:right;" href=" login.php">Login</a>
 
-        <a style="float:right" href="login-page.php">Login</a>
-        <a style="float:right" href="register-page-customer.php">Register</a>
+        <form style="float:right; margin-right: 20px" method="post">
+            <input type="text" name="search" placeholder="Search">
+            <input type="submit" name="submit" value="Search" style="width: 25%">
+        </form>
     </div>
 </body>
 

@@ -1,21 +1,20 @@
 <?php
 session_start();
-//veritabanı bağlantımızı yapıyoruz
+// veritabanı bağlantımızı yapıyoruz
 include('db.php');
 
-//login-func.php de oluşturulan email'i burada $user_check değişkenine atıyoruz
-$user_check = $_SESSION['email'];
+// login.php de oluşturulan email'i burada $person_check değişkenine atıyoruz
+$person_check = $_SESSION['email'];
 
-//$user_check değişkenini burada person tablosundan email sütununda sorguluyoruz
-$sql = mysqli_query($baglanti, "SELECT * FROM person WHERE email='$user_check' ");
+//$person_check değişkenini burada person tablosundan email hücresinde sorguluyoruz
+$sql = mysqli_query($baglanti, "SELECT * FROM person WHERE email = '$person_check'");
 
 $row = mysqli_fetch_array($sql, MYSQLI_ASSOC);
 
-$login_user = $row['email'];
+$login_user = $row['id'];
 
-// eğer $user_check değişkeni tanımlı ise home-login sayfamız açık kalıcak eğer tanımlı değilse home-not-login 'e yönlendirecek
-if (!isset($user_check)) {
-    header("Location: home-login.php");
-} else {
-    header("Location: home-not-login.php");
+/* eğer $person_check değişkeni tanımlı ise home.php sayfamız açık kalıcak eğer tanımlı değilse login.php ye yönlendirecek */
+if (!isset($person_check)) {
+    echo "Giriş Başarısız";
+    // header("Location: home-not-login.php");
 }
