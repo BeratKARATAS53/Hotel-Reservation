@@ -1,3 +1,51 @@
+<?php
+//veritabanı bağlantımızı yaptık
+include('db.php');
+//veritabanı bağlantısı sağlanmaz ise hata verdirdik
+if (mysqli_connect_errno()) {
+  echo "MySQL bağlantısı başarısız: " . mysqli_connect_error();
+}
+
+// Register Sayfasından Gelen Bilgileri Değişkenlere Aktarma.
+$first = $_POST['first'];
+$last = $_POST['last'];
+$email = $_POST['mail'];
+$address = $_POST['address'];
+$pass = $_POST['pass'];
+$confpass = $_POST['confirm-pass'];
+$phone = $_POST['phone'];
+$money = $_POST['money'];
+$hotelname = $_POST['hotel-name'];
+$type = $_POST['type'];
+
+$first =  trim($first);
+$last =  trim($last);
+$email = trim($email);
+$address =  trim($address);
+$pass = trim($password);
+$confpass =  trim($confpass);
+$phone =  trim($confpass);
+$money =  trim($money);
+$hotelname =  trim($hotelname);
+
+if (strcmp($pass, $confpass) != 0) {
+  echo "<script>alert('Passwords Don't Match!');</script>";
+} else {
+  $password = md5($password);
+  // Kayıt İşlemi
+  $kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',0,$money,'null','$hotelname','$type')";
+
+  $sonuc = mysqli_query($baglanti, $kayit);
+
+  if ($sonuc) {
+    header("Location: login.php");
+  } else {
+    echo "<script>alert('All Field Are Required!');</script>";
+  }
+}
+
+?>
+
 <!doctype html>
 <html>
 
@@ -11,9 +59,9 @@
   <div class="newForm">
     <center class="newTitle">
       <p>HOTEL EMPLOYEE REGISTER FORM</p>
-      <p><a href="register-page-customer.php">Go To Customer Register >>></a></p>
+      <p><a href="register-customer.php">Go To Customer Register >>></a></p>
     </center>
-    <form id="form1" name="form1" action="register-func-hotel.php" method="post">
+    <form method="post">
       <input type="text" name="first" id="first" placeholder="First Name" />
       <input type="text" name="last" id="last" placeholder="Last Name" />
       <input type="email" name="mail" id="mail" placeholder="Mail" />
@@ -36,7 +84,7 @@
       <input type="submit" name="submit" id="submit" value="SAVE">
     </form>
     <center>
-      <p><a href="login-page.php">Are You Member ?, Log In</a></p>
+      <p><a href="login.php">Are You Member ?, Log In</a></p>
     </center>
   </div>
 </body>
