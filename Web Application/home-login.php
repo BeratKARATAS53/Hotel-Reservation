@@ -10,8 +10,19 @@
 <body>
    <?php
    include('navbar-login.php');
-   include('rooms.php');
+   include('control.php');
    ?>
+
+   <div class="newForm">
+      <center class="newTitle">
+         <p>ROOM RESERVATION</p>
+      </center>
+      <?php
+      include('date.php');
+      ?>
+   </div>
+
+
 </body>
 
 </html>
