@@ -8,13 +8,7 @@ require('db.php');
 
 <body>
     <?php
-    if ($_SESSION['email'] != null) {
-        echo $_SESSION['email'];
-        include("navbar-login.php");
-    } else {
-        echo $_SESSION['email'];
-        include("navbar-not-login.php");
-    }
+    include("navbar.php");
     ?>
 
     <div class="w3-cell-row" style="margin: 50px">

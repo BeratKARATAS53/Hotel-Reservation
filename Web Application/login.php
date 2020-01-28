@@ -19,13 +19,8 @@ if (isset($_POST['email']) && isset($_POST['pass'])) //when form submitted
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     if (mysqli_num_rows($result) == 1) {
-        $_SESSION["login_user"] = array(
-            "id" => $row["id"],
-            "firstname" => $row["firstname"],
-            "lastname" => $row["lastname"],
-            "email" => $row["email"]
-        );
-        header('Location: home-login.php'); //redirect to main
+        $_SESSION['email'] = $email;
+        header('Location: /'); //redirect to main
     } else {
         echo "<script>alert('Wrong login or password');</script>";
     }
