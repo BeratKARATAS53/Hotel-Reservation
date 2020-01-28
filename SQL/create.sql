@@ -93,6 +93,7 @@ create table if not exists room(
    	room_number varchar(10) not null,
    	status varchar(255) not null,
    	capacity int not null,
+   	image varchar(255),
    	hotel_id int,
    	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade
 );
@@ -244,7 +245,7 @@ begin
 	   		begin
 		   		call addbalance(salary, curdate(), @balance_id);
 	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-	   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
+	   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id));
 				select p.id into id from person p where p.email = mail;
 	    		insert into customer(age, username, person_id) values(age, username, id); 
 				if not exists (select * from customer c where c.person_id=id) then
@@ -258,7 +259,7 @@ begin
 				if exists (select * from hotel where hotel.name=hotel_name) then
 			   		call addbalance(salary, curdate(), @balance_id);
 		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-		   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
+		   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id));
 					select distinct p.id into id from person p where p.email = mail;
 					select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 					insert into employee(salary, hotel_id, person_id) values(salary, hotel_id, id);
@@ -274,7 +275,7 @@ begin
 				if exists (select * from hotel where hotel.name=hotel_name) then
 			   		call addbalance(salary, curdate(), @balance_id);
 		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-		   			values(firstname, lastname, passwrd, mail, address, phone, (select @balance_id));
+		   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id));
 					select distinct p.id into id from person p where p.email = mail;
 					select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 					insert into manager(salary, hotel_id, person_id) values(salary, hotel_id, id);
@@ -303,7 +304,7 @@ begin
 	   		begin
 		   		select c.id into id from customer c where c.username=username;
 				select b.id into balance from balance b, person p where p.balance_id=b.id and p.id=person_id;
-	    		update person set person.firstname=firstname, person.lastname=lastname, person.passwrd=passwrd,
+	    		update person set person.firstname=firstname, person.lastname=lastname, person.passwrd=MD5(passwrd),
 	    			person.email=mail, person.address=address, person.telephone=phone where person.id=person_id;
 	    		update customer set customer.age=age, customer.username=username where customer.id=id;
 	    		update balance set balance.balance_date=curdate(), balance.money=salary where balance.id=balance;
@@ -312,7 +313,7 @@ begin
 			begin
 		   		select e.id into id from employee e where e.person_id=person_id;
 				select b.id into balance from balance b, person p where p.balance_id=b.id and p.id=person_id;
-	    		update person set person.firstname=firstname, person.lastname=lastname, person.passwrd=passwrd,
+	    		update person set person.firstname=firstname, person.lastname=lastname, person.passwrd=MD5(passwrd),
 	    			person.email=mail, person.address=address, person.telephone=phone where person.id=person_id;
 	    		update employee set employee.salary=salary where employee.id=id;
 	    		update balance set balance.balance_date=curdate(), balance.money=salary where balance.id=balance;
@@ -321,7 +322,7 @@ begin
 			begin
 		   		select e.id into id from employee e where e.person_id=person_id;
 				select b.id into balance from balance b, person p where p.balance_id=b.id and p.id=person_id;
-	    		update person set person.firstname=firstname, person.lastname=lastname, person.passwrd=passwrd,
+	    		update person set person.firstname=firstname, person.lastname=lastname, person.passwrd=MD5(passwrd),
 	    			person.email=mail, person.address=address, person.telephone=phone where person.id=person_id;
 	    		update manager set manager.salary=salary where manager.id=id;
 	    		update balance set balance.balance_date=curdate(), balance.money=salary where balance.id=balance;
@@ -347,7 +348,7 @@ delimiter ;
 drop procedure if exists addroom;
 delimiter $$
 create procedure addroom(in room_info varchar(255), in room_price float, in room_number varchar(10), in status varchar(255),
-	in capacity integer, in feature varchar(255), in hotel_name varchar(200), in room_type varchar(25))
+	in capacity integer, in image varchar(255), in feature varchar(255), in hotel_name varchar(200), in room_type varchar(25))
 begin
 	declare room_id INT DEFAULT 0;
 	declare hotel_id INT DEFAULT 0;
@@ -357,8 +358,8 @@ begin
 	   	when 'special' then
 	   		begin
 				if not exists (select * from room r where r.room_number=concat(hotel_id, '-1-', room_number) and r.hotel_id=hotel_id) then 
-					insert into room(room_info, room_price, room_number, status, capacity, hotel_id)
-					values(room_info, room_price, concat(hotel_id, '-1-', room_number), status, capacity, hotel_id);
+					insert into room(room_info, room_price, room_number, status, capacity, image, hotel_id)
+					values(room_info, room_price, concat(hotel_id, '-1-', room_number), status, capacity, image, hotel_id);
 					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat(hotel_id, '-1-', room_number);
 					insert into specialroom(feature, room_id) values(feature, room_id);
 				end if;
@@ -410,8 +411,7 @@ delimiter ;
 
 drop procedure if exists addreservation;
 delimiter $$
-create procedure addreservation(in start_date date, in finish_date date, in customer_id integer, in room_number varchar(10),
-	in total_price float)
+create procedure addreservation(in start_date date, in finish_date date, in customer_id integer, in room_number varchar(10), in total_price float)
 begin
 	declare reservation_id INT DEFAULT 0;
 	declare room_id INT DEFAULT 0;
@@ -443,19 +443,31 @@ delimiter ;
 drop procedure if exists updatereservation;
 delimiter $$
 create procedure updatereservation(in reservation_id integer, in start_date date, in finish_date date, in customer_id integer,
-	in room_number varchar(10), in total_price float, in person_money float)
+	in room_number varchar(10))
 begin
 	declare room_id INT DEFAULT 0;
 	declare balanceId INT DEFAULT 0;
-	declare reservation_money FLOAT DEFAULT 0;
+	declare person_money FLOAT DEFAULT 0;
+	declare room_service_money FLOAT DEFAULT 0;
+	declare room_money FLOAT DEFAULT 0;
+	declare reservation_money INT DEFAULT 0;
+	declare diff_day INT DEFAULT 0;
+	declare total_price FLOAT DEFAULT 0;
+	set diff_day := (select day(finish_date) - day(start_date));
 	if exists (select * from reservation r where r.id=reservation_id) then
 		if exists (select * from room rm where rm.room_number=room_number) then
-			if((select strcmp((select status from room rm where rm.room_number=room_number),'available')) = 0) then
+			if(strcmp((select status from room rm where rm.room_number=room_number),'available') = 0) then
 				select id into room_id from room rm where rm.room_number=room_number;
 				if not exists (select * from room_reservation rr, reservation res where rr.reservation_id=res.id and rr.room_id=room_id
 					and res.start_date=start_date and res.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
-					select price into reservation_money from reservation r where r.id=reservation_id;
+					select money into person_money from balance where id=balanceId;
+					if exists (select * from room_extraservice roomex where roomex.room_id=room_id) then
+						select sum(service_price) into room_service_money from room_extraservice re where re.room_id=room_id;
+					end if;
+					select room_price into room_money from room where id=room_id;
+					set person_money := (select person_money+reservation_money);
+					set total_price := (select ((diff_day*room_money)+room_service_money));
 					if(person_money > total_price) then
 						delete from reservation r where r.id=reservation_id;
 						insert into reservation(start_date, finish_date, price, customer_id)

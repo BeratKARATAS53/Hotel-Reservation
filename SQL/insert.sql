@@ -59,17 +59,17 @@ call addperson('Aykut', 'Erdogan', 'zaOEdXbKjx', 'aykut_erdogan244@example.com',
 
 /*----------------------------------------------------------------------------------*/
 /*ROOM TABLE*/
-/*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :feature, :hotel_name, :room_type)*/
-call addroom('Kose Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 50 m², Banyo : 1 banyo', 500, 100, 'available', 4, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Grand Makel Topkapi' , 'Special');
-call addroom('Suit Oda, Yatak : 2 cift kisilik yatak, 2 tek kisilik yatak, Buyukluk : 70 m², Banyo : 1 banyo', 400, 200, 'available', 6, 'Ekstra yatak: 1 bebek yatagi, Manzara : Dag/Pist', 'Divan Adana', 'special');
-call addroom('Standart Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 28-32 m², Banyo : 1 banyo', 175, 300, 'available', 4, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Dedeman Istanbul', 'standart');
-call addroom('Connection Oda, Yatak : 4 cift kisilik yatak, Buyukluk : 56-64 m², Banyo : 2 banyo', 250, 400, 'available', 8, 'Ekstra yatak: 2 ek yatak veya 2 bebek yatagi, Manzara : Dag/Pist', 'Shimall Hotel', 'standart');
-call addroom('Kral Dairesi, Yatak : 1 cift kisilik yatak, 4 tek kisilik yatak, Buyukluk : 170 m², Banyo : 2 banyo, 1 tuvalet', 1000, 500, 'available', 11, 'Ekstra yatak: 4 ek yatak veya 4 bebek yatagi, Manzara : Deniz', 'Hotel Grand Asya', 'special');
-call addroom('Kose Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 50 m², Banyo : 1 banyo', 500, 101, 'not available', 4, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Hotel Grand Asya', 'Special');
-call addroom('Suit Oda, Yatak : 2 cift kisilik yatak, 2 tek kisilik yatak, Buyukluk : 70 m², Banyo : 1 banyo', 400, 201, 'not available', 6, 'Ekstra yatak: 1 bebek yatagi, Manzara : Dag/Pist', 'Doubletree By Hilton', 'special');
-call addroom('Standart Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 28-32 m², Banyo : 1 banyo', 175, 301, 'not available', 4, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Hampton By Hilton Kahramanmaras', 'standart');
-call addroom('Connection Oda, Yatak : 4 cift kisilik yatak, Buyukluk : 56-64 m², Banyo : 2 banyo', 250, 401, 'not available', 8, 'Ekstra yatak: 2 ek yatak veya 2 bebek yatagi, Manzara : Dag/Pist', 'Pine Bay Holiday Resort', 'standart');
-call addroom('Kral Dairesi, Yatak : 1 cift kisilik yatak, 4 tek kisilik yatak, Buyukluk : 170 m², Banyo : 2 banyo, 1 tuvalet', 1000, 501, 'not available', 11, 'Ekstra yatak: 4 ek yatak veya 4 bebek yatagi, Manzara : Deniz', 'Ramada Encore Izmir', 'special');
+/*call addroom(:room_info, :room_price, :room_number, :status, :capacity, :image, :feature, :hotel_name, :room_type)*/
+call addroom('Kose Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 50 m², Banyo : 1 banyo', 500, 100, 'available', 4, null, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Grand Makel Topkapi' , 'Special');
+call addroom('Suit Oda, Yatak : 2 cift kisilik yatak, 2 tek kisilik yatak, Buyukluk : 70 m², Banyo : 1 banyo', 400, 200, 'available', 6, null, 'Ekstra yatak: 1 bebek yatagi, Manzara : Dag/Pist', 'Divan Adana', 'special');
+call addroom('Standart Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 28-32 m², Banyo : 1 banyo', 175, 300, 'available', 4, null, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Dedeman Istanbul', 'standart');
+call addroom('Connection Oda, Yatak : 4 cift kisilik yatak, Buyukluk : 56-64 m², Banyo : 2 banyo', 250, 400, 'available', 8, null, 'Ekstra yatak: 2 ek yatak veya 2 bebek yatagi, Manzara : Dag/Pist', 'Shimall Hotel', 'standart');
+call addroom('Kral Dairesi, Yatak : 1 cift kisilik yatak, 4 tek kisilik yatak, Buyukluk : 170 m², Banyo : 2 banyo, 1 tuvalet', 1000, 500, 'available', 11, null, 'Ekstra yatak: 4 ek yatak veya 4 bebek yatagi, Manzara : Deniz', 'Hotel Grand Asya', 'special');
+call addroom('Kose Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 50 m², Banyo : 1 banyo', 500, 101, 'not available', 4, null, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Hotel Grand Asya', 'Special');
+call addroom('Suit Oda, Yatak : 2 cift kisilik yatak, 2 tek kisilik yatak, Buyukluk : 70 m², Banyo : 1 banyo', 400, 201, 'not available', 6, null, 'Ekstra yatak: 1 bebek yatagi, Manzara : Dag/Pist', 'Doubletree By Hilton', 'special');
+call addroom('Standart Oda, Yatak : 2 cift kisilik yatak, Buyukluk : 28-32 m², Banyo : 1 banyo', 175, 301, 'not available', 4, null, 'Ekstra yatak: 1 ek yatak veya 1 bebek yatagi, Manzara : Dag/Pist', 'Hampton By Hilton Kahramanmaras', 'standart');
+call addroom('Connection Oda, Yatak : 4 cift kisilik yatak, Buyukluk : 56-64 m², Banyo : 2 banyo', 250, 401, 'not available', 8, null, 'Ekstra yatak: 2 ek yatak veya 2 bebek yatagi, Manzara : Dag/Pist', 'Pine Bay Holiday Resort', 'standart');
+call addroom('Kral Dairesi, Yatak : 1 cift kisilik yatak, 4 tek kisilik yatak, Buyukluk : 170 m², Banyo : 2 banyo, 1 tuvalet', 1000, 501, 'not available', 11, null, 'Ekstra yatak: 4 ek yatak veya 4 bebek yatagi, Manzara : Deniz', 'Ramada Encore Izmir', 'special');
 
 
 /*----------------------------------------------------------------------------------*/
