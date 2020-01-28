@@ -93,6 +93,7 @@ create table if not exists room(
    	room_number varchar(10) not null,
    	status varchar(255) not null,
    	capacity int not null,
+   	image varchar(255),
    	hotel_id int,
    	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade
 );
@@ -347,7 +348,7 @@ delimiter ;
 drop procedure if exists addroom;
 delimiter $$
 create procedure addroom(in room_info varchar(255), in room_price float, in room_number varchar(10), in status varchar(255),
-	in capacity integer, in feature varchar(255), in hotel_name varchar(200), in room_type varchar(25))
+	in capacity integer, in image varchar(255), in feature varchar(255), in hotel_name varchar(200), in room_type varchar(25))
 begin
 	declare room_id INT DEFAULT 0;
 	declare hotel_id INT DEFAULT 0;
@@ -357,8 +358,8 @@ begin
 	   	when 'special' then
 	   		begin
 				if not exists (select * from room r where r.room_number=concat(hotel_id, '-1-', room_number) and r.hotel_id=hotel_id) then 
-					insert into room(room_info, room_price, room_number, status, capacity, hotel_id)
-					values(room_info, room_price, concat(hotel_id, '-1-', room_number), status, capacity, hotel_id);
+					insert into room(room_info, room_price, room_number, status, capacity, image, hotel_id)
+					values(room_info, room_price, concat(hotel_id, '-1-', room_number), status, capacity, image, hotel_id);
 					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat(hotel_id, '-1-', room_number);
 					insert into specialroom(feature, room_id) values(feature, room_id);
 				end if;
