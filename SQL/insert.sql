@@ -52,7 +52,7 @@ call addperson('Pinar', 'ozcan', 'l4aibhdyfm', 'pinar_ozcan9@example.com', 'Merv
 call addperson('Ayca', 'Bozkurt', 'bfBDd5sywz', 'bozkurtayca@example.com', 'Akcam Bulvari No:304 Alucra, Giresun', '+908515839854', 43, 345,"BozkurtAyca", 'Hotel Grand Asya', null, 'manager');
 call addperson('Ismail', 'cakir', '2m0KoB8CpY', 'ismail_cakir999@example.com', 'Ahiler Caddesi No:941 Yedisu, Bingol', '+908515488313', 21, 223,"ismail_cakir", 'Doubletree By Hilton', null, 'manager');
 call addperson('Cemal', 'Yildiz', 'lo2A9PqkG7', 'yildizcemal@example.com', 'Hilal Bulvari No:372 Elbeyli, Kilis', '+908514224374', 43, 50,"yildiz804", 'Ramada By Wyndham Diyarbakir', null, 'manager');
-call addperson('Nilgun', 'Korkmaz', 'NzieyfbjZS', 'korkmaznilgun981@example.com', 'Namik Kemal Sokagi No:622 Lice, Diyarbakir', '+908518455036', 29, 600,"nilgun_korkmaz397", null, 'Hampton By Hilton Kahramanmaras', null, 'manager');
+call addperson('Nilgun', 'Korkmaz', 'NzieyfbjZS', 'korkmaznilgun981@example.com', 'Namik Kemal Sokagi No:622 Lice, Diyarbakir', '+908518455036', 29, 600,"nilgun_korkmaz397", 'Hampton By Hilton Kahramanmaras', null, 'manager');
 call addperson('Hulya', 'Arslan', 'NfdAylgZIT', 'hulya_arslan797@example.com', 'ulku Mahallesi No:787 caycuma, Zonguldak', '+908515129718', 36, 500, "HulyaArslan", 'Pine Bay Holiday Resort', null, 'manager');
 call addperson('Aykut', 'Erdogan', 'zaOEdXbKjx', 'aykut_erdogan244@example.com', 'Semerkant Mahallesi No:23 Mut, Mersin', '+908518392822', 26, 450, "AykutErdogan", 'Ramada Encore Izmir', null, 'manager');
 
@@ -117,16 +117,7 @@ call addroom_extraservice(1, 1);
 /*REZERVATION TABLE*/
 /*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
 call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
-call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
-call addreservation(curdate(), curdate()+2, 2, '1-1-100', 500);
-call addreservation(curdate(), curdate()+3, 3, '1-1-100', 500);
-call addreservation(curdate(), curdate()+4, 4, '1-1-100', 500);
-call addreservation(curdate(), curdate()+5, 5, '4-0-400', 500);
-call addreservation(curdate(), curdate()+6, 6, '4-0-400', 500);
-call addreservation(curdate(), curdate()+7, 7, '4-0-400', 500);
-call addreservation(curdate(), curdate()+8, 8, '4-0-400', 500);
-call addreservation(curdate(), curdate()+9, 9, '4-0-400', 500);
-call addreservation(curdate(), curdate()+10, 10, '4-0-400', 500);
+call addreservation(curdate()+1, curdate()+2, 1, '1-1-100', 500);
 
 /*----------------------------------------------------------------------------------*/
 /*ORGANIZATION TABLE*/
