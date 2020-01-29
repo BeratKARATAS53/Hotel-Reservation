@@ -16,6 +16,7 @@ include('db.php');
         <a class="active" href="profile-employees.php">Home</a>
         <a href="hotel-settings.php">Settings</a>
         <a href="hotel-balance.php">Balance</a>
+        <a href="statistics.php">Statistics</a>
 
         <?php
         $user = $_SESSION["email"];
