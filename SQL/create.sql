@@ -425,7 +425,7 @@ begin
 					and r.start_date=start_date and r.finish_date=finish_date) then
 					select balance_id into balanceId from person p, customer c where p.id=c.person_id and c.id=customer_id;
 					select money into person_money from balance where id=balanceId;
-					if(person_money > total_price) then
+					if(person_money >= total_price) then
 						insert into reservation(start_date, finish_date, price, customer_id)
 						values(start_date, finish_date, total_price, customer_id);
 						select max(id) into reservation_id from reservation re where re.start_date=start_date and re.finish_date=finish_date;
@@ -468,7 +468,7 @@ begin
 					select room_price into room_money from room where id=room_id;
 					set person_money := (select person_money+reservation_money);
 					set total_price := (select ((diff_day*room_money)+room_service_money));
-					if(person_money > total_price) then
+					if(person_money >= total_price) then
 						delete from reservation r where r.id=reservation_id;
 						insert into reservation(start_date, finish_date, price, customer_id)
 						values(start_date, finish_date, total_price, customer_id);

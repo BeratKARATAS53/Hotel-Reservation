@@ -19,6 +19,7 @@ echo $user;
         <a class="active" href="/">Home</a>
         <a href="rooms.php">Rooms</a>
         <a href="hotels.php">Hotels</a>
+        <a href="organizations.php">Organizations</a>
 
         <?php
         $user = $_SESSION["email"];
