@@ -23,25 +23,21 @@ $last =  trim($last);
 $email = trim($email);
 $address =  trim($address);
 $pass = trim($password);
-$confpass =  trim($confpass);
 $phone =  trim($confpass);
 $money =  trim($money);
 $hotelname =  trim($hotelname);
 
-if (strcmp($pass, $confpass) != 0) {
-  echo "<script>alert('Passwords Don't Match!');</script>";
+
+$password = md5($password);
+// Kayıt İşlemi
+$kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',0,$money,'null','$hotelname','$type')";
+
+$sonuc = mysqli_query($baglanti, $kayit);
+
+if ($sonuc) {
+  header("Location: login.php");
 } else {
-  $password = md5($password);
-  // Kayıt İşlemi
-  $kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',0,$money,'null','$hotelname','$type')";
-
-  $sonuc = mysqli_query($baglanti, $kayit);
-
-  if ($sonuc) {
-    header("Location: login.php");
-  } else {
-    echo "<script>alert('All Field Are Required!');</script>";
-  }
+  echo "<script>alert('All Field Are Required!');</script>";
 }
 
 ?>
@@ -67,7 +63,6 @@ if (strcmp($pass, $confpass) != 0) {
       <input type="email" name="mail" id="mail" placeholder="Mail" />
       <input type="text" name="address" id="address" placeholder="Address" />
       <input type="password" name="pass" id="pass" placeholder="Password" />
-      <input type="password" name="confirm-pass" id="confirm-pass" placeholder="Confirm Password" />
       <input type="text" name="phone" id="phone" placeholder="Telephone" />
       <input type="text" name="money" id="money" placeholder="Money" />
       <input type="text" name="hotel-name" id="hotel-name" placeholder="Hotel Name" /><br>
