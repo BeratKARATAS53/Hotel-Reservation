@@ -25,7 +25,7 @@ echo $user;
         $user = $_SESSION["email"];
         if ($user) { ?>
             <a style="float:right" href="logout.php">Log Out</a>
-            <a style="float:right" href="profile-page.php"><?php echo $user; ?></a>
+            <a style="float:right" href="profile-customer.php"><?php echo $user; ?></a>
         <?php
         } else { ?>
             <a style="float:right" href="login.php">Login</a>
