@@ -13,7 +13,8 @@ include('db.php');
 <body>
     <div class="topnav">
         <a href="/">Home</a>
-        <a href="update.php">Update</a>
+        <a href="my-reservations.php">My Reservations</a>
+        <a href="settings.php">Settings</a>
         <a href="balance-update.php">Balance</a>
 
 
