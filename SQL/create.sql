@@ -33,6 +33,8 @@ create table if not exists person(
    	address varchar (255) not null,
    	telephone varchar (20) unique not null,
    	balance_id int not null,
+   	p_role varchar(50) not null,
+   	image varchar (255),
    	foreign key (balance_id) references balance(id) on update cascade
 );
 
@@ -236,7 +238,7 @@ drop procedure if exists addperson;
 delimiter $$
 create procedure addperson(in firstname varchar(100), in lastname varchar(100), in passwrd varchar(255), in mail varchar(255),
 	in address varchar(255), in phone varchar(20), in age integer, in salary float, in username varchar(150),
-	in hotel_name varchar(200), in person_type varchar(20))
+	in hotel_name varchar(200), in image varchar(255), in person_type varchar(50))
 begin
 	declare id INT DEFAULT 0;
 	if not exists (select * from person p where p.email = mail or p.telephone = phone) then
@@ -244,8 +246,8 @@ begin
 	   	when 'customer' then
 	   		begin
 		   		call addbalance(salary, curdate(), @balance_id);
-	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-	   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id));
+	   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id, p_role, image)
+	   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id), person_type, image);
 				select p.id into id from person p where p.email = mail;
 	    		insert into customer(age, username, person_id) values(age, username, id); 
 				if not exists (select * from customer c where c.person_id=id) then
@@ -258,8 +260,8 @@ begin
 				declare hotel_id INT DEFAULT 0;
 				if exists (select * from hotel where hotel.name=hotel_name) then
 			   		call addbalance(salary, curdate(), @balance_id);
-		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-		   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id));
+		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id, p_role, image)
+		   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id), person_type, image);
 					select distinct p.id into id from person p where p.email = mail;
 					select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 					insert into employee(salary, hotel_id, person_id) values(salary, hotel_id, id);
@@ -274,8 +276,8 @@ begin
 		   		declare hotel_id INT DEFAULT 0;
 				if exists (select * from hotel where hotel.name=hotel_name) then
 			   		call addbalance(salary, curdate(), @balance_id);
-		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id)
-		   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id));
+		   			insert into person(firstname, lastname, passwrd, email, address, telephone, balance_id, p_role, image)
+		   			values(firstname, lastname, MD5(passwrd), mail, address, phone, (select @balance_id), person_type, image);
 					select distinct p.id into id from person p where p.email = mail;
 					select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
 					insert into manager(salary, hotel_id, person_id) values(salary, hotel_id, id);

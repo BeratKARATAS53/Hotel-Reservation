@@ -18,44 +18,43 @@ call addhotel('Ramada Encore Izmir', 'Mithatpasa Caddesi 1460, Balcova, 35330, I
 
 /*----------------------------------------------------------------------------------*/
 /*PERSON TABLE*/
-/*call addperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_name, :person_type)*/
+/*call addperson(:firstname, :lastname, :passwrd, :mail, :address, :phone, :age, :salary, :username, :hotel_name, :image, :person_type)*/
 /*Customer*/
-call addperson('Cemre', 'unal', '3kuUyxfI2h', 'unalcemre231@example.com', 'umit Mahallesi No:43 Kemaliye, Erzincan', '+908511295274', 20, 1000, 'UnalCemre', 'Grand Makel Topkapi', 'customer');
-call addperson('Ceren', 'Keskin', 'JRMm7FD9pz', 'ceren_keskin924@example.com', 'cigdemli Mahallesi No:863 Gurun, Sivas', '+908511281760', 25, 5000, 'ceren_keskin', 'Divan Adana', 'customer');
-call addperson('Sezen', 'Dogan', 'CQ9LmiDAqB', 'dogansezen@example.com', 'Karakus Caddesi No:480 Kavaklidere, Mugla', '+908512462713', 23, 2000, 'sezen_dogan', 'Dedeman Istanbul', 'customer');
-call addperson('Hasan', 'Aydin', 'PfrDWox0eE', 'hasan_aydin66@example.com', 'Kumral Bulvari No:897 Dursunbey, Balikesir', '+908516953719', 25, 1500, 'aydin147', 'Shimall Hotel', 'customer');
-call addperson('Aynur', 'Can', 'qjFZlRi3Y1', 'canaynur843@example.com', 'Ecdat Sokagi No:136 Ugurludag, corum', '+908515917065', 38, 1700, 'aynur_can', 'Hotel Grand Asya', 'customer');
-call addperson('sukru', 'Tas', 'teYGXPJmCf', 'tassukru822@example.com', 'Molla Bulvari No:506 Merkezefendi, Denizli', '+908515467333', 37, 1900, 'sukru_tas41', 'Doubletree By Hilton', 'customer');
-call addperson('Gozde', 'Korkmaz', '76YW20vyFx', 'korkmazgozde991@example.com', 'Nazar Mahallesi No:946 Patnos, Agri', '+908519736217', 30, 5500, 'gozde_korkmaz', 'Ramada By Wyndham Diyarbakir', 'customer');
-call addperson('Kadir', 'Kaya', '9CHsA3GqIe', 'kadir_kaya144@example.com', 'Keklik cesme Mahallesi No:337 Nazilli, Aydin', '+908515477416', 34, 6000, 'kadir444', 'Hampton By Hilton Kahramanmaras', 'customer');
-call addperson('Sibel', 'Arslan', 'G5qcQx9320', 'arslansibel742@example.com', 'senlik Mahallesi No:914 semdinli, Hakkari', '+908511169165', 40, 2400, 'sibel954', 'Pine Bay Holiday Resort', 'customer');
-call addperson('Cemal', 'Kose', 'osFMgUyvRt', 'kosecemal@example.com', 'Gazi Emir Sokagi No:349 Develi, Kayseri', '+908516800932', 31, 3000, 'KoseCemal', 'Ramada Encore Izmir', 'customer');
-call addperson('ads', 'das', 'das', '231@example.com', 'dsa Emir Sokagi No:349 Develi, Kayseri', '+758231', '0', 3000, 'null', 'Ramada Encore Izmir', 'employee');
+call addperson('Cemre', 'unal', '3kuUyxfI2h', 'unalcemre231@example.com', 'umit Mahallesi No:43 Kemaliye, Erzincan', '+908511295274', 20, 1000, 'UnalCemre', 'Grand Makel Topkapi', null, 'customer');
+call addperson('Ceren', 'Keskin', 'JRMm7FD9pz', 'ceren_keskin924@example.com', 'cigdemli Mahallesi No:863 Gurun, Sivas', '+908511281760', 25, 5000, 'ceren_keskin', 'Divan Adana', null, 'customer');
+call addperson('Sezen', 'Dogan', 'CQ9LmiDAqB', 'dogansezen@example.com', 'Karakus Caddesi No:480 Kavaklidere, Mugla', '+908512462713', 23, 2000, 'sezen_dogan', 'Dedeman Istanbul', null, 'customer');
+call addperson('Hasan', 'Aydin', 'PfrDWox0eE', 'hasan_aydin66@example.com', 'Kumral Bulvari No:897 Dursunbey, Balikesir', '+908516953719', 25, 1500, 'aydin147', 'Shimall Hotel', null, 'customer');
+call addperson('Aynur', 'Can', 'qjFZlRi3Y1', 'canaynur843@example.com', 'Ecdat Sokagi No:136 Ugurludag, corum', '+908515917065', 38, 1700, 'aynur_can', 'Hotel Grand Asya', null, 'customer');
+call addperson('sukru', 'Tas', 'teYGXPJmCf', 'tassukru822@example.com', 'Molla Bulvari No:506 Merkezefendi, Denizli', '+908515467333', 37, 1900, 'sukru_tas41', 'Doubletree By Hilton', null, 'customer');
+call addperson('Gozde', 'Korkmaz', '76YW20vyFx', 'korkmazgozde991@example.com', 'Nazar Mahallesi No:946 Patnos, Agri', '+908519736217', 30, 5500, 'gozde_korkmaz', 'Ramada By Wyndham Diyarbakir', null, 'customer');
+call addperson('Kadir', 'Kaya', '9CHsA3GqIe', 'kadir_kaya144@example.com', 'Keklik cesme Mahallesi No:337 Nazilli, Aydin', '+908515477416', 34, 6000, 'kadir444', 'Hampton By Hilton Kahramanmaras', null, 'customer');
+call addperson('Sibel', 'Arslan', 'G5qcQx9320', 'arslansibel742@example.com', 'senlik Mahallesi No:914 semdinli, Hakkari', '+908511169165', 40, 2400, 'sibel954', 'Pine Bay Holiday Resort', null, 'customer');
+call addperson('Cemal', 'Kose', 'osFMgUyvRt', 'kosecemal@example.com', 'Gazi Emir Sokagi No:349 Develi, Kayseri', '+908516800932', 31, 3000, 'KoseCemal', 'Ramada Encore Izmir', null, 'customer');
 
 /*Employee*/
-call addperson('Kubra', 'ozer', 'OyYdHaK8ew', 'ozerkubra789@example.com', 'Fatih Bulvari No:989 Dalaman, Mugla', '+908513178115', 28, 1200, 'kubraozer', 'Grand Makel Topkapi', 'employee');
-call addperson('Emre', 'Keskin', 'uj6FSTipNh', 'keskinemre858@example.com', 'Sancak Mahallesi No:659 Yenipazar, Bilecik', '131', 21, 398, 'emre1234', 'Divan Adana', 'employee');
-call addperson('Ugur', 'celik', 'rQjG1W9XpA', 'celikugur@example.com', 'Tomruk Caddesi No:472 Kibriscik, Bolu', '+908512188855', 22, 2214,"UgurCelik", 'Dedeman Istanbul', 'employee');
-call addperson('Derya', 'Kilic', 'xlLKChDFoS', 'kilicderya923@example.com', 'Kismetli Sokagi No:905 Ardahan', '+908516407009', 42, 2220,"derya_kilic452" ,'Shimall Hotel', 'employee');
-call addperson('Osman', 'ozdemir', 'UvkK7sBOzl', 'ozdemirosman725@example.com', 'Lalezar Mahallesi No:877 Ermenek, Karaman', '+908517378952', 37, 3000,"OsmanOzdemir", 'Hotel Grand Asya', 'employee');
-call addperson('Sevilay', 'Gunes', '1yrlUxNzfc', 'sevIlay_gunes694@example.com', 'Sarraf Sokagi No:626 Eleskirt, Agri', '+908515395499', 29, 5000, "GunesSevIlay", 'Doubletree By Hilton', 'employee');
-call addperson('Esra', 'Kose', 'ICoRPZvNFb', 'esra_kose47@example.com', 'Bahce Caddesi No:104 Foca, Izmir', '+908514200413', 36, 750,"EsraKose", 'Ramada By Wyndham Diyarbakir', 'employee');
-call addperson('Osman', 'Can', 'uPyFzsHaEJ', 'canosman@example.com', 'cakaloglu Sokagi No:994 Gediz, Kutahya', '+908519684948', 37, 4000, "osman_can", 'Hampton By Hilton Kahramanmaras', 'employee');
-call addperson('Muge', 'Korkmaz', 'S8U3waMD5n', 'muge_korkmaz905@example.com', 'Doruk Caddesi No:966 Atabey, Isparta', '+908512258909', 32, 2214,"muge417", 'Pine Bay Holiday Resort', 'employee');
-call addperson('Muhammet', 'Kaya', '8LdupBAW4e', 'muhammet_kaya730@example.com', 'Soylu Caddesi No:157 Alapli, Zonguldak', '+908516145818', 32, 2589 ,"muhammet_kaya", 'Ramada Encore Izmir', 'employee');
+call addperson('Kubra', 'ozer', 'OyYdHaK8ew', 'ozerkubra789@example.com', 'Fatih Bulvari No:989 Dalaman, Mugla', '+908513178115', 28, 1200, 'kubraozer', 'Grand Makel Topkapi', null, 'employee');
+call addperson('Emre', 'Keskin', 'uj6FSTipNh', 'keskinemre858@example.com', 'Sancak Mahallesi No:659 Yenipazar, Bilecik', '131', 21, 398, 'emre1234', 'Divan Adana', null, 'employee');
+call addperson('Ugur', 'celik', 'rQjG1W9XpA', 'celikugur@example.com', 'Tomruk Caddesi No:472 Kibriscik, Bolu', '+908512188855', 22, 2214,"UgurCelik", 'Dedeman Istanbul', null, 'employee');
+call addperson('Derya', 'Kilic', 'xlLKChDFoS', 'kilicderya923@example.com', 'Kismetli Sokagi No:905 Ardahan', '+908516407009', 42, 2220,"derya_kilic452" ,'Shimall Hotel', null, 'employee');
+call addperson('Osman', 'ozdemir', 'UvkK7sBOzl', 'ozdemirosman725@example.com', 'Lalezar Mahallesi No:877 Ermenek, Karaman', '+908517378952', 37, 3000,"OsmanOzdemir", 'Hotel Grand Asya', null, 'employee');
+call addperson('Sevilay', 'Gunes', '1yrlUxNzfc', 'sevIlay_gunes694@example.com', 'Sarraf Sokagi No:626 Eleskirt, Agri', '+908515395499', 29, 5000, "GunesSevIlay", 'Doubletree By Hilton', null, 'employee');
+call addperson('Esra', 'Kose', 'ICoRPZvNFb', 'esra_kose47@example.com', 'Bahce Caddesi No:104 Foca, Izmir', '+908514200413', 36, 750,"EsraKose", 'Ramada By Wyndham Diyarbakir', null, 'employee');
+call addperson('Osman', 'Can', 'uPyFzsHaEJ', 'canosman@example.com', 'cakaloglu Sokagi No:994 Gediz, Kutahya', '+908519684948', 37, 4000, "osman_can", 'Hampton By Hilton Kahramanmaras', null, 'employee');
+call addperson('Muge', 'Korkmaz', 'S8U3waMD5n', 'muge_korkmaz905@example.com', 'Doruk Caddesi No:966 Atabey, Isparta', '+908512258909', 32, 2214,"muge417", 'Pine Bay Holiday Resort', null, 'employee');
+call addperson('Muhammet', 'Kaya', '8LdupBAW4e', 'muhammet_kaya730@example.com', 'Soylu Caddesi No:157 Alapli, Zonguldak', '+908516145818', 32, 2589 ,"muhammet_kaya", 'Ramada Encore Izmir', null, 'employee');
 
 
 /*Manager*/
-call addperson('Salih', 'Arslan', 'ptsCeUvnOV', 'arslansalih155@example.com', 'Nagehan Caddesi No:713 cavdir, Burdur', '+908512398944', 31, 300, 'SalihArslan', 'Grand Makel Topkapi', 'manager');
-call addperson('Furkan ', 'Yilmaz', 'wmXZMKiRdx', 'yilmazfurkan351@example.com', 'Pasakoy Caddesi No:903 Altintas, Kutahya', '+908513897931', 39, 222,"furkan_yilmaz38", 'Divan Adana','manager');
-call addperson('Aynur', 'Can', 'ic8LCSD4mN', 'aynur_can621@example.com', 'Kanaryam Mahallesi No:998 Besikduzu, Trabzon', '+908511198666', 25, 800,"CanAynur", 'Dedeman Istanbul', 'manager');
-call addperson('Pinar', 'ozcan', 'l4aibhdyfm', 'pinar_ozcan9@example.com', 'Merve Caddesi No:44 Aksehir, Konya', '+908518142867', 25, 900,"PinarOzcan", 'Shimall Hotel', 'manager');
-call addperson('Ayca', 'Bozkurt', 'bfBDd5sywz', 'bozkurtayca@example.com', 'Akcam Bulvari No:304 Alucra, Giresun', '+908515839854', 43, 345,"BozkurtAyca", 'Hotel Grand Asya', 'manager');
-call addperson('Ismail', 'cakir', '2m0KoB8CpY', 'ismail_cakir999@example.com', 'Ahiler Caddesi No:941 Yedisu, Bingol', '+908515488313', 21, 223,"ismail_cakir", 'Doubletree By Hilton', 'manager');
-call addperson('Cemal', 'Yildiz', 'lo2A9PqkG7', 'yildizcemal@example.com', 'Hilal Bulvari No:372 Elbeyli, Kilis', '+908514224374', 43, 50,"yildiz804", 'Ramada By Wyndham Diyarbakir', 'manager');
-call addperson('Nilgun', 'Korkmaz', 'NzieyfbjZS', 'korkmaznilgun981@example.com', 'Namik Kemal Sokagi No:622 Lice, Diyarbakir', '+908518455036', 29, 600,"nilgun_korkmaz397", 'Hampton By Hilton Kahramanmaras', 'manager');
-call addperson('Hulya', 'Arslan', 'NfdAylgZIT', 'hulya_arslan797@example.com', 'ulku Mahallesi No:787 caycuma, Zonguldak', '+908515129718', 36, 500, "HulyaArslan", 'Pine Bay Holiday Resort', 'manager');
-call addperson('Aykut', 'Erdogan', 'zaOEdXbKjx', 'aykut_erdogan244@example.com', 'Semerkant Mahallesi No:23 Mut, Mersin', '+908518392822', 26, 450, "AykutErdogan", 'Ramada Encore Izmir', 'manager');
+call addperson('Salih', 'Arslan', 'ptsCeUvnOV', 'arslansalih155@example.com', 'Nagehan Caddesi No:713 cavdir, Burdur', '+908512398944', 31, 300, 'SalihArslan', 'Grand Makel Topkapi', null, 'manager');
+call addperson('Furkan ', 'Yilmaz', 'wmXZMKiRdx', 'yilmazfurkan351@example.com', 'Pasakoy Caddesi No:903 Altintas, Kutahya', '+908513897931', 39, 222,"furkan_yilmaz38", 'Divan Adana', null, 'manager');
+call addperson('Aynur', 'Can', 'ic8LCSD4mN', 'aynur_can621@example.com', 'Kanaryam Mahallesi No:998 Besikduzu, Trabzon', '+908511198666', 25, 800,"CanAynur", 'Dedeman Istanbul', null, 'manager');
+call addperson('Pinar', 'ozcan', 'l4aibhdyfm', 'pinar_ozcan9@example.com', 'Merve Caddesi No:44 Aksehir, Konya', '+908518142867', 25, 900,"PinarOzcan", 'Shimall Hotel', null, 'manager');
+call addperson('Ayca', 'Bozkurt', 'bfBDd5sywz', 'bozkurtayca@example.com', 'Akcam Bulvari No:304 Alucra, Giresun', '+908515839854', 43, 345,"BozkurtAyca", 'Hotel Grand Asya', null, 'manager');
+call addperson('Ismail', 'cakir', '2m0KoB8CpY', 'ismail_cakir999@example.com', 'Ahiler Caddesi No:941 Yedisu, Bingol', '+908515488313', 21, 223,"ismail_cakir", 'Doubletree By Hilton', null, 'manager');
+call addperson('Cemal', 'Yildiz', 'lo2A9PqkG7', 'yildizcemal@example.com', 'Hilal Bulvari No:372 Elbeyli, Kilis', '+908514224374', 43, 50,"yildiz804", 'Ramada By Wyndham Diyarbakir', null, 'manager');
+call addperson('Nilgun', 'Korkmaz', 'NzieyfbjZS', 'korkmaznilgun981@example.com', 'Namik Kemal Sokagi No:622 Lice, Diyarbakir', '+908518455036', 29, 600,"nilgun_korkmaz397", null, 'Hampton By Hilton Kahramanmaras', null, 'manager');
+call addperson('Hulya', 'Arslan', 'NfdAylgZIT', 'hulya_arslan797@example.com', 'ulku Mahallesi No:787 caycuma, Zonguldak', '+908515129718', 36, 500, "HulyaArslan", 'Pine Bay Holiday Resort', null, 'manager');
+call addperson('Aykut', 'Erdogan', 'zaOEdXbKjx', 'aykut_erdogan244@example.com', 'Semerkant Mahallesi No:23 Mut, Mersin', '+908518392822', 26, 450, "AykutErdogan", 'Ramada Encore Izmir', null, 'manager');
 
 /*----------------------------------------------------------------------------------*/
 /*ROOM TABLE*/
