@@ -49,7 +49,8 @@
       <tbody>
          <?php
          $count = 1;
-         $sel_query = "SELECT * FROM room;";
+         $search_value = $_POST["search"];
+         $sel_query = "SELECT * FROM room ORDER BY id desc";
          $result = mysqli_query($baglanti, $sel_query);
          while ($row = mysqli_fetch_assoc($result)) {
             $hotelId = $row['hotel_id'];
