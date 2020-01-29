@@ -94,7 +94,10 @@ $city = trim($city);
                         <header class="w3-container w3-light-grey">
                             <h4> <?php echo $filter_row["room_info"] ?> </h4>
                         </header>
-                        <p><?php echo "Room Price: ", $filter_row["room_price"], " $" . "<br/>",
+                        <img src="css/image/img-<?php echo $filter_row["image"] ?>" alt="Room Image" height="200" width="200">
+                        <p><?php echo "Room Price: ",
+                                $filter_row["room_price"],
+                                " $" . "<br/>",
                                 "Room Number: ",
                                 $filter_row["room_number"] . "<br/>",
                                 "Room Status: ",
@@ -123,7 +126,11 @@ $city = trim($city);
                         <header class="w3-container w3-light-grey">
                             <h4> <?php echo $reserve_row["room_info"] ?> </h4>
                         </header>
-                        <p><?php echo "Room Price: ", $reserve_row["room_price"], " $" . "<br/>",
+
+                        <img src="css/image/img-<?php echo $reserve_row["image"] ?>" alt="Room Image" height="200" width="200">
+                        <p><?php echo "Room Price: ",
+                                $reserve_row["room_price"],
+                                " $" . "<br/>",
                                 "Room Number: ",
                                 $reserve_row["room_number"] . "<br/>",
                                 "Room Status: ",
@@ -150,7 +157,10 @@ $city = trim($city);
                         <header class="w3-container w3-light-grey">
                             <h4> <?php echo $row["room_info"] ?> </h4>
                         </header>
-                        <p><?php echo "Room Price: ", $row["room_price"], " $" . "<br/>",
+                        <img src="css/image/img-<?php echo $row["image"] ?>" alt="Room Image" height="200" width="200">
+                        <p><?php echo "Room Price: ",
+                                $row["room_price"],
+                                " $" . "<br/>",
                                 "Room Number: ",
                                 $row["room_number"] . "<br/>",
                                 "Room Status: ",

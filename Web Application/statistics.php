@@ -147,17 +147,3 @@
 </body>
 
 </html>
-<script>
-    $(document).ready(function() {
-        $('#create_excel').click(function() {
-            <?php
-
-            require dirname(__FILE__) . '/php-excel.class.php';
-
-            $xls = new Excel_XML;
-            $xls->sendWorkbook('report.xml');
-
-            ?>
-        });
-    });
-</script>

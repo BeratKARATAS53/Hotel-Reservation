@@ -16,14 +16,19 @@ include('db.php');
         <a class="active" href="profile-employees.php">Home</a>
         <a href="hotel-settings.php">Settings</a>
         <a href="hotel-balance.php">Balance</a>
-        <a href="statistics.php">Statistics</a>
 
         <?php
         $user = $_SESSION["email"];
-        if ($user) { ?>
+        if ($user) {
 
-            <a href="add-room.php">Add Room</a>
-            <a href="add-organization.php">Add Organization</a>
+            $sql = "SELECT * FROM person WHERE email='$email';";
+            $result = mysqli_query($baglanti, $sql);
+            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            if ($row["p_role"] == "manager") { ?>
+                <a href="add-room.php">Add Room</a>
+                <a href="add-organization.php">Add Organization</a>
+            <?php }
+            ?>
             <a style="float:right" href="logout.php">Log Out</a>
             <a style="float:right" href="profile-employees.php"><?php echo $user; ?></a>
         <?php
