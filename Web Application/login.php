@@ -20,7 +20,11 @@ if (isset($_POST['email']) && isset($_POST['pass'])) //when form submitted
 
     if (mysqli_num_rows($result) == 1) {
         $_SESSION['email'] = $email;
-        header('Location: /'); //redirect to main
+        if (($row["p_role"] == "manager") || ($row["p_role"] == "employee")) {
+            header('Location: profile-employees.php'); //redirect to profile page
+        } else {
+            header('Location: /'); //redirect to main
+        }
     } else {
         echo "<script>alert('Wrong login or password');</script>";
     }

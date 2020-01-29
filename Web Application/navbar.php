@@ -19,12 +19,13 @@ echo $user;
         <a class="active" href="/">Home</a>
         <a href="rooms.php">Rooms</a>
         <a href="hotels.php">Hotels</a>
+        <a href="organizations.php">Organizations</a>
 
         <?php
         $user = $_SESSION["email"];
         if ($user) { ?>
             <a style="float:right" href="logout.php">Log Out</a>
-            <a style="float:right" href="profile-page.php"><?php echo $user; ?></a>
+            <a style="float:right" href="profile-customer.php"><?php echo $user; ?></a>
         <?php
         } else { ?>
             <a style="float:right" href="login.php">Login</a>
