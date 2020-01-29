@@ -15,6 +15,7 @@ $type = $_POST['type'];
 
 $city = trim($city);
 ?>
+<!DOCTYPE html>
 <html>
 
 <head>

@@ -369,8 +369,8 @@ begin
 	   	when 'standart' then
 	   		begin
 				if not exists (select * from room r where r.room_number=concat(hotel_id, '-0-', room_number) and r.hotel_id=hotel_id) then
-					insert into room(room_info, room_price, room_number, status, capacity, hotel_id)
-					values(room_info, room_price, concat(hotel_id, '-0-', room_number), status, capacity, hotel_id);
+					insert into room(room_info, room_price, room_number, status, capacity, image, hotel_id)
+					values(room_info, room_price, concat(hotel_id, '-0-', room_number), status, capacity, image, hotel_id);
 					select distinct r.id into room_id from room r where r.hotel_id=hotel_id and r.room_number=concat(hotel_id, '-0-', room_number);
 					insert into standartroom(room_id) values(room_id);
 				end if;
