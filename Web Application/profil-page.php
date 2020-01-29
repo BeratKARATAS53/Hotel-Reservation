@@ -13,7 +13,7 @@ require('db.php');
    <?php
    session_start();
    $email = $_SESSION['email'];
-   include('navbar-login2.php');
+   include('navbar2.php');
    $sql = "SELECT * FROM person WHERE email='$email';";
    $result = mysqli_query($baglanti, $sql);
    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
