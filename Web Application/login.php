@@ -26,7 +26,7 @@ if (isset($_POST['email']) && isset($_POST['pass'])) //when form submitted
             header('Location: /'); //redirect to main
         }
     } else {
-        echo "<script>alert('Wrong login or password');</script>";
+        echo "<script>alert('Wrong login or password');</script>" . $sql;
     }
 }
 

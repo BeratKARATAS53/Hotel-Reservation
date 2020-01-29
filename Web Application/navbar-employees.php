@@ -14,8 +14,7 @@ include('db.php');
 <body>
     <div class="topnav">
         <a class="active" href="profile-employees.php">Home</a>
-        <a href="hotel-settings.php">Settings</a>
-        <a href="hotel-balance.php">Balance</a>
+        <a href="settings-employees.php">Settings</a>
 
         <?php
         $user = $_SESSION["email"];

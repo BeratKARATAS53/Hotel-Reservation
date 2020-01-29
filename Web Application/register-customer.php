@@ -12,7 +12,6 @@ $last = $_POST['last'];
 $email = $_POST['mail'];
 $address = $_POST['address'];
 $pass = $_POST['pass'];
-$confpass = $_POST['confirm-pass'];
 $phone = $_POST['phone'];
 $age = $_POST['age'];
 $username = $_POST['username'];
@@ -22,13 +21,12 @@ $first =  trim($first);
 $last =  trim($last);
 $email = trim($email);
 $address =  trim($address);
-$pass = trim($password);
-$phone =  trim($confpass);
+$pass = trim($pass);
+$phone =  trim($phone);
 $age =  trim($age);
 $username =  trim($username);
 $money =  trim($money);
 
-$password = md5($password);
 // Kayıt İşlemi
 $kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',$age,$money,'$username','null','customer')";
 

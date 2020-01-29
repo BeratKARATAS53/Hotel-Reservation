@@ -63,6 +63,7 @@ $city = $_POST['city'];
                         <header class="w3-container w3-light-grey">
                             <h4> <?php echo $filter_row["name"] ?> </h4>
                         </header>
+                        <img src="css/image/img-<?php echo $filter_row["image"] ?>" alt="Organization Image" height="200" width="200">
                         <p><?php echo "Organization Information: ", $filter_row["org_info"] . "<br/>",
                                 "Organization Price: ",
                                 $filter_row["price"],
@@ -88,6 +89,7 @@ $city = $_POST['city'];
                         <header class="w3-container w3-light-grey">
                             <h4> <?php echo $row["name"] ?> </h4>
                         </header>
+                        <img src="css/image/img-<?php echo $row["image"] ?>" alt="Organization Image" height="200" width="200">
                         <p><?php echo "Organization Information: ", $row["org_info"] . "<br/>",
                                 "Organization Price: ",
                                 $row["price"],
