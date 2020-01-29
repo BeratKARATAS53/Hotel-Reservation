@@ -14,8 +14,7 @@ include('db.php');
     <div class="topnav">
         <a href="/">Home</a>
         <a href="my-reservations.php">My Reservations</a>
-        <a href="settings.php">Settings</a>
-        <a href="balance-update.php">Balance</a>
+        <a href="settings-customer.php">Settings</a>
 
 
         <a style="float:right" href="logout.php">Log Out</a>

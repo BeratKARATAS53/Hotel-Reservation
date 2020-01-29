@@ -122,16 +122,11 @@ call addreservation(curdate()+1, curdate()+2, 1, '1-1-100', 500);
 /*----------------------------------------------------------------------------------*/
 /*ORGANIZATION TABLE*/
 /*call addorganization(:name, :org_info, :price, :hotel_name)*/
-call addorganization('Toplanti', 'Projeksiyon, Kablolu / Kablosuz Internet Baglantisi, Ses Sistemi, Yazi Tahtasi', 500, 'Grand Makel Topkapi');
-call addorganization('Dugun', 'Catering, cicek, Davetiye, Dekor, DJ, Fotograf, Nikah sekeri, Pasta', 8000, 'Divan Adana');
-call addorganization('Mezuniyet', 'Kokteyl, Susleme hizmetleri, Gosteri, Sahne kurulumu, Ses sistemi kurulumu ve DJ hizmeti', 11000, 'Dedeman Istanbul');
-call addorganization('Balo', 'Guler yuz ve kaliteli hizmet,  yiyecek-icecek temin etme, Susleme hizmetleri', 5000, 'Shimall Hotel');
-call addorganization('Mevlid', 'Susleme, Hediyelik, Pasta, Kiyafet', 200, 'Hotel Grand Asya');
-call addorganization('Kongre', 'Rehberlik hizmeti, Otel ve ucak rezervasyonlari, Buyuk ve Ferah Mekan', 2000, 'Doubletree By Hilton');
-call addorganization('Tanitim', 'TV Programlari, Klip cekimleri, Havadan Video cekimleri, Egitim Videolari, Kurgu & Post Produksiyon', 400, 'Ramada By Wyndham Diyarbakir');
-call addorganization('Festival', 'Festival Alani Stant Kiralama Hizmetleri, Guvenlik Ekipleri, Vale Hizmetleri, Gosteri, Dans Grubu ve Etkinlik', 9000, 'Hampton By Hilton Kahramanmaras');
-call addorganization('Nisan', 'Catering, cicek, Davetiye, Dekor, DJ, Fotograf', 5000, 'Pine Bay Holiday Resort');
-call addorganization('Davet', 'Otantik sahne ve konsepte uygun muzisyen ekibi, Sinevizyon gosterimi', 1000, 'Ramada Encore Izmir');
+call addorganization('Toplanti', 'Projeksiyon, Kablolu / Kablosuz Internet Baglantisi, Ses Sistemi, Yazi Tahtasi', 500, null, 'Grand Makel Topkapi');
+call addorganization('Dugun', 'Catering, cicek, Davetiye, Dekor, DJ, Fotograf, Nikah sekeri, Pasta', 8000, null, 'Divan Adana');
+call addorganization('Mezuniyet', 'Kokteyl, Susleme hizmetleri, Gosteri, Sahne kurulumu, Ses sistemi kurulumu ve DJ hizmeti', 11000, null, 'Dedeman Istanbul');
+call addorganization('Balo', 'Guler yuz ve kaliteli hizmet,  yiyecek-icecek temin etme, Susleme hizmetleri', 5000, null, 'Shimall Hotel');
+call addorganization('Mevlid', 'Susleme, Hediyelik, Pasta, Kiyafet', 200, null, 'Hotel Grand Asya');
 
 /*----------------------------------------------------------------------------------*/
 /*RENT ORGANIZATION TABLE*/

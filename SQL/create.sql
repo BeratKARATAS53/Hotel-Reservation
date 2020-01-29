@@ -78,6 +78,7 @@ create table if not exists organization(
    	org_info varchar(255) not null,
   	price float not null,
    	hotel_id int,
+   	image varchar(255),
    	foreign key (hotel_id) references hotel(id) on delete cascade on update cascade
 );
 
@@ -507,13 +508,13 @@ delimiter ;
 
 drop procedure if exists addorganization;
 delimiter $$
-create procedure addorganization(in name varchar(255), in org_info varchar(255), in price float, in hotel_name varchar(200))
+create procedure addorganization(in name varchar(255), in org_info varchar(255), in price float, in image varchar(255), in hotel_name varchar(200))
 begin
 	declare hotel_id INT DEFAULT 0;
 	if not exists (select * from organization o where o.name=name and o.org_info=org_info) then
 		if exists (select * from hotel h where h.name=hotel_name) then
 			select distinct h.id into hotel_id from hotel h where h.name = hotel_name;
-			insert into organization(name, org_info, price, hotel_id) values(name, org_info, price, hotel_id);
+			insert into organization(name, org_info, price, hotel_id, image) values(name, org_info, price, hotel_id, image);
 		end if;
 	end if;
 end

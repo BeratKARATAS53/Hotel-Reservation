@@ -104,7 +104,7 @@ $hotel_name = $row2["name"];
                         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
                             $image = basename($_FILES["fileToUpload"]["name"]);
                             echo "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded.";
-                            header("Location: add-room.php?image=$image");
+                            header("Location: add-organization.php?image=$image");
                         } else {
                             echo "Sorry, there was an error uploading your file.";
                         }
@@ -112,29 +112,17 @@ $hotel_name = $row2["name"];
                 }
                 if (isset($_POST['save'])) {
                     // Register Sayfasından Gelen Bilgileri Değişkenlere Aktarma.
+                    $name = $_POST['name'];
                     $info = $_POST['info'];
                     $price = $_POST['price'];
-                    $number = $_POST['number'];
-                    $status = $_POST['status'];
-                    $capacity = $_POST['capacity'];
-                    $feature = $_POST['feature'];
-                    $name = $row2["name"];
-                    $type = $_POST['type'];
 
-
+                    $name = trim($name);
                     $info =  trim($info);
-                    $price =  trim($price);
-                    $number = trim($number);
-                    $status =  trim($status);
-                    $capacity = trim($capacity);
-                    $feature =  trim($feature);
-                    $name =  trim($name);
-                    $type =  trim($type);
 
                     // Kayıt İşlemi
-                    // call addroom(:room_info, :room_price, :room_number, :status, :capacity, :image, :feature, :hotel_name, :room_type)
-                    $kayit = "CALL addroom('$info','$price','$number','available','$capacity','$getImage','$feature','$name','$type')";
-                    echo "CALL addroom('$info','$price','$number','available','$capacity','$getImage','$feature','$name','$type')";
+                    // call addorganization(:name, :org_info, :price, :image, :hotel_name)
+                    $kayit = "CALL addorganization('$name','$info','$price','$getImage','$hotel_name')";
+                    echo "CALL addorganization('$name','$info','$price','$getImage','$hotel_name')";
 
                     $sonuc = mysqli_query($baglanti, $kayit);
 
@@ -161,22 +149,11 @@ $hotel_name = $row2["name"];
                 <h2 style="width:80%; margin-top: 10; margin-left: 70; color:#243b55"><b>Add Room</b></h2>
                 <div class="newForm">
                     <form method="post">
-                        <img src="css/image/img-<?php echo $getImage ?>" alt="Room Image" style="width:100%">
-                        <input type="text" name="info" id="info" placeholder="Room Info" />
-                        <input type="number" style="width: 100%; margin-top: 10" name="price" id="price" placeholder="Room Price" />
-                        <input type="number" style="width: 100%; margin-top: 10" name="number" id="number" placeholder="Room Number" />
-                        <input type="number" style="width: 100%; margin-top: 10" name="capacity" id="capacity" min="1" max="10" placeholder="Capacity" />
-                        <input type="text" name="feature" id="feature" placeholder="Feature" />
+                        <img src="css/image/img-<?php echo $getImage ?>" alt="Organization Image" style="width:100%">
+                        <input type="text" name="name" id="name" placeholder="Organization Name" />
+                        <input type="text" name="info" id="info" placeholder="Organization Info" />
+                        <input type="number" style="width: 100%; margin-top: 10" name="price" id="price" placeholder="Organization Price" />
                         <input type="text" name="name" id="name" placeholder="<?php echo $hotel_name ?>" disabled />
-                        <h3>Room Type</h3>
-                        <label class="newContainer">Standart
-                            <input type="radio" name="type" id="standart" value="standart">
-                            <span class="newCheckmark"></span>
-                        </label>
-                        <label class="newContainer">Special
-                            <input type="radio" name="type" id="special" value="special">
-                            <span class="newCheckmark"></span>
-                        </label>
                         <input type="submit" name="save" id="save" value="SAVE">
                     </form>
                 </div>
