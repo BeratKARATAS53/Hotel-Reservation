@@ -26,6 +26,7 @@ include('db.php');
             if ($row["p_role"] == "manager") { ?>
                 <a href="add-room.php">Add Room</a>
                 <a href="add-organization.php">Add Organization</a>
+                <a href="statistics.php">Statistics</a>
             <?php }
             ?>
             <a style="float:right" href="logout.php">Log Out</a>

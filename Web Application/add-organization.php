@@ -146,7 +146,7 @@ $hotel_name = $row2["name"];
 
         <div class="w3-cell-row" style="margin: 10px">
             <div class="w3-container w3-red w3-cell" style="width: 30%; background: linear-gradient(to right, #6190e8, #a7bfe8);">
-                <h2 style="width:80%; margin-top: 10; margin-left: 70; color:#243b55"><b>Add Room</b></h2>
+                <h2 style="width:80%; margin-top: 10; margin-left: 70; color:#243b55"><b>Add Organization</b></h2>
                 <div class="newForm">
                     <form method="post">
                         <img src="css/image/img-<?php echo $getImage ?>" alt="Organization Image" style="width:100%">

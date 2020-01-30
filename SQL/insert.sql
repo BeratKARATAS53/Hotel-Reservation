@@ -117,7 +117,11 @@ call addroom_extraservice(1, 1);
 /*REZERVATION TABLE*/
 /*call addreservation(:start_date, :finish_date, :customer_id, :room_number)*/
 call addreservation(curdate(), curdate()+1, 1, '1-1-100', 500);
-call addreservation(curdate()+1, curdate()+2, 1, '1-1-100', 500);
+call addreservation(curdate(), curdate()+1, 1, '2-1-200', 500);
+call addreservation(curdate()+1, curdate()+2, 2, '1-1-100', 1500);
+call addreservation(curdate()-5, curdate()-2, 2, '1-1-100', 500);
+call addreservation(curdate()-1, curdate(), 4, '1-1-100', 250);
+call addreservation(curdate()-51, curdate()-42, 3, '1-1-100', 175);
 
 /*----------------------------------------------------------------------------------*/
 /*ORGANIZATION TABLE*/
