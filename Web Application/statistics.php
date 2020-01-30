@@ -101,6 +101,16 @@
                 <td align="center"><?php echo $data["total"] ?></td>
             </tr>
             <?php
+            $sql = "SELECT COUNT(sr.id) as special FROM room r, specialroom sr WHERE sr.room_id = r.id AND r.hotel_id = $hotel_id";
+            $result = mysqli_query($baglanti, $sql);
+            $data = mysqli_fetch_assoc($result);
+            ?>
+            <tr>
+                <td align="center">COUNT</td>
+                <td align="center">Number of Special Rooms in The Hotel</td>
+                <td align="center"><?php echo $data["special"] ?></td>
+            </tr>
+            <?php
             $sql = "SELECT COUNT(id) as total FROM room_reservation rr, room r WHERE rr.room_id = r.id AND r.hotel_id = $hotel_id";
             $result = mysqli_query($baglanti, $sql);
             $data = mysqli_fetch_assoc($result);
@@ -139,6 +149,36 @@
                 <td align="center">AVG</td>
                 <td align="center">Average Price of Rooms in The Hotel</td>
                 <td align="center"><?php echo $data["avgprice"] . " $" ?></td>
+            </tr>
+            <?php
+            $sql = "SELECT SUM(money) as balance FROM hotel_balance hb WHERE hb.id = $hotel_id";
+            $result = mysqli_query($baglanti, $sql);
+            $data = mysqli_fetch_assoc($result);
+            ?>
+            <tr>
+                <td align="center">SUM</td>
+                <td align="center">Total Balance in The Hotel</td>
+                <td align="center"><?php echo $data["balance"] . " $" ?></td>
+            </tr>
+            <?php
+            $sql = "SELECT * FROM reservation_view rv, room r2 WHERE rv.room_id = r2.id AND rv.hotel_id = $hotel_id ORDER BY rv.id ASC LIMIT 1";
+            $result = mysqli_query($baglanti, $sql);
+            $data = mysqli_fetch_assoc($result);
+            ?>
+            <tr>
+                <td align="center">FIRST</td>
+                <td align="center">The First Rezerved Room in The Hotel</td>
+                <td align="center"><?php echo $data["room_number"] ?></td>
+            </tr>
+            <?php
+            $sql = "SELECT * FROM reservation_view rv, room r2 WHERE rv.room_id = r2.id AND rv.hotel_id = $hotel_id ORDER BY rv.id DESC LIMIT 1";
+            $result = mysqli_query($baglanti, $sql);
+            $data = mysqli_fetch_assoc($result);
+            ?>
+            <tr>
+                <td align="center">LAST</td>
+                <td align="center">The Last Rezerved Room in The Hotel</td>
+                <td align="center"><?php echo $data["room_number"] ?></td>
             </tr>
         </tbody>
     </table>
