@@ -15,6 +15,7 @@ include('db.php');
     <div class="topnav">
         <a class="active" href="profile-employees.php">Home</a>
         <a href="settings-employees.php">Settings</a>
+        <a href="statistics.php">Statistics</a>
 
         <?php
         $user = $_SESSION["email"];
