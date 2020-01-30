@@ -203,7 +203,7 @@ create procedure addhotel(in name varchar(200), in address varchar(255), in tele
 	in star int, in hotel_type varchar(150))
 begin
 	if not exists (select * from hotel where hotel.name=name) then
-		call addbalance(null, curdate(), @balance_id);
+		call addbalance(0, curdate(), @balance_id);
 		insert into hotel(name, address, telephone, hotel_info, star, hotel_type, balance_id)
 		values(name, address, telephone, hotel_info, star, hotel_type, (select @balance_id));
 	end if;
@@ -434,6 +434,7 @@ begin
 						select max(id) into reservation_id from reservation re where re.start_date=start_date and re.finish_date=finish_date;
 						insert into room_reservation(room_id, reservation_id) values(room_id, reservation_id);
 						update balance set balance.money=person_money-total_price, balance.balance_date=curdate() where balance.id=balanceId;
+						update hotel_balance set money=money+total_price where id=(select hotel_id from room where id=room_id);
 						delete from room_extraservice res where res.room_id=room_id;
 					end if;
 				end if;
