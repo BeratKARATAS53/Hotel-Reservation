@@ -1,7 +1,7 @@
 drop view if exists customer_view,employee_view,person_balance,hotel_balance,customer_reservation,manager_view,reservation_view,organization_view,customer_all_info,employee_all_info,manager_all_info;
 
 create view customer_view as
-	select p.id,p.firstname,p.lastname,p.passwrd,p.email,p.telephone,p.address,p.balance_id,c.id as customer_id,c.username,c.age
+	select p.id,p.firstname,p.lastname,p.passwrd,p.email,p.telephone,p.address,p.balance_id,c.id as customer_id,c.username,c.age,p.p_role
 	from customer c,person p
 	where c.person_id=p.id;
 
@@ -40,7 +40,7 @@ create view reservation_view as
 	where r.id=rr.room_id and rr.reservation_id=re.id;
 
 create view customer_all_info as 
-	select cv.id,cv.firstname,cv.lastname,cv.passwrd,cv.email,cv.telephone,cv.address,cv.balance_id,cv.customer_id,cv.username,cv.age,b.balance_date,b.money
+	select cv.id,cv.firstname,cv.lastname,cv.passwrd,cv.email,cv.telephone,cv.address,cv.balance_id,cv.customer_id,cv.username,cv.age,b.balance_date,b.money,cv.p_role
 	from customer_view cv,balance b
 	where cv.balance_id=b.id;
 	

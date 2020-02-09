@@ -28,7 +28,7 @@ $username =  trim($username);
 $money =  trim($money);
 
 // Kayıt İşlemi
-$kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',$age,$money,'$username','null','customer')";
+$kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',$age,$money,'$username','null','null','customer')";
 
 $sonuc = mysqli_query($baglanti, $kayit);
 

@@ -60,7 +60,7 @@ require('db.php');
                     <h4> <?php echo $row_org["name"] ?> </h4>
                 </header>
                 <div class="w3-container">
-                    <img src="css/image/img-<?php echo $row_org["image"] ?>" alt="Organization Image" height="200" width="200">
+                    <img src="css/image/img-<?php echo $row_org["image"] ?>" alt="Organization Image" height="250" width="300">
                     <p>
                         <?php echo "Organization Information: ", $row_org["org_info"] . "<br/>",
                             "Hotel Name: ",

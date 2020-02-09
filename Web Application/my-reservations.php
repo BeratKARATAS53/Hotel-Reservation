@@ -35,7 +35,7 @@
     $sql = "SELECT * FROM customer_view WHERE email='$email'";
     $result = mysqli_query($baglanti, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $id = $row["customer_id"];
+    $id = $row["id"];
 
     ?>
 
@@ -56,16 +56,17 @@
             $sql = "SELECT * FROM customer_reservation cr, room_reservation rr, room r, hotel h 
                     WHERE cr.reservation_id = rr.reservation_id AND rr.room_id = r.id AND r.hotel_id = h.id AND cr.customer_id = $id";
             $result = mysqli_query($baglanti, $sql);
-            $data = mysqli_fetch_assoc($result);
+            while ($data = mysqli_fetch_assoc($result)) {
             ?>
-            <tr>
-                <td align="center"><?php echo $data["reservation_id"] ?></td>
-                <td align="center"><?php echo $data["room_number"] ?></td>
-                <td align="center"><?php echo $data["price"] . " $" ?></td>
-                <td align="center"><?php echo $data["name"] ?></td>
-                <td align="center"><?php echo $data["address"] ?></td>
-                <td align="center"><?php echo $data["telephone"] ?></td>
-            </tr>
+                <tr>
+                    <td align="center"><?php echo $data["reservation_id"] ?></td>
+                    <td align="center"><?php echo $data["room_number"] ?></td>
+                    <td align="center"><?php echo $data["price"] . " $" ?></td>
+                    <td align="center"><?php echo $data["name"] ?></td>
+                    <td align="center"><?php echo $data["address"] ?></td>
+                    <td align="center"><?php echo $data["telephone"] ?></td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 

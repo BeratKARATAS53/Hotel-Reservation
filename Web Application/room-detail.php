@@ -76,7 +76,7 @@ require('db.php');
                     <h4> <?php echo $row_room["room_info"] ?> </h4>
                 </header>
                 <div class="w3-container">
-                    <img src="css/image/img-<?php echo $row_room["image"] ?>" alt="Room Image" height="200" width="200">
+                    <img src="css/image/img-<?php echo $row_room["image"] ?>" alt="Room Image" height="250" width="300">
                     <p>
                         <?php echo  "Room Price: ",
                             $row_room["room_price"],
