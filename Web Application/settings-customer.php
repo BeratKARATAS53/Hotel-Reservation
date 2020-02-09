@@ -8,11 +8,12 @@ if (mysqli_connect_errno()) {
 
 session_start();
 $email = $_SESSION['email'];
-$sql = "SELECT * FROM person p, customer c WHERE p.id = c.person_id AND p.email='$email'";
+$sql = "SELECT * FROM customer_all_info cai WHERE cai.email='$email'";
 $result = mysqli_query($baglanti, $sql);
 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $id = $row["id"];
 $age = $row["age"];
+$balance = $row["money"];
 $username = $row["username"];
 $type = $row["p_role"];
 
@@ -31,7 +32,7 @@ $type = $row["p_role"];
     <body>
         <?php
         session_start();
-        include('navbar-employees.php');
+        include('navbar-customer.php');
         ?>
 
         <div class="w3-cell-row">
@@ -51,16 +52,17 @@ $type = $row["p_role"];
                     $address =  trim($address);
                     $pass = trim($pass);
                     $phone =  trim($phone);
-                    $money =  trim($money);
+
+                    $balance = $balance + $money;
 
                     // Kayıt İşlemi
-                    $kayit = "CALL updateperson($id,'$first','$last','$pass','$email','$address','$phone',$age,$money,'$username','null','$type')";
-                    echo "CALL updateperson($id,'$first','$last','$pass','$email','$address','$phone',$age,$money,'$username','null','$type')";
+                    $kayit = "CALL updateperson($id,'$first','$last','$pass','$email','$address','$phone',$age,$balance,'$username','null','$type')";
+
                     $sonuc = mysqli_query($baglanti, $kayit);
 
                     if ($sonuc) {
                         echo "<script>alert('Success!');</script>";
-                        header("Location: profile-customer.php");
+                        // header("Location: profile-customer.php");
                     } else {
                         echo "<script>alert('All Field Are Required!');</script>";
                     }
@@ -74,6 +76,7 @@ $type = $row["p_role"];
                 <h2 style="width:80%; margin-top: 10; margin-left: 70; color:#243b55"><b>Settings</b></h2>
                 <div class="newForm">
                     <form method="post">
+                        <input type="text" name="username" id="username" placeholder="<?php echo $username ?>" disabled />
                         <input type="text" name="first" id="first" placeholder="First Name" />
                         <input type="text" name="last" id="last" placeholder="Last Name" />
                         <input type="email" name="mail" id="mail" placeholder="<?php echo $email ?>" disabled />

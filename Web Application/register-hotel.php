@@ -27,7 +27,7 @@ $money =  trim($money);
 $hotelname =  trim($hotelname);
 
 // Kayıt İşlemi
-$kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',0,$money,'null','$hotelname','$type')";
+$kayit = "CALL addPerson('$first','$last','$pass','$email','$address','$phone',0,$money,'null','$hotelname','null','$type')";
 
 $sonuc = mysqli_query($baglanti, $kayit);
 
